@@ -7,12 +7,17 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "npm run build && electron ./src/electron.js",
+    "start": "npm run build && electron ./dist/electron.js",
     "build": "webpack --config ./webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "electron": "^27.0.4",
+    "html-webpack-plugin": "^5.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-loader": "^9.5.0",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
