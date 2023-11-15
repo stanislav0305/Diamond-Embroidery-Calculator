@@ -7,8 +7,8 @@ function createWindow() {
   // Создаем окно
   let mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
-    autoHideMenuBar: true //скрыть меню окна
+    height: 600
+    //autoHideMenuBar: true //скрыть меню окна
     // webPreferences: {
     //  nodeIntegration: true
     // }

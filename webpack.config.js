@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const devMode = mode === 'development';
@@ -30,17 +31,28 @@ module.exports = [
     target: 'electron-renderer',
     devtool,
     module: {
-      rules: [{
-        test: /\.ts(x?)$/,
-        include: /src/,
-        use: [{ loader: 'ts-loader' }]
-      }]
+      rules: [
+        {
+          test: /\.ts(x?)$/,
+          include: /src/,
+          use: [{ loader: 'ts-loader' }]
+        },
+        {
+          test: /\.(c|sc|sa)ss$/i,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader',
+          ]
+        },
+      ]
     },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src', 'app', 'index.html'),
-        inject : 'body'
-      })
+        inject: 'body'
+      }),
+      new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
