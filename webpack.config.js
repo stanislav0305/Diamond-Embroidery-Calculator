@@ -1,9 +1,15 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const mode = process.env.NODE_ENV || 'development';
+const devMode = mode === 'development';
+const devtool = devMode ? 'source-map' : undefined;
+const distDir = devMode ? 'build' : 'dist';
 
 module.exports = [
   {
-    mode: 'development',
-    entry: './src/electron.ts',
+    mode,
+    entry: path.resolve(__dirname, 'src', 'electron', 'electron.ts'),
     target: 'electron-main',
     module: {
       rules: [{
@@ -13,15 +19,16 @@ module.exports = [
       }]
     },
     output: {
-      path: __dirname + '/dist',
-      filename: 'electron.js'
+      path: path.resolve(__dirname, distDir),
+      filename: 'electron.js',
+      clean: true,
     }
   },
   {
-    mode: 'development',
-    entry: './src/react.tsx',
+    mode,
+    entry: path.resolve(__dirname, 'src', 'app', 'index.tsx'),
     target: 'electron-renderer',
-    devtool: 'source-map',
+    devtool,
     module: {
       rules: [{
         test: /\.ts(x?)$/,
@@ -31,12 +38,16 @@ module.exports = [
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html'
+        template: path.resolve(__dirname, 'src', 'app', 'index.html'),
+        inject : 'body'
       })
     ],
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
     output: {
-      path: __dirname + '/dist',
-      filename: 'react.js'
+      path: path.resolve(__dirname, distDir),
+      filename: 'index.[contenthash].js'
     },
   }
 ];

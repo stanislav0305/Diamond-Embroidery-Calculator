@@ -29875,6 +29875,38 @@ if (
 
 /***/ }),
 
+/***/ "./node_modules/react-dom/client.js":
+/*!******************************************!*\
+  !*** ./node_modules/react-dom/client.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var m = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+if (false) {} else {
+  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+  exports.createRoot = function(c, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.createRoot(c, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+  exports.hydrateRoot = function(c, h, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.hydrateRoot(c, h, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/react-dom/index.js":
 /*!*****************************************!*\
   !*** ./node_modules/react-dom/index.js ***!
@@ -33342,43 +33374,44 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./src/react.tsx":
-/*!***********************!*\
-  !*** ./src/react.tsx ***!
-  \***********************/
+/***/ "./src/app/app.tsx":
+/*!*************************!*\
+  !*** ./src/app/app.tsx ***!
+  \*************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
-const Index = () => {
-    return React.createElement("div", null, "Hello React!");
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function App() {
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("h1", null, "Hello, Electron and React!")));
+}
+exports["default"] = App;
+
+
+/***/ }),
+
+/***/ "./src/app/index.tsx":
+/*!***************************!*\
+  !*** ./src/app/index.tsx ***!
+  \***************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-ReactDOM.render(React.createElement(Index, null), document.getElementById('app'));
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+const app_1 = __importDefault(__webpack_require__(/*! ./app */ "./src/app/app.tsx"));
+const container = document.getElementById('app');
+const root = (0, client_1.createRoot)(container);
+root.render(react_1.default.createElement(app_1.default, null));
 
 
 /***/ })
@@ -33427,8 +33460,8 @@ ReactDOM.render(React.createElement(Index, null), document.getElementById('app')
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/react.tsx");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/app/index.tsx");
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=react.js.map
+//# sourceMappingURL=index.28a03a1df42e16b5a898.js.map

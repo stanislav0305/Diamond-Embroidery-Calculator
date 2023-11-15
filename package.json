@@ -7,8 +7,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "npm run build && electron ./dist/electron.js",
-    "build": "webpack --config ./webpack.config.js",
+    "start": "npm run build-dev && electron ./build/electron.js",
+    "build-dev": "webpack --config ./webpack.config.js",
+    "build-prod": "webpack --config ./webpack.config.js --node-env=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
