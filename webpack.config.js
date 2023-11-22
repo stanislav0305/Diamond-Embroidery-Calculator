@@ -5,27 +5,42 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const mode = process.env.NODE_ENV || 'development';
 const devMode = mode === 'development';
 const devtool = devMode ? 'source-map' : undefined;
-const distDir = devMode ? 'build' : 'dist';
+const distDir = devMode ? 'build' : 'prod';
 
 module.exports = [
   {
     mode,
-    entry: path.resolve(__dirname, 'src', 'electron', 'electron.ts'),
+    entry: [
+      path.resolve(__dirname, 'src', 'electron', 'electron.ts'),
+      path.resolve(__dirname, 'src', 'assets', 'diamond.ico'),
+      path.resolve(__dirname, 'src', 'assets', 'license.md')
+    ],
     target: 'electron-main',
     module: {
-      rules: [{
-        test: /\.ts$/,
-        include: /src/,
-        use: [{ loader: 'ts-loader' }]
-      }]
+      rules: [
+        {
+          test: /\.ts$/,
+          include: /src/,
+          use: [{ loader: 'ts-loader' }]
+        },
+        {
+          test: /\.md$/i,
+          type: 'asset/resource'
+        },
+        {
+          test: /\.ico$/i,
+          type: 'asset/resource'
+        }
+      ]
     },
     output: {
       path: path.resolve(__dirname, distDir),
       filename: 'electron.js',
+      assetModuleFilename: 'assets/[name][ext]',
       clean: true,
     }
   },
-  {
+  { 
     mode,
     entry: path.resolve(__dirname, 'src', 'app', 'index.tsx'),
     target: 'electron-renderer',
@@ -44,7 +59,7 @@ module.exports = [
             'css-loader',
             'sass-loader',
           ]
-        },
+        }
       ]
     },
     plugins: [

@@ -1,0 +1,1 @@
+Diamond embroidery calculator license

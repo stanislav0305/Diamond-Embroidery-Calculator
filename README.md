@@ -1,1 +1,1 @@
-# Diamond-Embroider-Calculator
+# Diamond-Embroidery-Calculator
