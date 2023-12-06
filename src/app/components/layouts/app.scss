@@ -1,0 +1,51 @@
+@import '~bootstrap/scss/bootstrap';
+
+.title-bar {
+    -webkit-app-region: drag;
+}
+
+.title-bar a {
+    -webkit-app-region: no-drag;
+}
+
+.rotate-180-deg {
+    transform: rotate(180deg);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-primary);
+}
+
+.modal-content {
+    background-color: var(--background);
+    color: var(--text-primar);
+}
+
+:root {
+    color-scheme: light dark;
+
+    body,
+    .modal-content {
+        --background: #868585;
+        --text-primar: black;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+
+    body,
+    .modal-content {
+        --background: #333;
+        --text-primar: white;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+
+    body,
+    .modal-content {
+        --background: #868585;
+        --text-primar: black;
+    }
+}
