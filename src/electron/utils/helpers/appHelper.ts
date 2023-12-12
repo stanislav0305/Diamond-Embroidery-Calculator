@@ -3,9 +3,8 @@ import mainWindowBuilder from './mainWindowBuilder'
 import LogMainHelper from './logMainHelper'
 import ThemeSettingsI from '@shared/interfaces/themeSettingsI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
-import NativeThemeNameType from 'electron/types/nativeThemeNameType'
-import ThemeModeType from '@shared/types/themeModeType'
 import ThemeConverter from '../converters/themeConverter'
+import { mainConfig } from './mainConfigStoreManager'
 
 
 export default class AppHelper {
@@ -35,8 +34,16 @@ export default class AppHelper {
         AppHelper.mainWindow.on('unmaximize', () => {
             AppHelper.onUnmaximize()
         })
+
+        AppHelper.initNativeTheme()
     }
 
+    private static initNativeTheme() {
+        console.info('initNativeTheme...')
+        const settings = mainConfig.getThemeSettings() as ThemeSettingsI
+        console.info('settings for initNativeTheme', settings)
+        nativeTheme.themeSource = ThemeConverter.toNativeThemeName(settings.themeMode)
+    }
     /*
        Возвращаем приложение в фокус, если пользователь его открыл через иконку в Dock.
        В OS X обычно заново создают окно приложения, когда значок закрепления нажат, 
@@ -73,7 +80,8 @@ export default class AppHelper {
                 electron: process.versions.electron
             },
             paths: {
-                logPath: LogMainHelper.path
+                logPath: LogMainHelper.path,
+                mainConfigPath: mainConfig.path
             }
         }
     }
@@ -97,22 +105,27 @@ export default class AppHelper {
     public static minimize() {
         AppHelper.mainWindow?.minimize()
     }
-
-    public static themeSettings: ThemeSettingsI = {
-        themeMode: ThemeConverter.toThemeMode(nativeTheme.themeSource),
-        themeName: 'cerulean'
-    }
 }
 
 ipcMain.handle('theme:getCurrent', (): ThemeSettingsI => {
-    console.info('theme:getCurrent', AppHelper.themeSettings)
-    return AppHelper.themeSettings
+    console.info('theme:getCurrent')
+    const settings = mainConfig.getThemeSettings() as ThemeSettingsI
+    console.log('settings', settings)
+
+    return settings
 })
 
-ipcMain.handle('theme:set', (event : IpcMainInvokeEvent, settings: ThemeSettingsI) => {
+ipcMain.handle('theme:set', (event: IpcMainInvokeEvent, settings: ThemeSettingsI) => {
     console.info('theme:set')
     console.log('settings', settings)
-    AppHelper.themeSettings = settings
+
+    try {
+        mainConfig.setThemeSettings(settings)
+    } catch (err) {
+        console.error(err);
+        throw err
+    }
+
     nativeTheme.themeSource = ThemeConverter.toNativeThemeName(settings.themeMode)
 
     return settings

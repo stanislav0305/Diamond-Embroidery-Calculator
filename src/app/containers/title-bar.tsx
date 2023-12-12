@@ -128,6 +128,10 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
                                         <label className='me-2'>Путь к логам:</label>
                                         {appSettings.paths.logPath}
                                     </ListGroup.Item>
+                                    <ListGroup.Item>
+                                        <label className='me-2'>Путь к mainConfig:</label>
+                                        {appSettings.paths.mainConfigPath}
+                                    </ListGroup.Item>
                                 </ListGroup>
                             </Card>
                             <Card className='mt-1'>

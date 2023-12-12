@@ -5,6 +5,7 @@ export default interface AppSettingsI {
         electron: string
     },
     paths: {
-        logPath: string
+        logPath: string,
+        mainConfigPath: string
     }
 }
