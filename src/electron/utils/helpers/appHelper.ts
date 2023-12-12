@@ -1,8 +1,11 @@
 import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent, nativeTheme } from 'electron'
 import mainWindowBuilder from './mainWindowBuilder'
 import LogMainHelper from './logMainHelper'
-import ThemeSettingsI from '@shared/theme/themeSettingsI'
+import ThemeSettingsI from '@shared/interfaces/themeSettingsI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
+import NativeThemeNameType from 'electron/types/nativeThemeNameType'
+import ThemeModeType from '@shared/types/themeModeType'
+import ThemeConverter from '../converters/themeConverter'
 
 
 export default class AppHelper {
@@ -96,40 +99,48 @@ export default class AppHelper {
     }
 
     public static themeSettings: ThemeSettingsI = {
-        nativeThemeName: nativeTheme.themeSource,
-        themeName: 'light'
+        themeMode: ThemeConverter.toThemeMode(nativeTheme.themeSource),
+        themeName: 'cerulean'
     }
 }
 
-
 ipcMain.handle('theme:getCurrent', (): ThemeSettingsI => {
+    console.info('theme:getCurrent', AppHelper.themeSettings)
     return AppHelper.themeSettings
 })
 
 ipcMain.handle('theme:set', (event : IpcMainInvokeEvent, settings: ThemeSettingsI) => {
-    console.log('theme:set')
+    console.info('theme:set')
     console.log('settings', settings)
     AppHelper.themeSettings = settings
-    nativeTheme.themeSource = settings.nativeThemeName
+    nativeTheme.themeSource = ThemeConverter.toNativeThemeName(settings.themeMode)
+
+    return settings
 })
 
 ipcMain.handle('app:getSettings', () => {
+    console.info('app:getSettings')
     return AppHelper.getSettings()
 })
 
+
 ipcMain.handle('app:close', () => {
+    console.info('app:close')
     AppHelper.exit()
 })
 
 
 ipcMain.handle('window:minimize', () => {
+    console.info('window:minimize')
     AppHelper.minimize()
 })
 
 ipcMain.handle('window:maximize', () => {
+    console.info('window:maximize')
     AppHelper.maximize()
 })
 
 ipcMain.handle('window:unmaximize', () => {
+    console.info('window:unmaximize')
     AppHelper.unmaximize()
 })

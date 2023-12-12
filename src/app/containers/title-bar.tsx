@@ -1,5 +1,6 @@
 import React from 'react'
 import { Navbar, Nav, Button, Card, ListGroup } from 'react-bootstrap'
+import './title-bar'
 import { ThemeContext } from '@contexts/theme-context-provider'
 import logo from '@assets/diamond.png'
 import CustomModal from '@components/layouts/custom-modal'
@@ -37,7 +38,6 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
                 })
             }
         })
-
     }
 
     componentWillUnmount = async () => {

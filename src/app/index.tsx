@@ -1,8 +1,10 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import App from '@components/layouts/app';
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import 'bootstrap-icons/font/bootstrap-icons'
+import App from '@components/layouts/app'
 import { ThemeProvider } from '@contexts/theme-context-provider'
 import LogRendererHelper from '@utils/helpers/logRendererHelper'
+import './index.scss'
 
 
 LogRendererHelper.init()

@@ -1,4 +1,6 @@
 /node_modules
+/build-themes-prod
+/build-themes
 /build
 /prod
 /dist

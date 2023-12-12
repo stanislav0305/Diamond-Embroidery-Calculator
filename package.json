@@ -6,13 +6,21 @@
   "author": "Stanislav Torman",
   "license": "MIT",
   "main": "prod/main.js",
+
+  "!comment": "for dev firstly run build-thems-dev, after that run start",
+
   "scripts": {
+    "start-only": "electron ./build/main.js",
     "start": "npm run build-dev && electron ./build/main.js",
-    "build-dev": "npm run clean-dev && webpack --config ./webpack.config.js",
-    "build-prod": "npm run clean-prod && webpack --config ./webpack.config.js --node-env=production",
     "build-setup": "npm run build-prod && electron-builder build",
+    "build-dev": "npm run clean-dev && webpack --config ./webpack.config.js --env development --progress && npm run copy-thems-dev",
+     "build-prod": "npm run clean-prod && npm run build-thems-prod && webpack --config ./webpack.config.js --env production --progress && npm run copy-thems-prod",
     "clean-dev": "node -e \"require('fs-extra').emptyDir('build');\"",
     "clean-prod": "node -e \"require('fs-extra').emptyDir('prod');\"",
+    "copy-thems-dev": "node -e \"require('fs-extra').copy('build-themes', 'build');\"",
+    "copy-thems-prod": "node -e \"require('fs-extra').copy('build-themes-prod', 'prod');\"",
+    "build-thems-dev": "webpack --config ./webpack.config.js --env development build_themes --progress",
+    "build-thems-prod": "webpack --config ./webpack.config.js --env production build_themes --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "build": {
@@ -38,6 +46,7 @@
     "@types/react-dom": "^18.2.15",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.2",
+    "bootswatch": "^5.3.2",
     "css-loader": "^6.8.1",
     "electron": "^27.0.4",
     "electron-builder": "^24.6.4",

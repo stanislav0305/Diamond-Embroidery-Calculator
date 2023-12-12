@@ -1,0 +1,10 @@
+//@import '~bootstrap/scss/bootstrap';
+
+.rotate-180-deg {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}

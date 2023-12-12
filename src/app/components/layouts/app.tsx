@@ -1,7 +1,5 @@
 import React from 'react'
 import { Button, Container, Stack } from 'react-bootstrap'
-import 'bootstrap-icons/font/bootstrap-icons'
-import './app.scss'
 import TitleBar from '@containers/title-bar'
 
 

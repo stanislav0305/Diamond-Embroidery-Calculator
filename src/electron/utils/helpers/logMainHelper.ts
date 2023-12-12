@@ -5,7 +5,7 @@ export default class LogMainHelper {
     private static _path: string
 
     private constructor() { }
-    
+
     public static init() {
         log.transports.file.level = 'debug' // default: silly
         log.transports.file.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{processName}] [{level}] {text}'
@@ -14,7 +14,7 @@ export default class LogMainHelper {
         log.variables.processName = 'main'
 
         log.initialize({ preload: true, spyRendererConsole: false })
-        
+
 
         LogMainHelper._path = log.transports.file.getFile().path
         Object.assign(console, log.functions)
