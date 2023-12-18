@@ -1,5 +1,5 @@
-import LogHelper from './utils/helpers/logMainHelper'
-import AppHelper from './utils/helpers/appHelper'
+import LogHelper from '@mainUtils/helpers/logMainHelper'
+import { Application } from '@general/application'
 
 
 LogHelper.init()
@@ -7,4 +7,4 @@ console.info('-------------------------------------------------------')
 console.info('Log from the main process')
 console.info(`process.env.NODE_ENV = '${process.env.NODE_ENV}'`)
 
-AppHelper.init()
+export const app = new Application()

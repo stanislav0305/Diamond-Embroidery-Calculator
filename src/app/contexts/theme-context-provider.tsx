@@ -1,16 +1,16 @@
-import React, { createContext, PropsWithChildren, useState } from 'react'
-import ThemeSettingsI from '@shared/interfaces/themeSettingsI'
+import React, { createContext, PropsWithChildren } from 'react'
+import ThemeI from '@shared/interfaces/themeI'
 import ThemeModeType from '@shared/types/themeModeType'
 
 type ThemeContextType = {
-  themeSettings: ThemeSettingsI,
-  setThemeSettings: (themeSettings: ThemeSettingsI) => void
+  theme: ThemeI,
+  setTheme: (theme: ThemeI) => void
 }
 
 export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
 
 type ThemeProviderState = {
-  themeSettings: ThemeSettingsI,
+  theme: ThemeI,
   isLoaded: boolean
 }
 
@@ -19,35 +19,35 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
     super(props)
 
     this.state = {
-      themeSettings: {} as ThemeSettingsI,
+      theme: {} as ThemeI,
       isLoaded: false
     }
   }
 
 
   componentDidMount = async () => {
-    const themeSettings = await window.api.theme.getCurrent()
-    console.log('getTheme', themeSettings)
+    const theme = await window.api.theme.getCurrent()
+    console.log('getTheme', theme)
 
-    this.setThemeMode(themeSettings.themeMode)
+    this.setThemeMode(theme.mode)
     
     this.setState(prev => {
       return {
         ...prev,
-        themeSettings,
+        theme,
         isLoaded: true
       }
     })
   }
 
-  setTheme = async (settings: ThemeSettingsI) => {
-    const themeSettings = await window.api.theme.set(settings)
-    console.log('setTheme', themeSettings)
+  setTheme = async (theme: ThemeI) => {
+    const savedTheme = await window.api.theme.set(theme)
+    console.log('setTheme', savedTheme)
 
-    this.setThemeMode(themeSettings.themeMode)
+    this.setThemeMode(savedTheme.mode)
 
     this.setState({
-      themeSettings,
+      theme: savedTheme,
       isLoaded: true
     })
   }
@@ -61,8 +61,8 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
 
   render() {
     const { children } = this.props
-    const { themeSettings, isLoaded } = this.state
-    const themePath = `${themeSettings.themeName}-theme.css`
+    const { theme, isLoaded } = this.state
+    const themePath = `${theme.name}-theme.css`
 
     return (
       <>
@@ -72,8 +72,8 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
         {isLoaded &&
           <ThemeContext.Provider
             value={{
-              themeSettings: themeSettings,
-              setThemeSettings: this.setTheme
+              theme,
+              setTheme: this.setTheme
             }}
           >
             {children}

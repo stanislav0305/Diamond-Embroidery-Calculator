@@ -1,12 +1,12 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
-import ThemeSettingsI from '@shared/interfaces/themeSettingsI'
+import ThemeI from '@shared/interfaces/themeI'
 import ContextBridgeApiI from '@shared/interfaces/contextBridgeApiI'
 
 
 const API: ContextBridgeApiI = {
   theme: {
     getCurrent: ()  => ipcRenderer.invoke('theme:getCurrent').catch(e => console.error(e)),
-    set: (settings: ThemeSettingsI) => ipcRenderer.invoke('theme:set', settings).catch(e => console.error(e))
+    set: (settings: ThemeI) => ipcRenderer.invoke('theme:set', settings).catch(e => console.error(e))
   },
   app: {
     getSettings: () => ipcRenderer.invoke('app:getSettings').catch(e => console.error(e)),

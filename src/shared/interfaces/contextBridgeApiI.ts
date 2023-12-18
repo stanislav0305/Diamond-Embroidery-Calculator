@@ -1,12 +1,12 @@
 import { IpcRendererEvent } from 'electron'
-import ThemeSettingsI from '@shared/interfaces/themeSettingsI'
+import ThemeI from '@shared/interfaces/themeI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 
 
 export default interface ContextBridgeApiI {
   theme: {
-    getCurrent: () => Promise<ThemeSettingsI>
-    set: (settings: ThemeSettingsI) => Promise<ThemeSettingsI>
+    getCurrent: () => Promise<ThemeI>
+    set: (settings: ThemeI) => Promise<ThemeI>
   },
   app: {
     getSettings: () => Promise<AppSettingsI>

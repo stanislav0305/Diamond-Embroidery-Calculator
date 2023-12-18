@@ -22,70 +22,6 @@ module.exports = (env, argv) => {
     const mainConfig = [
       {
         mode,
-        entry: [
-          path.resolve(__dirname, 'src', 'electron', 'main.ts'),
-          path.resolve(__dirname, 'src', 'assets', 'diamond.ico'),
-          path.resolve(__dirname, 'src', 'assets', 'license.md')
-        ],
-        target: 'electron-main',
-        module: {
-          rules: [
-            {
-              test: /\.ts$/,
-              exclude: /node_modules/,
-              use: [{ loader: 'ts-loader' }]
-            },
-            {
-              test: /\.md$/i,
-              type: 'asset/resource'
-            },
-            {
-              test: /\.ico$/i,
-              type: 'asset/resource'
-            }
-          ]
-        },
-        resolve: {
-          extensions: ['.tsx', '.ts', '.js'],
-          alias: {
-            "@shared": path.resolve(__dirname, 'src/shared')
-          }
-        },
-        output: {
-          path: path.resolve(__dirname, distDir),
-          filename: 'main.js',
-          assetModuleFilename: 'assets/[name][ext]',
-          //clean: true,
-        }
-      },
-      {
-        mode,
-        entry: [
-          path.resolve(__dirname, 'src', 'preload', 'preload.ts')
-        ],
-        target: 'electron-preload',
-        module: {
-          rules: [
-            {
-              test: /\.ts$/,
-              exclude: /node_modules/,
-              use: [{ loader: 'ts-loader' }]
-            }
-          ]
-        },
-        resolve: {
-          extensions: ['.tsx', '.ts', '.js'],
-          alias: {
-            "@shared": path.resolve(__dirname, 'src/shared')
-          }
-        },
-        output: {
-          path: path.resolve(__dirname, distDir),
-          filename: 'preload.js'
-        }
-      },
-      {
-        mode,
         entry: {
           index: path.resolve(__dirname, 'src', 'app', 'index.tsx'),
         },
@@ -151,13 +87,13 @@ module.exports = (env, argv) => {
         resolve: {
           extensions: ['.tsx', '.ts', '.js', '.scss'],
           alias: {
-            "@containers": path.resolve(__dirname, 'src/app/containers'),
-            '@components': path.resolve(__dirname, 'src/app/components'),
-            "@contexts": path.resolve(__dirname, 'src/app/contexts'),
-            "@utils": path.resolve(__dirname, 'src/app/utils'),
-            "@hooks": path.resolve(__dirname, 'src/app/utils/hooks'),
-            "@shared": path.resolve(__dirname, 'src/shared'),
-            "@assets": path.resolve(__dirname, 'src/assets')
+            "@assets": path.resolve(__dirname, 'src', 'assets'),
+            "@containers": path.resolve(__dirname, 'src', 'app', 'containers'),
+            '@components': path.resolve(__dirname, 'src', 'app', 'components'),
+            "@contexts": path.resolve(__dirname, 'src', 'app', 'contexts'),
+            "@utils": path.resolve(__dirname, 'src', 'app', 'utils'),
+            "@hooks": path.resolve(__dirname, 'src', 'app', 'utils', 'hooks'),
+            "@shared": path.resolve(__dirname, 'src', 'shared')
           }
         },
         output: {
@@ -165,6 +101,74 @@ module.exports = (env, argv) => {
           filename: 'index.[contenthash].js',
           assetModuleFilename: 'assets/[name][ext]'
         },
+      },
+      {
+        mode,
+        entry: [
+          path.resolve(__dirname, 'src', 'preload', 'preload.ts')
+        ],
+        target: 'electron-preload',
+        module: {
+          rules: [
+            {
+              test: /\.ts$/,
+              exclude: /node_modules/,
+              use: [{ loader: 'ts-loader' }]
+            }
+          ]
+        },
+        resolve: {
+          extensions: ['.tsx', '.ts', '.js'],
+          alias: {
+            "@shared": path.resolve(__dirname, 'src/shared')
+          }
+        },
+        output: {
+          path: path.resolve(__dirname, distDir),
+          filename: 'preload.js'
+        }
+      },
+      {
+        mode,
+        entry: [
+          path.resolve(__dirname, 'src', 'electron', 'main.ts'),
+          path.resolve(__dirname, 'src', 'assets', 'diamond.ico'),
+          path.resolve(__dirname, 'src', 'assets', 'license.md')
+        ],
+        target: 'electron-main',
+        module: {
+          rules: [
+            {
+              test: /\.ts$/,
+              exclude: /node_modules/,
+              use: [{ loader: 'ts-loader' }]
+            },
+            {
+              test: /\.md$/i,
+              type: 'asset/resource'
+            },
+            {
+              test: /\.ico$/i,
+              type: 'asset/resource'
+            }
+          ]
+        },
+        resolve: {
+          extensions: ['.tsx', '.ts', '.js'],
+          alias: {
+            "@dataAccess": path.resolve(__dirname, 'src', 'electron', 'dataAccess'),
+            "@general": path.resolve(__dirname, 'src', 'electron', 'general'),
+            "@ipc": path.resolve(__dirname, 'src', 'electron', 'ipc'),
+            "@mainUtils": path.resolve(__dirname, 'src', 'electron', 'utils'),
+            "@shared": path.resolve(__dirname, 'src', 'shared')
+          }
+        },
+        output: {
+          path: path.resolve(__dirname, distDir),
+          filename: 'main.js',
+          assetModuleFilename: 'assets/[name][ext]',
+          //clean: true,
+        }
       }
     ];
 

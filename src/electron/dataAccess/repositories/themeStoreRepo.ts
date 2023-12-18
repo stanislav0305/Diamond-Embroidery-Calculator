@@ -1,20 +1,14 @@
-import ThemeSettingsI from '@shared/interfaces/themeSettingsI';
 import Store, { Schema } from 'electron-store';
+import { ThemeEntityI } from '@dataAccess/entities/themeEntityI'
+import { BaseStoreRepoI } from '@dataAccess/repositories/baseStoreRepoI'
 
-type themeModesType = 'light' | 'dark' | 'auto'
-
-interface ThemeSettingsStoreI {
-    themeMode: themeModesType
-    themeName: string
-}
 
 interface StoreShemaI {
-    themeSettings: ThemeSettingsStoreI
+    theme: ThemeEntityI
 }
 
-
-class MainConfigStoreManager {
-    name: string = 'mainConfigStore'
+class ThemeStoreRepo implements BaseStoreRepoI<StoreShemaI, ThemeEntityI> {
+    name: string = 'mainConfig'
     store: Store<StoreShemaI>
 
     constructor() {
@@ -25,38 +19,43 @@ class MainConfigStoreManager {
         return this.store.path;
     }
 
-    public getThemeSettings() {
-        return this.store.get('themeSettings') as ThemeSettingsStoreI | null
+    public get() {
+        return this.store.get('theme') as ThemeEntityI | null
     }
 
-    public setThemeSettings(settings: ThemeSettingsI) {
-        const s = settings as ThemeSettingsStoreI
-        this.store.set('themeSettings', s)
+    public set(theme: ThemeEntityI) {
+        const t = theme as ThemeEntityI
+        this.store.set('theme', t)
     }
 
 
     private getSchema() {
         return {
-            themeSettings: {
+            theme: {
                 type: 'object',
                 properties: {
-                    themeMode: {
+                    mode: {
                         type: 'string',
                         enum: ['light', 'dark', 'auto'],
                         default: 'auto'
                     },
-                    themeName: {
+                    name: {
                         type: 'string',
                         default: 'cerulean'
                     },
                 },
                 default: {},
-                required: ['themeMode', 'themeName'],
+                required: ['mode', 'name'],
             }
         } as Schema<StoreShemaI>
     }
 
     private getStoreOptions() {
+        const x: ThemeEntityI = {
+            mode: 'auto',
+            name: 'cerulean'
+        }
+
         return {
             schema: this.getSchema(),
             name: this.name,
@@ -65,14 +64,14 @@ class MainConfigStoreManager {
             },
             migrations: {
                 '0.0.1': store => {
-                    store.set('themeSettings', {
-                        themeMode: 'auto',
-                        themeName: 'cerulean'
-                    } as ThemeSettingsStoreI);
+                    store.set('theme', {
+                        mode: 'auto',
+                        name: 'cerulean'
+                    } as ThemeEntityI);
                 },
             },
         } as Store.Options<StoreShemaI>
     }
 }
 
-export const mainConfig = new MainConfigStoreManager()
+export const themeRepo = new ThemeStoreRepo()

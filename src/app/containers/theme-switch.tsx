@@ -13,24 +13,24 @@ export default class ThemeSwitch extends React.Component {
         event.preventDefault()
         console.log('onSelectThemeMode...')
 
-        const newSettings = this.context.themeSettings
-        newSettings.themeMode = value as ThemeModeType
+        const newTheme = this.context.theme
+        newTheme.mode = value as ThemeModeType
 
-        this.context.setThemeSettings(newSettings)
+        this.context.setTheme(newTheme)
     }
 
     onSelectThemeName = async (value: string | null, event: React.SyntheticEvent<unknown>) => {
         event.preventDefault()
         console.log('onSelectThemeName...')
 
-        const newSettings = this.context.themeSettings
-        newSettings.themeName = value as ThemeNameType
+        const newTheme = this.context.theme
+        newTheme.name = value as ThemeNameType
 
-        this.context.setThemeSettings(newSettings)
+        this.context.setTheme(newTheme)
     }
 
     render() {
-        const { themeMode, themeName } = this.context.themeSettings
+        const { mode, name } = this.context.theme
 
         return (
             <Container fluid>
@@ -43,9 +43,9 @@ export default class ThemeSwitch extends React.Component {
                             <Dropdown.Toggle
                                 id="dropdown-basic"
                                 size='sm'
-                                className={themeModesDataMap.get(themeMode)!.css}
+                                className={themeModesDataMap.get(mode)!.css}
                             >
-                                {themeModesDataMap.get(themeMode)!.ruName}
+                                {themeModesDataMap.get(mode)!.ruName}
                              </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item
@@ -76,7 +76,7 @@ export default class ThemeSwitch extends React.Component {
                     </Col>
                     <Col>
                         <DropdownButton
-                            title={themeName}
+                            title={name}
                             size='sm'
                             className='text-capitalize'
                             onSelect={this.onSelectThemeName}

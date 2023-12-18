@@ -92,12 +92,12 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
     }
 
     render() {
-        const { themeName } = this.context?.themeSettings ?? {}
+        const { name } = this.context?.theme ?? {}
         const { isMaximized, showModal, appSettings } = this.state
 
         return (
             <>
-                <Navbar bg={themeName} data-bs-theme={themeName} className='title-bar p-0'>
+                <Navbar bg={name} data-bs-theme={name} className='title-bar p-0'>
                     <Navbar.Brand>
                         <img
                             alt="logo"
