@@ -1,14 +1,17 @@
 import { IpcMainInvokeEvent } from 'electron';
-import { IpcChannelGroupI, IpcRequestBase } from '@ipc/ipcChannelGroupI'
-import { appSettingsRepo } from  '@dataAccess/repositories/appSettingsRepo'//'@dataAccess/repositories/appSettingsRepo'
+import { IpcChannelGroupI, IpcRequestBase, IpcResponseBase } from '@ipc/ipcChannelGroupI'
+import { appSettingsRepo } from  '@dataAccess/repositories/appSettingsRepo'
 import AppSettingsI from '@shared/interfaces/appSettingsI';
 import { app } from '../main'
 
 interface IpcRequestApp extends IpcRequestBase, AppSettingsI {
 }
 
-export class AppChannelGroup extends IpcChannelGroupI<AppChannelGroup, IpcRequestApp> {
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: AppChannelGroup) => {} | void>
+interface IpcResponseAppSettings extends IpcResponseBase, AppSettingsI {
+}
+
+export class AppChannelGroup extends IpcChannelGroupI<AppChannelGroup, IpcRequestApp, IpcResponseAppSettings> {
+    public handles: Map<string, (event: IpcMainInvokeEvent, owner: AppChannelGroup) => IpcResponseAppSettings | void>
 
     constructor() {
         super()
@@ -19,7 +22,7 @@ export class AppChannelGroup extends IpcChannelGroupI<AppChannelGroup, IpcReques
         ])
     }
 
-    public static getSettings(event: IpcMainInvokeEvent, owner: AppChannelGroup) {
+    public static getSettings(event: IpcMainInvokeEvent, owner: AppChannelGroup) : IpcResponseAppSettings {
         console.info(`${owner.baseName}:getSettings`)
         const settings = appSettingsRepo.get() as AppSettingsI
         console.log('settings', settings)

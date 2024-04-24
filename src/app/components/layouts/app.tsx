@@ -1,25 +1,16 @@
 import React from 'react'
-import { Button, Container, Stack } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import TitleBar from '@containers/title-bar'
+import MainPage from '@components/pages/main-page'
 
 
-function App() {
+export default function App() {
     return (
         <>
             <TitleBar></TitleBar>
             <Container>
-                <h1>Калькулятор алмазной вышевки</h1>
-                <Stack direction="horizontal" gap={2}>
-                    <Button as="a" variant="primary">
-                        Button as link
-                    </Button>
-                    <Button as="a" variant="success">
-                        Button as link
-                    </Button>
-                </Stack>
+                <MainPage></MainPage>
             </Container>
         </>
     )
 }
-
-export default App

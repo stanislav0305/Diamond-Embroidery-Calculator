@@ -1,5 +1,6 @@
 import { IpcRendererEvent } from 'electron'
 import ThemeI from '@shared/interfaces/themeI'
+import PictureI from '@shared/interfaces/pictureI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 
 
@@ -22,5 +23,12 @@ export default interface ContextBridgeApiI {
     off: {
       unmaximized: () => void
     }
+  },
+  pictures: {
+    getAll: () => Promise<PictureI[]>
+    create: (picture: PictureI) => Promise<PictureI>
+    read: (id: number) => Promise<PictureI>
+    update: (picture: PictureI) => Promise<PictureI>
+    delete: (id: number) => Promise<boolean>
   }
 }

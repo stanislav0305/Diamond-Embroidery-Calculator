@@ -114,6 +114,7 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
                         <Button as="a" variant="outline-danger" size="sm" className='bi bi-x-lg me-1' onClick={this.onClickAppClose}></Button>
                     </Nav>
                 </Navbar>
+                <h1>Калькулятор алмазной вышевки</h1>
                 <CustomModal header='Настройки'
                     show={showModal}
                     showBtnSave={false}

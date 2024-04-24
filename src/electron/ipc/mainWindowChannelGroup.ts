@@ -6,8 +6,8 @@ import { MainWindow } from '@general/window'
 interface IpcRequestMainWindow extends IpcRequestBase {
 }
 
-export class MainWindowChannelGroup extends IpcChannelGroupI<MainWindowChannelGroup, IpcRequestMainWindow> {
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) => {} | void>
+export class MainWindowChannelGroup extends IpcChannelGroupI<MainWindowChannelGroup, IpcRequestMainWindow, void> {
+    public handles: Map<string, (event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) => void>
     public mainWindow: MainWindow
 
     constructor(mainWindow: MainWindow) {

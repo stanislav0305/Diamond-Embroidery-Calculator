@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'react-bootst
 import { Defaults } from '@utils/defaults'
 
 
-interface OprtionsI {
+interface OptionsI {
     header: string,
     className?: string,
     show?: boolean,
@@ -13,14 +13,14 @@ interface OprtionsI {
     onHide: () => void
 }
 
-const defaults: Defaults<OprtionsI> = {
+const defaults: Defaults<OptionsI> = {
     className: '',
     show: false,
     showBtnSave: false,
     onSave: () => { }
 }
 
-export default function CustomModal(props: PropsWithChildren<OprtionsI>) {
+export default function CustomModal(props: PropsWithChildren<OptionsI>) {
     const mergedProps = Object.assign({}, defaults, props)
     const { children, header, className, show, showBtnSave, onSave, onClose, onHide } = mergedProps
 

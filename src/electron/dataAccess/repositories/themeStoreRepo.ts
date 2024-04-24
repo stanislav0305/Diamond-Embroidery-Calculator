@@ -1,35 +1,36 @@
 import Store, { Schema } from 'electron-store';
 import { ThemeEntityI } from '@dataAccess/entities/themeEntityI'
-import { BaseStoreRepoI } from '@dataAccess/repositories/baseStoreRepoI'
+import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
 
 
-interface StoreShemaI {
+interface StoreShemaI { 
     theme: ThemeEntityI
 }
 
-class ThemeStoreRepo implements BaseStoreRepoI<StoreShemaI, ThemeEntityI> {
-    name: string = 'mainConfig'
-    store: Store<StoreShemaI>
-
+class ThemeStoreRepo extends BaseStoreRepo<StoreShemaI, ThemeEntityI> {
     constructor() {
-        this.store = new Store<StoreShemaI>(this.getStoreOptions())
+        super('mainConfig', 'theme')
     }
 
-    public get path() {
-        return this.store.path;
+    protected override getStoreOptions(): Store.Options<StoreShemaI> {
+        return {
+            schema: this.getSchema(),
+            name: this.storeName,
+            beforeEachMigration: (store, context) => {
+                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`);
+            },
+            migrations: {
+                '0.0.1': store => {
+                    store.set('theme', {
+                        mode: 'auto',
+                        name: 'cerulean'
+                    } as ThemeEntityI);
+                },
+            },
+        }
     }
 
-    public get() {
-        return this.store.get('theme') as ThemeEntityI | null
-    }
-
-    public set(theme: ThemeEntityI) {
-        const t = theme as ThemeEntityI
-        this.store.set('theme', t)
-    }
-
-
-    private getSchema() {
+    protected override getSchema(): Schema<StoreShemaI> {
         return {
             theme: {
                 type: 'object',
@@ -43,34 +44,11 @@ class ThemeStoreRepo implements BaseStoreRepoI<StoreShemaI, ThemeEntityI> {
                         type: 'string',
                         default: 'cerulean'
                     },
-                },
+                } as Schema<ThemeEntityI>,
                 default: {},
                 required: ['mode', 'name'],
-            }
+            } 
         } as Schema<StoreShemaI>
-    }
-
-    private getStoreOptions() {
-        const x: ThemeEntityI = {
-            mode: 'auto',
-            name: 'cerulean'
-        }
-
-        return {
-            schema: this.getSchema(),
-            name: this.name,
-            beforeEachMigration: (store, context) => {
-                console.log(`[mainConfigStore] migrate from ${context.fromVersion} → ${context.toVersion}`);
-            },
-            migrations: {
-                '0.0.1': store => {
-                    store.set('theme', {
-                        mode: 'auto',
-                        name: 'cerulean'
-                    } as ThemeEntityI);
-                },
-            },
-        } as Store.Options<StoreShemaI>
     }
 }
 

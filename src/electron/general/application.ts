@@ -3,6 +3,7 @@ import { MainWindow } from '@general/window'
 import { NativeTheme } from '@general/nativeTheme'
 import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
 import ThemeI from '@shared/interfaces/themeI'
+import { PicturesChannelGroup } from '@ipc/picturesChannelGroup'
 import { ThemeChannelGroup } from '@ipc/themeChannelGroup'
 import { AppChannelGroup } from '@ipc/appChannelGroup'
 import { MainWindowChannelGroup } from '@ipc/mainWindowChannelGroup'
@@ -34,7 +35,8 @@ export class Application {
         IpcChannelsRegister.add([
             new AppChannelGroup(),
             new MainWindowChannelGroup(this.mainWindow),
-            new ThemeChannelGroup(this.nativeTheme)
+            new ThemeChannelGroup(this.nativeTheme),
+            new PicturesChannelGroup()
         ])
     }
 

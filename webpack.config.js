@@ -15,6 +15,9 @@ module.exports = (env, argv) => {
   const distThemesDir = devMode ? 'build-themes' : 'build-themes-prod';
   const devtool = devMode ? 'source-map' : undefined;
   const distDir = devMode ? 'build' : 'prod';
+  const tsconfigFile = devMode ? 'tsconfig.json' : 'tsconfig.prod.json';
+  const renderIndexJsFileName = devMode ? 'index.js' : 'index.[contenthash].js';
+  
 
   const config = [];
 
@@ -32,7 +35,10 @@ module.exports = (env, argv) => {
             {
               test: /\.ts(x?)$/,
               exclude: /node_modules/,
-              use: [{ loader: 'ts-loader' }]
+              use: [{
+                loader: 'ts-loader',
+                options: { configFile: tsconfigFile }
+              }]
             },
             {
               test: /\.(c|sc|sa)ss$/i,
@@ -98,7 +104,7 @@ module.exports = (env, argv) => {
         },
         output: {
           path: path.resolve(__dirname, distDir),
-          filename: 'index.[contenthash].js',
+          filename: renderIndexJsFileName,
           assetModuleFilename: 'assets/[name][ext]'
         },
       },
@@ -108,12 +114,16 @@ module.exports = (env, argv) => {
           path.resolve(__dirname, 'src', 'preload', 'preload.ts')
         ],
         target: 'electron-preload',
+        devtool,
         module: {
           rules: [
             {
               test: /\.ts$/,
               exclude: /node_modules/,
-              use: [{ loader: 'ts-loader' }]
+              use: [{
+                loader: 'ts-loader',
+                options: { configFile: tsconfigFile }
+              }]
             }
           ]
         },
@@ -136,12 +146,16 @@ module.exports = (env, argv) => {
           path.resolve(__dirname, 'src', 'assets', 'license.md')
         ],
         target: 'electron-main',
+        devtool,
         module: {
           rules: [
             {
               test: /\.ts$/,
               exclude: /node_modules/,
-              use: [{ loader: 'ts-loader' }]
+              use: [{
+                loader: 'ts-loader',
+                options: { configFile: tsconfigFile }
+              }]
             },
             {
               test: /\.md$/i,
