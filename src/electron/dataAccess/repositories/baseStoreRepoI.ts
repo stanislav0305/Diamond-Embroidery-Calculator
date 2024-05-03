@@ -35,6 +35,22 @@ export abstract class BaseStoreRepo<S extends Record<string, any>, T> {
     }
 
     public setArrayRow(value: T, key?: string) {
+        
+        //!!!!!!!!!!!!
+        //использование генератор уникальных идентификаторов
+        //https://stackforgeeks.com/blog/missing-key-prop-for-element-reactjs-and-typescript
+        //!!!!!!!!!!!!
+
+        //https://githubissues.com/sindresorhus/electron-store/240
+        //чтобы обновить
+        /*
+        const items: [
+            {'data1':true},
+            {'data2':false}
+          ]
+        config.set('items.0.data1', false)
+        */
+        //что бы добавить 
         const values = this.get(key) as T[]
         const newValues = [...(values || []), value];
         this.set(newValues, key);

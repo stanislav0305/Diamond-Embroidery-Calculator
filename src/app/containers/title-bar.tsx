@@ -1,17 +1,19 @@
 import React from 'react'
-import { Navbar, Nav, Button, Card, ListGroup } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 import './title-bar'
 import { ThemeContext } from '@contexts/theme-context-provider'
-import logo from '@assets/diamond.png'
-import CustomModal from '@components/layouts/custom-modal'
+import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
+import AppSettings from '@components/app-settings'
 import ThemeSwitch from '@containers/theme-switch'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 
 
 interface TitleBarIState {
     isMaximized: boolean,
-    showModal: boolean,
-    appSettings: AppSettingsI | null
+    appSettingsModal: {
+        mode: ModalMode,
+        data: AppSettingsI | undefined
+    }
 }
 
 export default class TitleBar extends React.Component<{}, TitleBarIState> {
@@ -23,8 +25,10 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
 
         this.state = {
             isMaximized: false,
-            showModal: false,
-            appSettings: null
+            appSettingsModal: {
+                mode: 'closed',
+                data: undefined
+            }
         }
     }
 
@@ -69,90 +73,57 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
 
     //--------------------------
 
-    onClickOpenSettings = async (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
+    appSettingsModal = {
+        onOpen: (event: React.MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault()
 
-        await window.api.app.getSettings()
-            .then((appSettings: AppSettingsI) => {
-                this.toogleSettings(appSettings)
+            this.appSettingsModal.toogle('loading')
+            window.api.app.getSettings()
+                .then((data: AppSettingsI) => {
+                    this.appSettingsModal.toogle('loaded', data)
+                })
+        },
+        onClose: (event: React.MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault()
+
+            this.appSettingsModal.toogle('closed')
+        },
+        toogle: (mode: ModalMode = 'closed', data: AppSettingsI | undefined = undefined) => {
+            this.setState({
+                ...this.state,
+                appSettingsModal: {
+                    mode,
+                    data
+                }
             })
-    }
-
-    onClickCloseSettings = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        this.toogleSettings()
-    }
-
-    toogleSettings = (appSettings: AppSettingsI | null = null) => {
-        this.setState({
-            ...this.state,
-            showModal: !this.state.showModal,
-            appSettings: appSettings
-        })
+        }
     }
 
     render() {
         const { name } = this.context?.theme ?? {}
-        const { isMaximized, showModal, appSettings } = this.state
+        const { isMaximized, appSettingsModal } = this.state
+        const { mode, data } = appSettingsModal
 
         return (
             <>
                 <Navbar bg={name} data-bs-theme={name} className='title-bar p-0'>
                     <Navbar.Brand>
-                        <img
-                            alt="logo"
-                            src={logo}
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        />{' '}
+                        <div className="d-inline-block align-top logo-img-30x30 mx-1" />
                     </Navbar.Brand>
+                    <h6 className="mt-2">Калькулятор алмазной вышевки</h6>
                     <Nav className="ms-auto">
-                        <Button as="a" variant="outline-secondary" size="sm" className='bi bi-gear me-3' onClick={this.onClickOpenSettings}></Button>
+                        <Button as="a" variant="outline-secondary" size="sm" className='bi bi-gear me-3' onClick={this.appSettingsModal.onOpen}></Button>
                         <Button as="a" variant="outline-secondary" size="sm" className='bi bi-dash-lg me-1' onClick={this.onClickMinimize}></Button>
                         <Button as="a" variant="outline-secondary" size="sm" className={`bi ${isMaximized ? 'bi-copy rotate-180-deg' : 'bi-square'} me-1`} onClick={this.onClickMaximize}></Button>
                         <Button as="a" variant="outline-danger" size="sm" className='bi bi-x-lg me-1' onClick={this.onClickAppClose}></Button>
                     </Nav>
                 </Navbar>
-                <h1>Калькулятор алмазной вышевки</h1>
                 <CustomModal header='Настройки'
-                    show={showModal}
-                    showBtnSave={false}
-                    onClose={this.onClickCloseSettings}
-                    onHide={this.toogleSettings}>
+                    mode={mode}
+                    onClose={this.appSettingsModal.onClose}
+                    onHide={this.appSettingsModal.toogle}>
                     <ThemeSwitch></ThemeSwitch>
-                    {appSettings &&
-                        <>
-                            <Card>
-                                <ListGroup className='list-group-flush'>
-                                    <ListGroup.Item>
-                                        <label className='me-2'>Путь к логам:</label>
-                                        {appSettings.paths.logPath}
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <label className='me-2'>Путь к mainConfig:</label>
-                                        {appSettings.paths.mainConfigPath}
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </Card>
-                            <Card className='mt-1'>
-                                <ListGroup className='list-group-flush'>
-                                    <ListGroup.Item>
-                                        <strong>Node v</strong>
-                                        {appSettings.versions.node}
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <strong>Electron v</strong>
-                                        {appSettings.versions.electron}
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <strong>Chrome v</strong>
-                                        {appSettings.versions.chrome}
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </Card>
-                        </>
-                    }
+                    <AppSettings appSettings={data} />
                 </CustomModal >
             </>
         )

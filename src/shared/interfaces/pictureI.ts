@@ -1,4 +1,6 @@
 import { BaseI } from '@shared/interfaces/baseI'
+import DiamondFormType from '@shared/types/diamondFormType'
+import CoverageAreaType from '@shared/types/coverageAreaType'
 
 
 export default interface PictureI extends BaseI {
@@ -22,6 +24,3 @@ export interface PictureDetileI {
     name: string
     price:number
 }
-
-export type DiamondFormType = 'circle' | 'square'
-export type CoverageAreaType = 'total' | 'partial'

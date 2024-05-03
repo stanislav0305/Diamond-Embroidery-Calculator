@@ -1,6 +1,6 @@
 import Store, { Schema } from 'electron-store';
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import { PictureEntityI, PictureDetileEntityI } from '@dataAccess/entities/pictureEntityI';
+import { PictureEntityI, picturesShema } from '@dataAccess/entities/pictureEntityI';
 
 
 interface StoreShemaI {
@@ -29,78 +29,9 @@ class PicturesStoreRepo extends BaseStoreRepo<StoreShemaI, PictureEntityI> {
 
     protected override getSchema(): Schema<StoreShemaI> {
         return {
-            pictures: {
-                type: 'array',
-                properties: {
-                    items: {
-                        type: 'object',
-                        properties: {
-                            id: {
-                                type: 'number',
-                            },
-                            height: {
-                                type: 'number',
-                            },
-                            width: {
-                                type: 'number',
-                            },
-                            diamondForm: {
-                                type: 'string',
-                                enum: ['circle', 'square'],
-                                default: 'circle'
-                            },
-                            coverageArea: { //площадь покрытия
-                                type: 'string',
-                                enum: ['total', 'partial'],
-                                default: 'total'
-                            },
-                            detiles: {
-                                type: 'array',
-                                properties: {
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            name: {
-                                                type: 'string'
-                                            },
-                                            price:
-                                            {
-                                                type: 'number'
-                                            }
-                                        }
-                                    }
-                                },
-                                default: [] as PictureDetileEntityI[]
-                            },
-                            detilesSumTotal: {
-                                type: 'number',
-                                default: 0
-                            },
-                            pricePerHour: {
-                                type: 'number',
-                                default: 0
-                            },
-                            hoursSpent: {
-                                type: 'number',
-                                default: 0
-                            },
-                            bayFullPrice: {
-                                type: 'number',
-                                default: 0
-                            },
-                            comment: {
-                                type: 'string'
-                            }
-                        },
-                        default: {},
-                        required: ['id', 'name'],
-                    }
-                },
-                default: [] as PictureEntityI[]
-            }
+            pictures: picturesShema
         } as Schema<StoreShemaI>
     }
-
 }
 
 export const picturesRepo = new PicturesStoreRepo()

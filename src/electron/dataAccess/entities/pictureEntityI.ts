@@ -1,5 +1,42 @@
+import { Schema } from 'electron-store';
 import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
 
+
+export interface PictureDetileEntityI {
+    name: string
+    price: number
+}
+
+export const pictureDetilesShema = {
+    type: 'array',
+    default: [] as PictureDetileEntityI[],
+    items: {
+        type: 'object',
+        required: ['id', 'name', 'price'],
+        properties: {
+            id: {
+                type: 'number'
+            },
+            name: {
+                type: 'string',
+            },
+            price:
+            {
+                type: 'number',
+                default: 0,
+            }
+        } as Schema<PictureDetileEntityI>
+    }
+}
+
+
+const diamondFormDefault = 'circle'
+const diamondForms = ['circle', 'square']
+export type DiamondFormType = typeof diamondForms[number];
+
+const coverageAreaDefault = 'total'
+const coverageAreas = ['total', 'partial']
+export type CoverageAreaType = typeof coverageAreas[number];
 
 export interface PictureEntityI extends BasetEntityI {
     height: number
@@ -18,10 +55,52 @@ export interface PictureEntityI extends BasetEntityI {
     comment: string
 }
 
-export interface PictureDetileEntityI {
-    name: string
-    price:number
+export const picturesShema = {
+    type: 'array',
+    default: [] as PictureEntityI[],
+    items: {
+        type: 'object',
+        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detilesSumTotal', 'bayFullPrice'],
+        properties: {
+            id: {
+                type: 'number'
+            },
+            height: {
+                type: 'number',
+            },
+            width: {
+                type: 'number',
+            },
+            diamondForm: {
+                type: 'string',
+                enum: diamondForms,
+                default: diamondFormDefault,
+            },
+            coverageArea: { //площадь покрытия
+                type: 'string',
+                enum: coverageAreas,
+                default: coverageAreaDefault,
+            },
+            detiles: pictureDetilesShema,
+            detilesSumTotal: {
+                type: 'number',
+                default: 0,
+            },
+            pricePerHour: {
+                type: 'number',
+                default: 0
+            },
+            hoursSpent: {
+                type: 'number',
+                default: 0
+            },
+            bayFullPrice: {
+                type: 'number',
+                default: 0,
+            },
+            comment: {
+                type: 'string'
+            }
+        } as Schema<PictureEntityI>
+    }
 }
-
-export type DiamondFormType = 'circle' | 'square'
-export type CoverageAreaType = 'total' | 'partial'

@@ -1,41 +1,57 @@
 import React, { PropsWithChildren } from 'react'
+import { Spinner } from 'react-bootstrap'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'react-bootstrap'
 import { Defaults } from '@utils/defaults'
 
 
+export type ModalMode = 'loading' | 'loaded' | 'closed'
+
 interface OptionsI {
     header: string,
     className?: string,
-    show?: boolean,
-    showBtnSave?: boolean,
-    onSave?: (event: React.MouseEvent<HTMLButtonElement>) => void,
-    onClose: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    mode?: ModalMode,
+    confirmBtnText?: string,
+    onConfirm?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void),
+    closeBtnText?: string,
+    onClose?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void),
     onHide: () => void
 }
 
 const defaults: Defaults<OptionsI> = {
     className: '',
-    show: false,
-    showBtnSave: false,
-    onSave: () => { }
+    mode: 'closed',
+    confirmBtnText: '',
+    onConfirm: null,
+    closeBtnText: 'Закрыть',
+    onClose: null,
 }
+
 
 export default function CustomModal(props: PropsWithChildren<OptionsI>) {
     const mergedProps = Object.assign({}, defaults, props)
-    const { children, header, className, show, showBtnSave, onSave, onClose, onHide } = mergedProps
+    const { children, header, mode, className, confirmBtnText, onConfirm, closeBtnText, onClose, onHide } = mergedProps
 
     return (
         <>
-            <Modal show={show} className={className + ' mt-5 '} onHide={onHide}>
+            <Modal show={mode === 'loading' || mode === 'loaded'} className={className + ' mt-5 '} onHide={onHide}>
                 <ModalHeader closeButton>
+                    <div className="d-inline-block align-top logo-img-25x25 me-1" />
                     <Modal.Title>{header}</Modal.Title>
                 </ModalHeader>
                 <ModalBody>
-                    {children}
+                    {mode === 'loading' &&
+                        <div className='text-center'>
+                            <Spinner color="primary" style={{ height: '3rem', width: '3rem' }}></Spinner>
+                            <h6>Загрузка...</h6>
+                        </div>
+                    }
+                    {mode === 'loaded' &&
+                        children
+                    }
                 </ModalBody>
                 <ModalFooter>
-                    <Button className={showBtnSave ? ' ' : ' d-none '} color="primary" onClick={onSave}>Сохранить</Button>{' '}
-                    <Button color="secondary" onClick={onClose}>Закрыть</Button>
+                    {onConfirm && <Button color="primary" disabled={mode === 'loading'} onClick={onConfirm}>{confirmBtnText}</Button>}
+                    {onClose && <Button color="secondary" className='mx-3' onClick={onClose}>{closeBtnText}</Button>}
                 </ModalFooter>
             </Modal>
         </>

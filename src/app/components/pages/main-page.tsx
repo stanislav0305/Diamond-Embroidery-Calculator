@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button, Stack } from 'react-bootstrap'
-
+import { Container } from 'react-bootstrap'
+import PicturesTable from '@containers/pictures-table'
 
 export default function MainPage() {
     return (
-        <Stack direction="horizontal" gap={2}>
-            <Button as="a" variant="primary">Добавить</Button>
-        </Stack>
+        <Container className='position-relative'>
+            <PicturesTable></PicturesTable>
+        </Container>
     )
 }

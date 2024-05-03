@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
 
@@ -17,7 +18,7 @@ module.exports = (env, argv) => {
   const distDir = devMode ? 'build' : 'prod';
   const tsconfigFile = devMode ? 'tsconfig.json' : 'tsconfig.prod.json';
   const renderIndexJsFileName = devMode ? 'index.js' : 'index.[contenthash].js';
-  
+
 
   const config = [];
 
@@ -49,33 +50,27 @@ module.exports = (env, argv) => {
               ]
             },
             {
-              test: /\.(jpe?g|png|webp|gif|svg)$/i,
+              test: /\.(jpe?g|png|gif|svg)$/i,
               type: 'asset/resource',
-              use: {
-                loader: 'image-webpack-loader',
-                options: {
-                  mozjpeg: {
-                    progressive: true,
-                  },
-                  // optipng.enabled: false will disable optipng
-                  optipng: {
-                    enabled: false,
-                  },
-                  pngquant: {
-                    quality: [0.65, 0.90],
-                    speed: 4
-                  },
-                  gifsicle: {
-                    interlaced: false,
-                  },
-                  // the webp option will enable WEBP
-                  webp: {
-                    quality: 75
-                  }
-                }
-              }
             },
           ]
+        },
+        optimization: {
+          minimizer: [
+            new ImageMinimizerPlugin({
+              minimizer: {
+                implementation: ImageMinimizerPlugin.imageminMinify,
+                options: {
+                  plugins: [
+                    ['gifsicle', { interlaced: true }],
+                    ['jpegtran', { progressive: true }],
+                    ['optipng', { optimizationLevel: 5 }],
+                    ['svgo', { name: 'preset-default' }],
+                  ],
+                },
+              },
+            }),
+          ],
         },
         plugins: [
           new HtmlWebpackPlugin({
