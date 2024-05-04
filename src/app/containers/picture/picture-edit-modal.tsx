@@ -1,9 +1,9 @@
 import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import { EventMessagesContext } from '@contexts/event-messages-provider'
-import PictureI from '@shared/interfaces/pictureI'
-import PictureEdit from '@components/picture-edit'
-import { createPicture } from '@utils/getData'
+import PictureI, { PictureDetailI, pictureDefault } from '@shared/interfaces/pictureI'
+import PictureEdit from '@components/picture/picture-edit'
+import { genId } from '@utils/getData'
 
 interface PicturEditModalProps {
   onSaved: (forAdd: boolean, picture: PictureI) => void,
@@ -12,13 +12,13 @@ interface PicturEditModalProps {
 interface PicturEditModalState {
   mode: ModalMode,
   forAdd: boolean,
-  picture: PictureI | null
+  picture: PictureI,
+  details: PictureDetailI[]
 }
 
 export default class PicturEditModal extends React.Component<PicturEditModalProps, PicturEditModalState> {
   static contextType = EventMessagesContext
   context!: React.ContextType<typeof EventMessagesContext>
-
 
   constructor(props: PicturEditModalProps) {
     super(props)
@@ -26,21 +26,15 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     this.state = {
       mode: 'closed',
       forAdd: false,
-      picture: null,
+      picture: pictureDefault,
+      details: []
     }
   }
-  
-  onOpen = (id: number) => {
-    const forAdd = !id
-    this.toogle('loading', forAdd)
 
-    if (forAdd) {
-      this.toogle('loaded', forAdd)
-    }
-    else {
-      const picture = createPicture(id) //data.find(item => item.id === id)
-      this.toogle('loaded', forAdd, picture)
-    }
+  onOpen = (picture: PictureI) => {
+    const forAdd = !picture.id
+    //this.toogle('loading', forAdd)
+    this.toogle('loaded', forAdd, picture)
   }
 
   onClose = () => {
@@ -49,6 +43,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
 
   onSave = (picture: PictureI) => {
     const forAdd = !picture.id
+    picture.id = picture.id || genId()
     //this.toogle('loading', forAdd, picture)
 
     //сохроняем в базу данных
@@ -67,7 +62,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
         ...prev,
         mode,
         forAdd,
-        picture
+        picture: picture ?? prev.picture
       }
     })
   }

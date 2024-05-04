@@ -1,6 +1,7 @@
+import * as Yup from 'yup'
 import { BaseI } from '@shared/interfaces/baseI'
-import DiamondFormType from '@shared/types/diamondFormType'
-import CoverageAreaType from '@shared/types/coverageAreaType'
+import DiamondFormType, { diamondFormDefault, diamondForms } from '@shared/types/diamondFormType'
+import CoverageAreaType, { coverageAreaDefault, coverageAreas } from '@shared/types/coverageAreaType'
 
 
 export default interface PictureI extends BaseI {
@@ -9,8 +10,8 @@ export default interface PictureI extends BaseI {
     diamondForm: DiamondFormType
     coverageArea: CoverageAreaType //площадь покрытия
 
-    detiles: PictureDetileI[]
-    detilesSumTotal: number
+    details: PictureDetailI[]
+    detailsSumTotal: number
 
     pricePerHour: number
     hoursSpent: number
@@ -20,7 +21,68 @@ export default interface PictureI extends BaseI {
     comment: string
 }
 
-export interface PictureDetileI {
+export interface PictureDetailI extends BaseI {
     name: string
-    price:number
+    price: number
 }
+
+export const pictureDefault: PictureI = {
+    id: 0,
+    height: 0,
+    width: 0,
+    diamondForm: diamondFormDefault,
+    coverageArea: coverageAreaDefault,
+    details: [],
+    detailsSumTotal: 0,
+    pricePerHour: 0,
+    hoursSpent: 0,
+    bayFullPrice: 0,
+    comment: ''
+}
+
+export const pictureDetailDefault: PictureDetailI = {
+    id: 0,
+    name: '',
+    price: 0
+}
+
+export const PictureDetailISchema = Yup.object().shape({
+    id: Yup.number()
+        .required('Обязательное поле'),
+    name: Yup.string()
+        .required('Обязательное поле'),
+    price: Yup.number()
+        .required('Обязательное поле'),
+})
+
+export const PictureISchema = Yup.object().shape({
+    id: Yup.number()
+        .required('Обязательное поле'),
+    height: Yup.number()
+        .min(10, 'Значение должно быть меньше или равно 10')
+        .required('Обязательное поле'),
+    width: Yup.number()
+        .min(10, 'Значение должно быть меньше или равно 10')
+        .required('Обязательное поле'),
+    diamondForm: Yup.string()
+        .oneOf(diamondForms)
+        .default(diamondFormDefault)
+        .required('Обязательное поле'),
+    coverageArea: Yup.string()
+        .oneOf(coverageAreas)
+        .default(coverageAreaDefault)
+        .required('Обязательное поле'),
+    details: Yup.array()
+        .of(PictureDetailISchema),
+    detailsSumTotal: Yup.number()
+        .required('Обязательное поле')
+        .min(0, 'Значение должно быть меньше или равно 0'),
+    pricePerHour: Yup.number()
+        .min(0, 'Значение должно быть меньше или равно 0'),
+    hoursSpent: Yup.number()
+        .min(0, 'Значение должно быть меньше или равно 0'),
+    bayFullPrice: Yup.number()
+        .min(0, 'Значение должно быть меньше или равно 0')
+        .required('Обязательное поле'),
+    comment: Yup.string()
+})

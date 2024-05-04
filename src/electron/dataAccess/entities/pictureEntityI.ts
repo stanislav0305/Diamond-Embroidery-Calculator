@@ -2,14 +2,14 @@ import { Schema } from 'electron-store';
 import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
 
 
-export interface PictureDetileEntityI {
+export interface PictureDetailEntityI extends BasetEntityI {
     name: string
     price: number
 }
 
-export const pictureDetilesShema = {
+export const pictureDetailsShema = {
     type: 'array',
-    default: [] as PictureDetileEntityI[],
+    default: [] as PictureDetailEntityI[],
     items: {
         type: 'object',
         required: ['id', 'name', 'price'],
@@ -25,7 +25,7 @@ export const pictureDetilesShema = {
                 type: 'number',
                 default: 0,
             }
-        } as Schema<PictureDetileEntityI>
+        } as Schema<PictureDetailEntityI>
     }
 }
 
@@ -44,8 +44,8 @@ export interface PictureEntityI extends BasetEntityI {
     diamondForm: DiamondFormType
     coverageArea: CoverageAreaType //площадь покрытия
 
-    detiles: PictureDetileEntityI[]
-    detilesSumTotal: number
+    details: PictureDetailEntityI[]
+    detailsSumTotal: number
 
     pricePerHour: number
     hoursSpent: number
@@ -60,7 +60,7 @@ export const picturesShema = {
     default: [] as PictureEntityI[],
     items: {
         type: 'object',
-        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detilesSumTotal', 'bayFullPrice'],
+        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'bayFullPrice'],
         properties: {
             id: {
                 type: 'number'
@@ -81,8 +81,8 @@ export const picturesShema = {
                 enum: coverageAreas,
                 default: coverageAreaDefault,
             },
-            detiles: pictureDetilesShema,
-            detilesSumTotal: {
+            details: pictureDetailsShema,
+            detailsSumTotal: {
                 type: 'number',
                 default: 0,
             },

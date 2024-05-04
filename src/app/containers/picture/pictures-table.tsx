@@ -1,19 +1,20 @@
 import React, { useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
-import PictureI from '@shared/interfaces/pictureI'
+import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import getData from '@utils/getData'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
 import { Row } from '@tanstack/react-table'
-import PicturEditModal from '@containers/picture-edit-modal'
-import PicturRemoveModal from './picture-remove-modal'
+import PicturEditModal from '@containers/picture/picture-edit-modal'
+import PicturRemoveModal from '@containers/picture/picture-remove-modal'
 
-
-const data: PictureI[] = getData(35)
 
 export default function PicturesTable() {
+
+  const [data, setData] = React.useState<PictureI[]>(getData(35))
+
 
   const columns = useMemo<MRT_ColumnDef<PictureI>[]>(
     () =>
@@ -171,26 +172,31 @@ export default function PicturesTable() {
 
   //------------------------------------------------------------------------------
 
-  const pictureEditModalRef = useRef<null | PicturEditModal>(null)
+  const pictureEditModalRef = useRef<PicturEditModal>({} as PicturEditModal)
   const openPictureEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
     e.preventDefault()
-    pictureEditModalRef.current?.onOpen(id)
+
+    const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
+    pictureEditModalRef.current.onOpen(picture)
   }
 
   const onSavedPicture = (forAdd: boolean, picture: PictureI) => {
-    console.log('Refresh table !')
+    console.info('Updating the painting table after adding or updating a painting!')
+    const d = forAdd ? data : data.filter(p => p.id !== picture.id)
+    setData([...d, picture])
   }
 
   //------------------------------------------------------------------------------
 
-  const pictureRemoveModalRef = useRef<null | PicturRemoveModal>(null)
+  const pictureRemoveModalRef = useRef<PicturRemoveModal>({} as PicturRemoveModal)
   const openPictureRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
     e.preventDefault()
-    pictureRemoveModalRef.current?.onOpen(id)
+    pictureRemoveModalRef.current.onOpen(id)
   }
 
   const onRemovedPicture = (id: number) => {
-    console.log('Refresh table !')
+    console.info('Updating the table of paintings after deleting a painting!')
+    setData(data.filter(picture => picture.id !== id))
   }
 
   //------------------------------------------------------------------------------

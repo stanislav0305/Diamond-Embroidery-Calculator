@@ -1,149 +1,24 @@
-
-import React, { ReactNode } from 'react'
-import * as Yup from 'yup'
+import React from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
-import { Formik, useField } from 'formik';
-import { coverageAreaDefault, coverageAreas, coverageAreasDataMap } from '@shared/types/coverageAreaType';
-import { diamondFormDefault, diamondForms, diamondFormDataMap } from '@shared/types/diamondFormType';
-import PictureI from '@shared/interfaces/pictureI'
+import { Formik } from 'formik';
+import { coverageAreasDataMap } from '@shared/types/coverageAreaType';
+import { diamondFormDataMap } from '@shared/types/diamondFormType';
+import PictureI, { PictureDetailI, PictureISchema } from '@shared/interfaces/pictureI'
+import PicturesDetailsTable from '@containers/picture/picture-details-table'
+import FormField from '@components/form/form-field';
+import FormFieldSelect from '@components/form/form-field-select';
 
 
-const PictureDetileISchema = Yup.object().shape({
-    name: Yup.string()
-        .required('Обязательное поле'),
-    price: Yup.number()
-        .required('Обязательное поле'),
-})
-
-const PictureISchema = Yup.object().shape({
-    id: Yup.number()
-        .required('Обязательное поле'),
-    height: Yup.number()
-        .min(10, 'Значение должно быть меньше или равно 10')
-        .required('Обязательное поле'),
-    width: Yup.number()
-        .min(10, 'Значение должно быть меньше или равно 10')
-        .required('Обязательное поле'),
-    diamondForm: Yup.string()
-        .oneOf(diamondForms)
-        .default(diamondFormDefault)
-        .required('Обязательное поле'),
-    coverageArea: Yup.string()
-        .oneOf(coverageAreas)
-        .default(coverageAreaDefault)
-        .required('Обязательное поле'),
-    detiles: Yup.array()
-        .of(PictureDetileISchema),
-    detilesSumTotal: Yup.number()
-        .required('Обязательное поле')
-        .min(0, 'Значение должно быть меньше или равно 0'),
-    pricePerHour: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0'),
-    hoursSpent: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0'),
-    bayFullPrice: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0')
-        .required('Обязательное поле'),
-    comment: Yup.string()
-})
-
-const pictureInitValues: PictureI = {
-    id: 0,
-    height: 0,
-    width: 0,
-    diamondForm: diamondFormDefault,
-    coverageArea: coverageAreaDefault,
-    detiles: [],
-    detilesSumTotal: 0,
-    pricePerHour: 0,
-    hoursSpent: 0,
-    bayFullPrice: 0,
-    comment: ''
-};
-
-type FormFieldProps = React.HTMLAttributes<HTMLInputElement> & {
-    name: string,
-    type?: string,
-    label: string,
-    as?: React.ElementType,
-    placeholder?: string,
-    disabled?: boolean,
-    showValInSpan?: boolean,
-}
-
-
-type optionsTypes = (typeof diamondFormDataMap | typeof coverageAreasDataMap)
-type FormFieldSelectProps = React.HTMLAttributes<HTMLSelectElement> & {
-    name: string,
-    label: string,
-    placeholder?: string,
-    options: optionsTypes,
-    disabled?: boolean,
-}
-
-const FormFieldSelect = ({ className, name, label, options, placeholder, ...props }: FormFieldSelectProps) => {
-    const [field, meta] = useField(name)
-    const isValid = meta.touched && meta.error === undefined;
-    const isInvalid = meta.touched && meta.error !== undefined;
-
-
-    const optionsObjs: ReactNode[] = [];
-    options.forEach((value, key) =>
-        optionsObjs.push(<option key={key} value={key}>{value}</option>)
-    )
-
-    return (
-        <Form.Group className={className} controlId={name}>
-            <Form.Label>{label}</Form.Label>
-            <Form.Select
-                size="sm"
-                aria-label={label}
-                name={name}
-                {...props}
-                value={field.value}
-                isValid={isValid}
-                isInvalid={isInvalid}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-            >
-                {placeholder && <option>{placeholder}</option>}
-                {optionsObjs}
-            </Form.Select>
-            {isInvalid && <Form.Text className="text-danger">{meta.error}</Form.Text>}
-        </Form.Group>
-    )
-}
-
-const FormField = ({ className, name, label, type, as, showValInSpan, ...props }: FormFieldProps) => {
-    const [field, meta] = useField(name)
-    const isValid = meta.touched && meta.error === undefined;
-    const isInvalid = meta.touched && meta.error !== undefined;
-
-    return (
-        <Form.Group className={className} controlId={name}>
-            <Form.Label>{label}</Form.Label>
-            {showValInSpan && <span className='ms-2'>{field.value}</span>}
-            <Form.Control
-                size="sm"
-                as={as}
-                name={name}
-                type={type}
-                {...props}
-                value={field.value}
-                isValid={isValid}
-                isInvalid={isInvalid}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-            />
-            {isInvalid && <Form.Text className="text-danger">{meta.error}</Form.Text>}
-        </Form.Group>
-    )
-}
-
-export default function PictureEdit(props: { data: PictureI | null, onSave: (data: PictureI) => void, onClose: () => void }) {
+export default function PictureEdit(props: {
+    data: PictureI,
+    onSave: (data: PictureI) => void,
+    onClose: () => void
+}) {
     if (props === undefined) return null
     const forAdd = props.data === null
-    const initVal = props.data ?? pictureInitValues
+    const initVal = props.data
+
+    const [details, setDetails] = React.useState<PictureDetailI[]>(props.data.details)
 
     return (
         <>
@@ -154,11 +29,13 @@ export default function PictureEdit(props: { data: PictureI | null, onSave: (dat
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {
                             setSubmitting(false)
+
+                            values.details = details
                             props.onSave(values)
                         }, 400);
                     }}
                 >
-                    {({ handleReset, submitForm }) => (
+                    {({ values, handleReset, submitForm }) => (
                         <>
                             <Form className='p-2'>
                                 <FormField
@@ -203,6 +80,18 @@ export default function PictureEdit(props: { data: PictureI | null, onSave: (dat
                                             name="coverageArea"
                                             label="Площадь покрытия"
                                             options={coverageAreasDataMap}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <PicturesDetailsTable pictureDetails={details} onDetailsChenge={setDetails} />
+                                        <FormField
+                                            className="mb-3"
+                                            name="detailsSumTotal"
+                                            type="hidden"
+                                            label="Всего за материалы"
+                                            showValInSpan={true}
                                         />
                                     </Col>
                                 </Row>

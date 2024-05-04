@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import PictureI, { PictureDetileI } from '@shared/interfaces/pictureI'
+import PictureI, { PictureDetailI } from '@shared/interfaces/pictureI'
 
 // функция генерации массива чисел от 1 до `len + 1`
 const range = (len: number) => {
@@ -12,15 +12,16 @@ const range = (len: number) => {
 
 // функция генерации id
 let _id = 1
-const id = () => _id++
+export const genId = () => _id++
 
 // функция, возвращающая случайное целое число в заданном диапазоне
 const randInt = (min: number, max: number) =>
     Math.floor(min + Math.random() * (max - min + 1))
 
 
-const createPictureDetile = () => {
-    const v: PictureDetileI = {
+const createPictureDetail = () => {
+    const v: PictureDetailI = {
+        id: genId(),
         name: faker.company.name(),
         price: randInt(1, 20)
     }
@@ -29,17 +30,20 @@ const createPictureDetile = () => {
 }
 
 // функция генерации данных PictureEntity
-export const createPicture = (idVal: number | undefined) => {
-    const detilesSumTotal = randInt(0, 20)
+export const createPicture = (id: number): PictureI => {
+    const details: PictureDetailI[] = range(randInt(0, 10)).map(createPictureDetail)
+    const detilesSumTotal = details.reduce((accumulator, pd) => {
+        return accumulator + pd.price
+    }, 0)
 
     const v: PictureI = {
-        id: idVal ?? id(),
+        id: id,
         height: randInt(10, 300),
         width: randInt(10, 300),
         diamondForm: randInt(0, 1) ? 'circle' : 'square',
         coverageArea: randInt(0, 1) ? 'total' : 'partial',
-        detiles: range(randInt(0, 10)).map(createPictureDetile),
-        detilesSumTotal: detilesSumTotal,
+        details: details,
+        detailsSumTotal: detilesSumTotal,
 
         pricePerHour: 2,
         hoursSpent: randInt(5, 50),
