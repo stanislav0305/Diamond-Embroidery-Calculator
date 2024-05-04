@@ -15,7 +15,7 @@ export const pictureDetailsShema = {
         required: ['id', 'name', 'price'],
         properties: {
             id: {
-                type: 'number'
+                type: 'string'
             },
             name: {
                 type: 'string',
@@ -63,7 +63,7 @@ export const picturesShema = {
         required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'bayFullPrice'],
         properties: {
             id: {
-                type: 'number'
+                type: 'string'
             },
             height: {
                 type: 'number',

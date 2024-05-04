@@ -27,8 +27,8 @@ export default interface ContextBridgeApiI {
   pictures: {
     getAll: () => Promise<PictureI[]>
     create: (picture: PictureI) => Promise<PictureI>
-    read: (id: number) => Promise<PictureI>
+    read: (id: string) => Promise<PictureI>
     update: (picture: PictureI) => Promise<PictureI>
-    delete: (id: number) => Promise<boolean>
+    delete: (id: string) => Promise<boolean>
   }
 }

@@ -4,14 +4,14 @@ import { Variant } from 'react-bootstrap/esm/types';
 
 
 export interface EventMessagePropsI {
-    elementiId: number,
+    elementiId: string,
     title: string,
     action: ActionType,
     variant: Variant,
     description: string,
     secAgo: number,
     show: boolean,
-    onClose: (id: number, e?: React.MouseEvent | React.KeyboardEvent) => void,
+    onClose: (id: string, e?: React.MouseEvent | React.KeyboardEvent) => void,
 }
 
 type ActionType = 'created' | 'updated' | 'removed' | 'info'

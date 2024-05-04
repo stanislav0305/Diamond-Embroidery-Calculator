@@ -13,8 +13,8 @@ interface PictureDetailsProps {
 
 const getTable = (pictureDetails: PictureDetailI[],
     columns: MRT_ColumnDef<PictureDetailI>[],
-    openPictureDetailEditModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => void,
-    openPictureDetailRemoveModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => void
+    openPictureDetailEditModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void,
+    openPictureDetailRemoveModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void
 ) => {
     return useMaterialReactTable({
         columns,
@@ -33,7 +33,7 @@ const getTable = (pictureDetails: PictureDetailI[],
                     variant="outline-primary"
                     size="sm"
                     className='bi bi-pencil-fill me-3'
-                    onClick={(e) => openPictureDetailEditModal(e, row.getValue('id') as number)}
+                    onClick={(e) => openPictureDetailEditModal(e, row.getValue('id') as string)}
                 >
                 </Button>
                 <Button
@@ -41,7 +41,7 @@ const getTable = (pictureDetails: PictureDetailI[],
                     variant="outline-danger"
                     size="sm"
                     className='bi bi-trash3-fill me-3'
-                    onClick={(e) => openPictureDetailRemoveModal(e, row.getValue('id') as number)}
+                    onClick={(e) => openPictureDetailRemoveModal(e, row.getValue('id') as string)}
                 >
                 </Button>
             </>
@@ -81,7 +81,7 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
     //------------------------------------------------------------------------------
 
     const pictureDetailEditModalRef = useRef<PicturDetailEditModal>({} as PicturDetailEditModal)
-    const openPictureDetailEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
+    const openPictureDetailEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
         e.preventDefault()
         const pictutreDetail = id ? props.pictureDetails.find(item => item.id === id) ?? pictureDetailDefault : pictureDetailDefault
         pictureDetailEditModalRef.current.onOpen(pictutreDetail)
@@ -97,12 +97,12 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
     //------------------------------------------------------------------------------
 
     const pictureDetailRemoveModalRef = useRef<PicturDetailRemoveModal>({} as PicturDetailRemoveModal)
-    const openPictureDetailRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
+    const openPictureDetailRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
         e.preventDefault()
         pictureDetailRemoveModalRef.current.onOpen(id)
     }
 
-    const onRemovedPictureDetail = (id: number) => {
+    const onRemovedPictureDetail = (id: string) => {
         console.info('Updating the table of materials of the painting, after removing the metamaterial!')
         props.onDetailsChenge(props.pictureDetails.filter(item => item.id !== id))
     }
@@ -123,7 +123,7 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
                     variant="outline-success"
                     size="sm"
                     className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
-                    onClick={(e) => openPictureDetailEditModal(e, 0)}
+                    onClick={(e) => openPictureDetailEditModal(e, '')}
                 >
                 </Button>
                 <MaterialReactTable table={table} />

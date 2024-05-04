@@ -12,7 +12,7 @@ interface IpcResponsePicture extends IpcResponseBase, PictureI {
 
 }
 
-type IpcRequestPictureT = number | IpcRequestPicture
+type IpcRequestPictureT = string | IpcRequestPicture
 type IpcResponsePictureT = boolean | IpcResponsePicture | IpcResponsePicture[]
 
 
@@ -52,7 +52,7 @@ export class PicturesChannelGroup extends IpcChannelGroupI<PicturesChannelGroup,
     }
 
     public static read(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        const id = request as number
+        const id = request as string
         return {} as IpcResponsePicture
     }
 
@@ -61,7 +61,7 @@ export class PicturesChannelGroup extends IpcChannelGroupI<PicturesChannelGroup,
     }
 
     public static delete(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        const id = request as number
+        const id = request as string
 
         return false
     }

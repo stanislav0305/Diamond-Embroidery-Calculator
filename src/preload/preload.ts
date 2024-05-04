@@ -31,9 +31,9 @@ const API: ContextBridgeApiI = {
   pictures: {
     getAll: () => ipcRenderer.invoke('pictures:getAll').catch((e: Error) => console.error(e)),
     create: (picture: PictureI) => ipcRenderer.invoke('pictures:create', picture).catch((e: Error) => console.error(e)),
-    read: (id: number) => ipcRenderer.invoke('pictures:read', id).catch((e: Error) => console.error(e)),
+    read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch((e: Error) => console.error(e)),
     update: (picture: PictureI) => ipcRenderer.invoke('pictures:update', picture).catch((e: Error) => console.error(e)),
-    delete: (id: number) => ipcRenderer.invoke('pictures:delete', id).catch((e: Error) => console.error(e)),
+    delete: (id: string) => ipcRenderer.invoke('pictures:delete', id).catch((e: Error) => console.error(e)),
   }
 }
 

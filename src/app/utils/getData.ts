@@ -1,18 +1,20 @@
 import { faker } from '@faker-js/faker'
 import PictureI, { PictureDetailI } from '@shared/interfaces/pictureI'
+import ShortUniqueId from 'short-unique-id'
+
+const uid = new ShortUniqueId({ length: 10 });
 
 // функция генерации массива чисел от 1 до `len + 1`
 const range = (len: number) => {
     const arr = []
     for (let i = 1; i < len + 1; i++) {
-        arr.push(i)
+        arr.push(genId())
     }
     return arr
 }
 
 // функция генерации id
-let _id = 1
-export const genId = () => _id++
+export const genId = () => uid.rnd()
 
 // функция, возвращающая случайное целое число в заданном диапазоне
 const randInt = (min: number, max: number) =>
@@ -30,7 +32,7 @@ const createPictureDetail = () => {
 }
 
 // функция генерации данных PictureEntity
-export const createPicture = (id: number): PictureI => {
+export const createPicture = (id: string): PictureI => {
     const details: PictureDetailI[] = range(randInt(0, 10)).map(createPictureDetail)
     const detilesSumTotal = details.reduce((accumulator, pd) => {
         return accumulator + pd.price

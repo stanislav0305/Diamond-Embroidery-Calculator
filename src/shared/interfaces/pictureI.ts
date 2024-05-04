@@ -27,7 +27,7 @@ export interface PictureDetailI extends BaseI {
 }
 
 export const pictureDefault: PictureI = {
-    id: 0,
+    id: '',
     height: 0,
     width: 0,
     diamondForm: diamondFormDefault,
@@ -41,14 +41,14 @@ export const pictureDefault: PictureI = {
 }
 
 export const pictureDetailDefault: PictureDetailI = {
-    id: 0,
+    id: '',
     name: '',
     price: 0
 }
 
 export const PictureDetailISchema = Yup.object().shape({
-    id: Yup.number()
-        .required('Обязательное поле'),
+    id: Yup.string()
+        .default(''),
     name: Yup.string()
         .required('Обязательное поле'),
     price: Yup.number()
@@ -56,8 +56,8 @@ export const PictureDetailISchema = Yup.object().shape({
 })
 
 export const PictureISchema = Yup.object().shape({
-    id: Yup.number()
-        .required('Обязательное поле'),
+    id: Yup.string()
+        .default(''),
     height: Yup.number()
         .min(10, 'Значение должно быть меньше или равно 10')
         .required('Обязательное поле'),

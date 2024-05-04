@@ -1,3 +1,3 @@
 export interface BasetEntityI{
-    id: number
+    id: string
 }

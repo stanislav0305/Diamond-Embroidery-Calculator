@@ -4,12 +4,12 @@ import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 
 
 interface PicturRemoveModalProps {
-    onRemoved: (id: number) => void,
+    onRemoved: (id: string) => void,
 }
 
 interface PicturRemoveModalState {
     mode: ModalMode,
-    id: number,
+    id: string,
 }
 
 export default class PicturRemoveModal extends React.Component<PicturRemoveModalProps, PicturRemoveModalState> {
@@ -21,11 +21,11 @@ export default class PicturRemoveModal extends React.Component<PicturRemoveModal
 
         this.state = {
             mode: 'closed',
-            id: 0,
+            id: '',
         }
     }
 
-    onOpen = (id: number) => {
+    onOpen = (id: string) => {
         this.toogle('loaded', id)
     }
 
@@ -46,7 +46,7 @@ export default class PicturRemoveModal extends React.Component<PicturRemoveModal
         this.props.onRemoved(id)
     }
 
-    toogle = (mode: ModalMode = 'closed', id?: number) => {
+    toogle = (mode: ModalMode = 'closed', id?: string) => {
         this.setState(prev => {
             return {
                 ...prev,

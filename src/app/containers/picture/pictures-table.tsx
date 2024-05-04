@@ -155,7 +155,7 @@ export default function PicturesTable() {
           variant="outline-primary"
           size="sm"
           className='bi bi-pencil-fill me-3'
-          onClick={(e) => openPictureEditModal(e, row.getValue('id') as number)}
+          onClick={(e) => openPictureEditModal(e, row.getValue('id') as string)}
         >
         </Button>
         <Button
@@ -163,7 +163,7 @@ export default function PicturesTable() {
           variant="outline-danger"
           size="sm"
           className='bi bi-trash3-fill me-3'
-          onClick={(e) => openPictureRemoveModal(e, row.getValue('id') as number)}
+          onClick={(e) => openPictureRemoveModal(e, row.getValue('id') as string)}
         >
         </Button>
       </>
@@ -173,7 +173,7 @@ export default function PicturesTable() {
   //------------------------------------------------------------------------------
 
   const pictureEditModalRef = useRef<PicturEditModal>({} as PicturEditModal)
-  const openPictureEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
+  const openPictureEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
 
     const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
@@ -189,12 +189,12 @@ export default function PicturesTable() {
   //------------------------------------------------------------------------------
 
   const pictureRemoveModalRef = useRef<PicturRemoveModal>({} as PicturRemoveModal)
-  const openPictureRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
+  const openPictureRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
     pictureRemoveModalRef.current.onOpen(id)
   }
 
-  const onRemovedPicture = (id: number) => {
+  const onRemovedPicture = (id: string) => {
     console.info('Updating the table of paintings after deleting a painting!')
     setData(data.filter(picture => picture.id !== id))
   }
@@ -209,7 +209,7 @@ export default function PicturesTable() {
           variant="outline-success"
           size="sm"
           className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
-          onClick={(e) => openPictureEditModal(e, 0)}
+          onClick={(e) => openPictureEditModal(e, '')}
         >
         </Button>
         <MaterialReactTable table={table} />

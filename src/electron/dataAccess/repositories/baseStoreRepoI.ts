@@ -24,7 +24,7 @@ export abstract class BaseStoreRepo<S extends Record<string, any>, T> {
     //Получите элемент или значение по умолчанию, если элемент не существует.
     public get(key?: string): T | T[] | null { return this.store.get(key ? key : this.fieldName) }
 
-    public getArrayRow<T extends BasetEntityI>(key: string, id: number): T | undefined {
+    public getArrayRow<T extends BasetEntityI>(key: string, id: string): T | undefined {
         const values = this.get(key ? key : this.fieldName) as T[]
         return values.find(v => v.id === id)
     }
@@ -74,8 +74,8 @@ export abstract class BaseStoreRepo<S extends Record<string, any>, T> {
     public setAll(entities: T[]): void { }
 
     public create(entity: T): T | null { return null }
-    public read(id: number): T | null { return null }
+    public read(id: string): T | null { return null }
     public update(entity: T) : T | null { return null }
-    public delete(id: number): boolean { return false }
+    public delete(id: string): boolean { return false }
     */
 }

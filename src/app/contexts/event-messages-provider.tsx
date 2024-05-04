@@ -95,7 +95,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         }, 1000)
     }
 
-    onClose = (elementiId: number, e?: React.MouseEvent | React.KeyboardEvent) => {
+    onClose = (elementiId: string, e?: React.MouseEvent | React.KeyboardEvent) => {
         e?.preventDefault()
 
         this.setState({
