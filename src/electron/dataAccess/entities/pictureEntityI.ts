@@ -1,5 +1,6 @@
 import { Schema } from 'electron-store';
 import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import { HistoryEntityI } from './historyEntity';
 
 
 export interface PictureDetailEntityI extends BasetEntityI {
@@ -38,7 +39,7 @@ const coverageAreaDefault = 'total'
 const coverageAreas = ['total', 'partial']
 export type CoverageAreaType = typeof coverageAreas[number];
 
-export interface PictureEntityI extends BasetEntityI {
+export interface PictureEntityI extends HistoryEntityI {
     height: number
     width: number
     diamondForm: DiamondFormType
@@ -60,7 +61,7 @@ export const picturesShema = {
     default: [] as PictureEntityI[],
     items: {
         type: 'object',
-        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'bayFullPrice'],
+        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'bayFullPrice', 'created'],
         properties: {
             id: {
                 type: 'string'
@@ -99,6 +100,12 @@ export const picturesShema = {
                 default: 0,
             },
             comment: {
+                type: 'string'
+            },
+            created: {
+                type: 'string'
+            },
+            updated: {
                 type: 'string'
             }
         } as Schema<PictureEntityI>

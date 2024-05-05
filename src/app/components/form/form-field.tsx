@@ -21,12 +21,12 @@ export default function FormField({ className, name, label, type, as, showValInS
     return (
         <Form.Group className={className} controlId={name}>
             <Form.Label>{label}</Form.Label>
-            {showValInSpan && <span className='ms-2'>{field.value}</span>}
+            {showValInSpan && <span className="d-block">{field.value}</span>}
             <Form.Control
                 size="sm"
                 as={as}
                 name={name}
-                type={type}
+                type={showValInSpan ? "hidden" : type}
                 {...props}
                 value={field.value}
                 isValid={isValid}

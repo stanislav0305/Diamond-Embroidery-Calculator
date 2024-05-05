@@ -1,10 +1,11 @@
 import * as Yup from 'yup'
+import { HistoryI } from '@shared/interfaces/historyI'
 import { BaseI } from '@shared/interfaces/baseI'
 import DiamondFormType, { diamondFormDefault, diamondForms } from '@shared/types/diamondFormType'
 import CoverageAreaType, { coverageAreaDefault, coverageAreas } from '@shared/types/coverageAreaType'
 
 
-export default interface PictureI extends BaseI {
+export default interface PictureI extends HistoryI {
     height: number
     width: number
     diamondForm: DiamondFormType
@@ -37,7 +38,9 @@ export const pictureDefault: PictureI = {
     pricePerHour: 0,
     hoursSpent: 0,
     bayFullPrice: 0,
-    comment: ''
+    comment: '',
+    created: new Date().toLocaleString(),
+    updated: undefined
 }
 
 export const pictureDetailDefault: PictureDetailI = {

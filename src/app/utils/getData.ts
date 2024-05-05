@@ -38,8 +38,11 @@ export const createPicture = (id: string): PictureI => {
         return accumulator + pd.price
     }, 0)
 
+    const now = new Date().toLocaleString()
     const v: PictureI = {
         id: id,
+        created: now,
+        updated: randInt(0, 1) ? now : undefined,
         height: randInt(10, 300),
         width: randInt(10, 300),
         diamondForm: randInt(0, 1) ? 'circle' : 'square',
@@ -52,7 +55,7 @@ export const createPicture = (id: string): PictureI => {
 
         bayFullPrice: detilesSumTotal + randInt(5, 50),
 
-        comment: faker.string.alpha({ length: { min: 0, max: 50 } })
+        comment: faker.string.alpha({ length: { min: 0, max: 50 } })        
     }
 
     return v

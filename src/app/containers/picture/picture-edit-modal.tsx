@@ -43,17 +43,24 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
 
   onSave = (picture: PictureI) => {
     const forAdd = !picture.id
-    picture.id = picture.id || genId()
+    const now = new Date().toLocaleString()
+    const p = {
+      ...picture,
+      id: picture.id || genId(),
+      created: forAdd ? now : picture.created,
+      updated: !forAdd ? now : picture.updated,
+    }
+
     //this.toogle('loading', forAdd, picture)
 
     //сохроняем в базу данных
-    console.log(JSON.stringify(picture, null, 2));
+    console.log(JSON.stringify(p, null, 2));
 
     this.toogle('closed')
     forAdd ? this.context.addMessage('PictureCreated') : this.context.addMessage('PictureUpdated')
 
     //обновляем таблицу
-    this.props.onSaved(forAdd, picture)
+    this.props.onSaved(forAdd, p)
   }
 
   toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null) => {

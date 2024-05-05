@@ -25,6 +25,17 @@ export default function PicturesTable() {
           sortDescFirst: false,
         },
         {
+          header: 'Создана',
+          accessorKey: 'created',
+          sortDescFirst: false,
+        },
+        {
+          header: 'Обновлена',
+          accessorKey: 'updated',
+          sortUndefined: 'last',
+          sortDescFirst: false,
+        },
+        {
           header: 'Высота',
           accessorKey: 'height',
           filterFn: 'heightWidthFilterFn',
@@ -182,6 +193,7 @@ export default function PicturesTable() {
 
   const onSavedPicture = (forAdd: boolean, picture: PictureI) => {
     console.info('Updating the painting table after adding or updating a painting!')
+
     const d = forAdd ? data : data.filter(p => p.id !== picture.id)
     setData([...d, picture])
   }

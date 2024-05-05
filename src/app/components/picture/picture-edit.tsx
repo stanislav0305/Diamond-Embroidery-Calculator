@@ -38,13 +38,32 @@ export default function PictureEdit(props: {
                     {({ values, handleReset, submitForm }) => (
                         <>
                             <Form className='p-2'>
-                                <FormField
-                                    className="mb-3"
-                                    name="id"
-                                    type="hidden"
-                                    label="#"
-                                    showValInSpan={true}
-                                />
+                                <Row>
+                                    <Col>
+                                        <FormField
+                                            name="id"
+                                            type="hidden"
+                                            label="#"
+                                            showValInSpan={true}
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <FormField
+                                            name="created"
+                                            type="hidden"
+                                            label="Создана"
+                                            showValInSpan={true}
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <FormField
+                                            name="updated"
+                                            type="hidden"
+                                            label="Обновлена"
+                                            showValInSpan={true}
+                                        />
+                                    </Col>
+                                </Row>
                                 <Row>
                                     <Col>
                                         <FormField
