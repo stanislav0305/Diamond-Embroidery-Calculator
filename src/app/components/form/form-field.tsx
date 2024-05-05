@@ -10,7 +10,7 @@ type FormFieldProps = React.HTMLAttributes<HTMLInputElement> & {
     as?: React.ElementType,
     placeholder?: string,
     disabled?: boolean,
-    showValInSpan?: boolean,
+    showValInSpan?: boolean
 }
 
 export default function FormField({ className, name, label, type, as, showValInSpan, ...props }: FormFieldProps) {

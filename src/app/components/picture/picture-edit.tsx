@@ -19,6 +19,11 @@ export default function PictureEdit(props: {
     const initVal = props.data
 
     const [details, setDetails] = React.useState<PictureDetailI[]>(props.data.details)
+    const [detailsSumTotal, setDetailsSumTotal] = React.useState<number>(props.data.detailsSumTotal)
+    const onDetailsChenger = (details: PictureDetailI[]) => {
+        setDetails(details)
+        setDetailsSumTotal(details.reduce((sum, pd) => sum + pd.price, 0))
+    }
 
     return (
         <>
@@ -31,6 +36,7 @@ export default function PictureEdit(props: {
                             setSubmitting(false)
 
                             values.details = details
+                            values.detailsSumTotal = detailsSumTotal
                             props.onSave(values)
                         }, 400);
                     }}
@@ -104,14 +110,9 @@ export default function PictureEdit(props: {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <PicturesDetailsTable pictureDetails={details} onDetailsChenge={setDetails} />
-                                        <FormField
-                                            className="mb-3"
-                                            name="detailsSumTotal"
-                                            type="hidden"
-                                            label="Всего за материалы"
-                                            showValInSpan={true}
-                                        />
+                                        <PicturesDetailsTable pictureDetails={details} onDetailsChenge={onDetailsChenger} />
+                                        <Form.Label className="fw-bold">Всего за материалы</Form.Label>
+                                        <span className="ms-2 fw-bold">{detailsSumTotal}</span>
                                     </Col>
                                 </Row>
                                 <Row>
