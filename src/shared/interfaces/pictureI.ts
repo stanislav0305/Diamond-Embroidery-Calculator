@@ -16,6 +16,7 @@ export default interface PictureI extends HistoryI {
 
     pricePerHour: number
     hoursSpent: number
+    forHoursSpentTotal: number
 
     bayFullPrice: number
 
@@ -37,6 +38,7 @@ export const pictureDefault: PictureI = {
     detailsSumTotal: 0,
     pricePerHour: 0,
     hoursSpent: 0,
+    forHoursSpentTotal: 0,
     bayFullPrice: 0,
     comment: '',
     created: new Date().toLocaleString(),
@@ -84,6 +86,8 @@ export const PictureISchema = Yup.object().shape({
         .min(0, 'Значение должно быть меньше или равно 0'),
     hoursSpent: Yup.number()
         .min(0, 'Значение должно быть меньше или равно 0'),
+    forHoursSpentTotal: Yup.number()
+        .required('Обязательное поле'),
     bayFullPrice: Yup.number()
         .min(0, 'Значение должно быть меньше или равно 0')
         .required('Обязательное поле'),

@@ -19,10 +19,8 @@ export default function PictureEdit(props: {
     const initVal = props.data
 
     const [details, setDetails] = React.useState<PictureDetailI[]>(props.data.details)
-    const [detailsSumTotal, setDetailsSumTotal] = React.useState<number>(props.data.detailsSumTotal)
     const onDetailsChenger = (details: PictureDetailI[]) => {
         setDetails(details)
-        setDetailsSumTotal(details.reduce((sum, pd) => sum + pd.price, 0))
     }
 
     return (
@@ -36,7 +34,6 @@ export default function PictureEdit(props: {
                             setSubmitting(false)
 
                             values.details = details
-                            values.detailsSumTotal = detailsSumTotal
                             props.onSave(values)
                         }, 400);
                     }}
@@ -49,23 +46,25 @@ export default function PictureEdit(props: {
                                         <FormField
                                             name="id"
                                             type="hidden"
-                                            label="#"
+                                            prefixReactNode={<span>#</span>}
                                             showValInSpan={true}
                                         />
                                     </Col>
-                                    <Col>
+                                </Row>
+                                <Row>
+                                    <Col className='pe-0'>
                                         <FormField
                                             name="created"
                                             type="hidden"
-                                            label="Создана"
+                                            prefixReactNode={<span>Создана</span>}
                                             showValInSpan={true}
                                         />
                                     </Col>
-                                    <Col>
+                                    <Col className='ps-0'>
                                         <FormField
                                             name="updated"
                                             type="hidden"
-                                            label="Обновлена"
+                                            prefixReactNode={<span>Обновлена</span>}
                                             showValInSpan={true}
                                         />
                                     </Col>
@@ -76,7 +75,8 @@ export default function PictureEdit(props: {
                                             className="mb-3"
                                             name="height"
                                             type="number"
-                                            label="Высота"
+                                            prefixReactNode={<span className='fw-bold'>Высота</span>}
+                                            postfixReactNode={<span className='fw-bold'>см</span>}
                                             placeholder="Введите высоту"
                                         />
                                     </Col>
@@ -85,7 +85,8 @@ export default function PictureEdit(props: {
                                             className="mb-3"
                                             name="width"
                                             type="number"
-                                            label="Ширина"
+                                            prefixReactNode={<span className='fw-bold'>Ширина</span>}
+                                            postfixReactNode={<span className='fw-bold'>см</span>}
                                             placeholder="Введите ширину"
                                         />
                                     </Col>
@@ -111,8 +112,16 @@ export default function PictureEdit(props: {
                                 <Row>
                                     <Col>
                                         <PicturesDetailsTable pictureDetails={details} onDetailsChenge={onDetailsChenger} />
-                                        <Form.Label className="fw-bold">Всего за материалы</Form.Label>
-                                        <span className="ms-2 fw-bold">{detailsSumTotal}</span>
+                                        <FormField
+                                            className="mt-1 mb-3 fw-bold"
+                                            name="detailsSumTotal"
+                                            type="hidden"                                       
+                                            prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
+                                            classNameForSpan="fw-bold px-4"
+                                            postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                            showValInSpan={true}
+                                            value={details.reduce((sum, pd) => sum + pd.price, 0)}
+                                        />
                                     </Col>
                                 </Row>
                                 <Row>
@@ -122,6 +131,7 @@ export default function PictureEdit(props: {
                                             name="pricePerHour"
                                             type="number"
                                             label="Цена за час"
+                                            postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                             placeholder="Введите цену за час"
                                         />
                                     </Col>
@@ -135,11 +145,26 @@ export default function PictureEdit(props: {
                                         />
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col>
+                                        <FormField
+                                            className="mb-3 fw-bold"
+                                            name="forHoursSpentTotal"
+                                            type="hidden"
+                                            classNameForSpan="fw-bold px-4"
+                                            prefixReactNode={<span className='fw-bold'>Всего за потраченные часы</span>}
+                                            postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                            showValInSpan={true}
+                                            value={values.pricePerHour * values.hoursSpent}
+                                        />
+                                    </Col>
+                                </Row>
                                 <FormField
                                     className="mb-3"
                                     name="bayFullPrice"
                                     type="number"
-                                    label="Продано за"
+                                    prefixReactNode={<span className='fw-bold'>Продано за</span>}
+                                    postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                     placeholder="Введите цену продажи"
                                 />
                                 <FormField
@@ -157,7 +182,10 @@ export default function PictureEdit(props: {
                         </>
                     )}
                 </Formik>
-            </Card>
+            </Card >
         </>
     )
 }
+
+//<Form.Label className="fw-bold">Всего за материалы</Form.Label>
+//<span className="ms-2 fw-bold">{detailsSumTotal}</span>

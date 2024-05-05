@@ -33,12 +33,12 @@ const createPictureDetail = () => {
 
 // функция генерации данных PictureEntity
 export const createPicture = (id: string): PictureI => {
-    const details: PictureDetailI[] = range(randInt(0, 10)).map(createPictureDetail)
-    const detilesSumTotal = details.reduce((accumulator, pd) => {
-        return accumulator + pd.price
-    }, 0)
-
     const now = new Date().toLocaleString()
+    const details: PictureDetailI[] = range(randInt(0, 10)).map(createPictureDetail)
+    const detilesSumTotal = details.reduce((accumulator, pd) => { return accumulator + pd.price }, 0)
+    const pricePerHour = 2
+    const hoursSpent = randInt(5, 50)
+
     const v: PictureI = {
         id: id,
         created: now,
@@ -50,12 +50,13 @@ export const createPicture = (id: string): PictureI => {
         details: details,
         detailsSumTotal: detilesSumTotal,
 
-        pricePerHour: 2,
-        hoursSpent: randInt(5, 50),
+        pricePerHour: pricePerHour,
+        hoursSpent: hoursSpent,
+        forHoursSpentTotal: hoursSpent * pricePerHour,
 
         bayFullPrice: detilesSumTotal + randInt(5, 50),
 
-        comment: faker.string.alpha({ length: { min: 0, max: 50 } })        
+        comment: faker.string.alpha({ length: { min: 0, max: 50 } })
     }
 
     return v

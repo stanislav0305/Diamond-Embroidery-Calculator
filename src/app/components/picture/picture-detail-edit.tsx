@@ -30,13 +30,16 @@ export default function PictureDetailEdit(props: {
                     {({ handleReset, submitForm }) => (
                         <>
                             <Form className='p-2'>
-                                <FormField
-                                    className="mb-3"
-                                    name="id"
-                                    type="hidden"
-                                    label="#"
-                                    showValInSpan={true}
-                                />
+                                <Row>
+                                    <Col>
+                                        <FormField
+                                            name="id"
+                                            type="hidden"
+                                            prefixReactNode={<span>#</span>}
+                                            showValInSpan={true}
+                                        />
+                                    </Col>
+                                </Row>
                                 <Row>
                                     <Col>
                                         <FormField
@@ -52,6 +55,7 @@ export default function PictureDetailEdit(props: {
                                             name="price"
                                             type="number"
                                             label="Цена"
+                                            postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                             placeholder="Введите цену"
                                         />
                                     </Col>

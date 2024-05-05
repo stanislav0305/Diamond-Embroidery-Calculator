@@ -50,6 +50,7 @@ export interface PictureEntityI extends HistoryEntityI {
 
     pricePerHour: number
     hoursSpent: number
+    forHoursSpentTotal: number
 
     bayFullPrice: number
 
@@ -61,7 +62,7 @@ export const picturesShema = {
     default: [] as PictureEntityI[],
     items: {
         type: 'object',
-        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'bayFullPrice', 'created'],
+        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'forHoursSpentTotal', 'bayFullPrice', 'created'],
         properties: {
             id: {
                 type: 'string'
@@ -92,6 +93,10 @@ export const picturesShema = {
                 default: 0
             },
             hoursSpent: {
+                type: 'number',
+                default: 0
+            },
+            forHoursSpentTotal:{
                 type: 'number',
                 default: 0
             },

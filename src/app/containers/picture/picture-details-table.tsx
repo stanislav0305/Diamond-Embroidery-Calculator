@@ -69,6 +69,10 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
                 {
                     header: 'Цена',
                     accessorKey: 'price',
+                    accessorFn: row => row.price.toLocaleString('ru-RU', {
+                        style: 'currency',
+                        currency: 'EUR'
+                    }),
                     filterVariant: 'range',
                     sortUndefined: 'last',
                     sortDescFirst: false,
