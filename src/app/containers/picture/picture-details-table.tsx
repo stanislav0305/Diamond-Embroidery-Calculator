@@ -121,7 +121,6 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
 
     return (
         <>
-            <h6>Материалы картины</h6>
             <div className='position-relative'>
                 <Button as="a"
                     variant="outline-success"

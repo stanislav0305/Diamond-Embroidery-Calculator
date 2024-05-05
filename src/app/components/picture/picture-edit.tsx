@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row, Accordion } from 'react-bootstrap'
 import { Formik } from 'formik';
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType';
 import { diamondFormDataMap } from '@shared/types/diamondFormType';
@@ -40,7 +40,7 @@ export default function PictureEdit(props: {
                 >
                     {({ values, handleReset, submitForm }) => (
                         <>
-                            <Form className='p-2'>
+                            <Form className='p-1'>
                                 <Row>
                                     <Col>
                                         <FormField
@@ -50,9 +50,7 @@ export default function PictureEdit(props: {
                                             showValInSpan={true}
                                         />
                                     </Col>
-                                </Row>
-                                <Row>
-                                    <Col className='pe-0'>
+                                    <Col sm="7">
                                         <FormField
                                             name="created"
                                             type="hidden"
@@ -60,7 +58,10 @@ export default function PictureEdit(props: {
                                             showValInSpan={true}
                                         />
                                     </Col>
-                                    <Col className='ps-0'>
+                                </Row>
+                                <Row className='mb-4'>
+                                    <Col></Col>
+                                    <Col sm="7">
                                         <FormField
                                             name="updated"
                                             type="hidden"
@@ -69,10 +70,9 @@ export default function PictureEdit(props: {
                                         />
                                     </Col>
                                 </Row>
-                                <Row>
+                                <Row className='mb-4'>
                                     <Col>
                                         <FormField
-                                            className="mb-3"
                                             name="height"
                                             type="number"
                                             prefixReactNode={<span className='fw-bold'>Высота</span>}
@@ -82,7 +82,6 @@ export default function PictureEdit(props: {
                                     </Col>
                                     <Col>
                                         <FormField
-                                            className="mb-3"
                                             name="width"
                                             type="number"
                                             prefixReactNode={<span className='fw-bold'>Ширина</span>}
@@ -91,10 +90,9 @@ export default function PictureEdit(props: {
                                         />
                                     </Col>
                                 </Row>
-                                <Row>
+                                <Row className='mb-4'>
                                     <Col>
                                         <FormFieldSelect
-                                            className="mb-3"
                                             name="diamondForm"
                                             label="Форма кристала"
                                             options={diamondFormDataMap}
@@ -102,20 +100,26 @@ export default function PictureEdit(props: {
                                     </Col>
                                     <Col>
                                         <FormFieldSelect
-                                            className="mb-3"
                                             name="coverageArea"
                                             label="Площадь покрытия"
                                             options={coverageAreasDataMap}
                                         />
                                     </Col>
                                 </Row>
-                                <Row>
+                                <Row className='mb-4'>
                                     <Col>
-                                        <PicturesDetailsTable pictureDetails={details} onDetailsChenge={onDetailsChenger} />
+                                        <Accordion>
+                                            <Accordion.Item eventKey="0">
+                                                <Accordion.Header>Материалы картины</Accordion.Header>
+                                                <Accordion.Body className='p-0'>
+                                                    <PicturesDetailsTable pictureDetails={details} onDetailsChenge={onDetailsChenger} />
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        </Accordion>
                                         <FormField
-                                            className="mt-1 mb-3 fw-bold"
+                                            className="mt-1 fw-bold"
                                             name="detailsSumTotal"
-                                            type="hidden"                                       
+                                            type="hidden"
                                             prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
                                             classNameForSpan="fw-bold px-4"
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
@@ -127,28 +131,26 @@ export default function PictureEdit(props: {
                                 <Row>
                                     <Col>
                                         <FormField
-                                            className="mb-3"
                                             name="pricePerHour"
                                             type="number"
-                                            label="Цена за час"
+                                            prefixReactNode={<span>Цена за час</span>}
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                             placeholder="Введите цену за час"
                                         />
                                     </Col>
                                     <Col>
                                         <FormField
-                                            className="mb-3"
                                             name="hoursSpent"
                                             type="number"
-                                            label="Затрачено часов"
+                                            prefixReactNode={<span>Затрачено часов</span>}
                                             placeholder="Введите количество затрачено часов"
                                         />
                                     </Col>
                                 </Row>
-                                <Row>
+                                <Row className='mb-4'>
                                     <Col>
                                         <FormField
-                                            className="mb-3 fw-bold"
+                                            className="fw-bold"
                                             name="forHoursSpentTotal"
                                             type="hidden"
                                             classNameForSpan="fw-bold px-4"
@@ -160,18 +162,17 @@ export default function PictureEdit(props: {
                                     </Col>
                                 </Row>
                                 <FormField
-                                    className="mb-3"
-                                    name="bayFullPrice"
-                                    type="number"
-                                    prefixReactNode={<span className='fw-bold'>Продано за</span>}
-                                    postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                    placeholder="Введите цену продажи"
-                                />
-                                <FormField
+                                    className="mb-4"
                                     as="textarea"
-                                    className="mb-3"
                                     name="comment"
                                     label="Коментарий"
+                                />
+                                <FormField
+                                    name="bayFullPrice"
+                                    type="number"
+                                    prefixReactNode={<span className='fw-bold'>Продаю за</span>}
+                                    postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                    placeholder="Введите цену продажи"
                                 />
                             </Form>
                             <Form.Group className="text-center pb-2">
@@ -186,6 +187,3 @@ export default function PictureEdit(props: {
         </>
     )
 }
-
-//<Form.Label className="fw-bold">Всего за материалы</Form.Label>
-//<span className="ms-2 fw-bold">{detailsSumTotal}</span>
