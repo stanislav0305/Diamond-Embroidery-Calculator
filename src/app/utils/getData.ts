@@ -64,5 +64,6 @@ export const createPicture = (id: string): PictureI => {
 
 // функция генерации фиктивных данных в виде массива объектов пользователя заданной длины
 const getData = (len: number) => range(len).map(createPicture)
+export const getPictureDetailsDefaultSetDate = (len: number) => range(len).map(createPictureDetail)
 
 export default getData

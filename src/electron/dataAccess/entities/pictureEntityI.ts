@@ -57,6 +57,12 @@ export interface PictureEntityI extends HistoryEntityI {
     comment: string
 }
 
+export const pictureDetailsDefaultSetShema = {
+    type: 'array',
+    default: [] as PictureDetailEntityI[],
+    items: pictureDetailsShema,
+}
+
 export const picturesShema = {
     type: 'array',
     default: [] as PictureEntityI[],

@@ -8,7 +8,9 @@ import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-m
 
 interface PictureDetailsProps {
     pictureDetails: PictureDetailI[],
-    onDetailsChenge: (details: PictureDetailI[]) => void
+    onDetailsChenge?: (details: PictureDetailI[]) => void,
+    onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void,
+    onRemovedPictureDetail?: (id: string) => void
 }
 
 const getTable = (pictureDetails: PictureDetailI[],
@@ -95,7 +97,7 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
         console.info('Updating the table of materials of a painting after adding or updating the material!')
 
         const pd = forAdd ? props.pictureDetails : props.pictureDetails.filter(item => item.id !== pictureDetail.id)
-        props.onDetailsChenge([...pd, pictureDetail])
+        props.onDetailsChenge && props.onDetailsChenge([...pd, pictureDetail])
     }
 
     //------------------------------------------------------------------------------
@@ -108,12 +110,13 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
 
     const onRemovedPictureDetail = (id: string) => {
         console.info('Updating the table of materials of the painting, after removing the metamaterial!')
-        props.onDetailsChenge(props.pictureDetails.filter(item => item.id !== id))
+        props.onDetailsChenge && props.onDetailsChenge(props.pictureDetails.filter(item => item.id !== id))
     }
 
     //------------------------------------------------------------------------------
 
-    const table = getTable(props.pictureDetails,
+    const table = getTable(
+        props.pictureDetails,
         columns,
         openPictureDetailEditModal,
         openPictureDetailRemoveModal
@@ -132,8 +135,8 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
                 <MaterialReactTable table={table} />
             </div>
 
-            <PicturDetailEditModal ref={pictureDetailEditModalRef} onSaved={onSavedPictureDetail} />
-            <PicturDetailRemoveModal ref={pictureDetailRemoveModalRef} onRemoved={onRemovedPictureDetail} />
+            <PicturDetailEditModal ref={pictureDetailEditModalRef} onSaved={props.onSavedPictureDetail ?? onSavedPictureDetail} />
+            <PicturDetailRemoveModal ref={pictureDetailRemoveModalRef} onRemoved={props.onRemovedPictureDetail ?? onRemovedPictureDetail} />
         </>
     )
 }

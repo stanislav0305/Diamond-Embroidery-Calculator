@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
-import getData from '@utils/getData'
+import getData, { getPictureDetailsDefaultSetDate } from '@utils/getData'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
@@ -188,6 +188,7 @@ export default function PicturesTable() {
     e.preventDefault()
 
     const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
+    picture.details = id ? picture.details : getPictureDetailsDefaultSetDate(10)
     pictureEditModalRef.current.onOpen(picture)
   }
 

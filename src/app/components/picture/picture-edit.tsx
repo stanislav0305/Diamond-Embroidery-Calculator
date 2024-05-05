@@ -15,9 +15,10 @@ export default function PictureEdit(props: {
     onClose: () => void
 }) {
     if (props === undefined) return null
-    const forAdd = props.data === null
+    const forAdd = props.data.id === ''
     const initVal = props.data
 
+     
     const [details, setDetails] = React.useState<PictureDetailI[]>(props.data.details)
     const onDetailsChenger = (details: PictureDetailI[]) => {
         setDetails(details)
