@@ -1,12 +1,14 @@
 import React from 'react'
 import { Form, InputGroup } from 'react-bootstrap'
-import { useField } from 'formik';
+import { useField } from 'formik'
+import { BaseFormat } from '@components/inputs/types'
 
 
-type FormFieldProps = React.HTMLAttributes<HTMLInputElement> & {
+type FormFieldProps = {
     name: string,
     type?: string,
     label?: string,
+    className?: string,
     as?: React.ElementType,
     placeholder?: string,
     disabled?: boolean,
@@ -15,49 +17,107 @@ type FormFieldProps = React.HTMLAttributes<HTMLInputElement> & {
     prefixReactNode?: React.ReactNode
     postfixReactNode?: React.ReactNode
     value?: any,
+    displayType?: 'input' | 'text'
 }
 
-export default function FormField({ className, classNameForSpan, prefixReactNode, postfixReactNode, name, label, type, as, showValInSpan, value, ...props }: FormFieldProps) {
-    const [field, meta] = useField(name)
+export default function FormField({ className, classNameForSpan, prefixReactNode, postfixReactNode, name,
+    label, type, as, showValInSpan, value, displayType = 'input' }: FormFieldProps) {
+    const [field, meta, helpers] = useField(name)
+
     field.value = value ?? field.value
     const isValid = meta.touched && meta.error === undefined;
     const isInvalid = meta.touched && meta.error !== undefined;
+    const propAs = as
+    const isBaseFormat: boolean = typeof propAs === typeof BaseFormat
 
     return (
-        <Form.Group className={className} controlId={name}>
-            {label && <Form.Label>{label}</Form.Label>}
+        <Form.Group className={className}>
+            {label &&
+                <Form.Label>{label}</Form.Label>
+            }
+            {showValInSpan &&
+                <span className={classNameForSpan}>{field.value}</span>
+            }
 
-            {label && showValInSpan && <span className={classNameForSpan}>{field.value}</span>}
-            <InputGroup size="sm" className='mb-1'>
-                {prefixReactNode &&
-                    <InputGroup.Text className='p-1'>
-                        {prefixReactNode}
-                    </InputGroup.Text>
-                }
-                {!label && showValInSpan &&
-                    <InputGroup.Text className={`${classNameForSpan} p-1`}>
-                        {field.value}
-                    </InputGroup.Text>
-                }
+            {!showValInSpan &&
+                <InputGroup size="sm" className='mb-1'>
+                    {prefixReactNode &&
+                        <InputGroup.Text className='p-1'>
+                            {prefixReactNode}
+                        </InputGroup.Text>
+                    }
+
+                    {displayType === 'input' &&
+                        <Form.Control
+                            as={propAs}
+                            size="sm"
+                            name={name}
+                            type={type}
+
+                            value={field.value}
+                            isValid={isValid}
+                            isInvalid={isInvalid}
+
+                            {...(isBaseFormat && {
+                                displayType: 'input',
+                                helpers: helpers,
+                            })}
+                            {...(!isBaseFormat && {
+                                onChange: field.onChange,
+                                onBlur: field.onBlur
+                            })}
+                        />
+                    }
+
+                    {displayType === 'text' &&
+                        <InputGroup.Text
+                            as={propAs}
+                            size="sm"
+
+                            name={name}
+                            value={field.value}
+
+                            {...(isBaseFormat && {
+                                displayType: 'text',
+                                helpers: helpers,
+                            })}
+                        >
+                            {field.value}
+                        </InputGroup.Text>
+                    }
+
+                    {postfixReactNode &&
+                        <InputGroup.Text className='p-1'>
+                            {postfixReactNode}
+                        </InputGroup.Text>
+                    }
+                </InputGroup>
+            }
+
+            {
+                showValInSpan || (!showValInSpan && displayType === 'text') &&
                 <Form.Control
+                    as={propAs}
                     size="sm"
-                    as={as}
                     name={name}
-                    type={showValInSpan ? "hidden" : type}
-                    {...props}
+                    type="hidden"
                     value={field.value}
+
                     isValid={isValid}
                     isInvalid={isInvalid}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
+
+                    {...(isBaseFormat && {
+                        displayType: 'input',
+                        helpers: helpers,
+                    })}
+                    {...(!isBaseFormat && {
+                        onChange: field.onChange,
+                        onBlur: field.onBlur
+                    })}
                 />
-                {postfixReactNode &&
-                    <InputGroup.Text className='p-1'>
-                        {postfixReactNode}
-                    </InputGroup.Text>
-                }
-            </InputGroup>
+            }
+
             {isInvalid && <Form.Text className="text-danger">{meta.error}</Form.Text>}
-        </Form.Group>
+        </Form.Group >
     )
 }

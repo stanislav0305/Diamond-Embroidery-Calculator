@@ -7,6 +7,8 @@ import PictureI, { PictureDetailI, PictureISchema } from '@shared/interfaces/pic
 import PicturesDetailsTable from '@containers/picture/picture-details-table'
 import FormField from '@components/form/form-field';
 import FormFieldSelect from '@components/form/form-field-select';
+import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
+import IntPositiveFormat from '@components/inputs/int-positive-format';
 
 
 export default function PictureEdit(props: {
@@ -18,7 +20,7 @@ export default function PictureEdit(props: {
     const forAdd = props.data.id === ''
     const initVal = props.data
 
-     
+
     const [details, setDetails] = React.useState<PictureDetailI[]>(props.data.details)
     const onDetailsChenger = (details: PictureDetailI[]) => {
         setDetails(details)
@@ -41,57 +43,52 @@ export default function PictureEdit(props: {
                 >
                     {({ values, handleReset, submitForm }) => (
                         <>
-                            <Form className='p-1'>
+                            <Form className="p-1">
                                 <Row>
                                     <Col>
                                         <FormField
                                             name="id"
-                                            type="hidden"
+                                            displayType="text"
                                             prefixReactNode={<span>#</span>}
-                                            showValInSpan={true}
                                         />
                                     </Col>
                                     <Col sm="7">
                                         <FormField
                                             name="created"
-                                            type="hidden"
+                                            displayType="text"
                                             prefixReactNode={<span>Создана</span>}
-                                            showValInSpan={true}
                                         />
                                     </Col>
                                 </Row>
-                                <Row className='mb-4'>
+                                <Row className="mb-4">
                                     <Col></Col>
                                     <Col sm="7">
                                         <FormField
                                             name="updated"
-                                            type="hidden"
+                                            displayType="text"
                                             prefixReactNode={<span>Обновлена</span>}
-                                            showValInSpan={true}
                                         />
                                     </Col>
                                 </Row>
-                                <Row className='mb-4'>
+                                <Row className="mb-4">
                                     <Col>
                                         <FormField
                                             name="height"
-                                            type="number"
-                                            prefixReactNode={<span className='fw-bold'>Высота</span>}
-                                            postfixReactNode={<span className='fw-bold'>см</span>}
-                                            placeholder="Введите высоту"
+                                            as={IntPositiveFormat}
+                                            prefixReactNode={<span className="fw-bold">Высота</span>}
+                                            postfixReactNode={<span className="fw-bold">см</span>}
                                         />
                                     </Col>
                                     <Col>
                                         <FormField
                                             name="width"
-                                            type="number"
-                                            prefixReactNode={<span className='fw-bold'>Ширина</span>}
-                                            postfixReactNode={<span className='fw-bold'>см</span>}
-                                            placeholder="Введите ширину"
+                                            as={IntPositiveFormat}
+                                            prefixReactNode={<span className="fw-bold">Ширина</span>}
+                                            postfixReactNode={<span className="fw-bold">см</span>}
                                         />
                                     </Col>
                                 </Row>
-                                <Row className='mb-4'>
+                                <Row className="mb-4">
                                     <Col>
                                         <FormFieldSelect
                                             name="diamondForm"
@@ -107,12 +104,12 @@ export default function PictureEdit(props: {
                                         />
                                     </Col>
                                 </Row>
-                                <Row className='mb-4'>
+                                <Row className="mb-4">
                                     <Col>
                                         <Accordion>
                                             <Accordion.Item eventKey="0">
-                                                <Accordion.Header>Материалы картины</Accordion.Header>
-                                                <Accordion.Body className='p-0'>
+                                                <Accordion.Header className="fw-bold">Материалы картины</Accordion.Header>
+                                                <Accordion.Body className="p-0">
                                                     <PicturesDetailsTable pictureDetails={details} onDetailsChenge={onDetailsChenger} />
                                                 </Accordion.Body>
                                             </Accordion.Item>
@@ -120,11 +117,10 @@ export default function PictureEdit(props: {
                                         <FormField
                                             className="mt-1 fw-bold"
                                             name="detailsSumTotal"
-                                            type="hidden"
+                                            as={NumericPositiveDecimal2Format}
+                                            displayType="text"
                                             prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
-                                            classNameForSpan="fw-bold px-4"
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                            showValInSpan={true}
                                             value={details.reduce((sum, pd) => sum + pd.price, 0)}
                                         />
                                     </Col>
@@ -133,7 +129,7 @@ export default function PictureEdit(props: {
                                     <Col>
                                         <FormField
                                             name="pricePerHour"
-                                            type="number"
+                                            as={NumericPositiveDecimal2Format}
                                             prefixReactNode={<span>Цена за час</span>}
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                             placeholder="Введите цену за час"
@@ -142,22 +138,21 @@ export default function PictureEdit(props: {
                                     <Col>
                                         <FormField
                                             name="hoursSpent"
-                                            type="number"
+                                            as={IntPositiveFormat}
                                             prefixReactNode={<span>Затрачено часов</span>}
                                             placeholder="Введите количество затрачено часов"
                                         />
                                     </Col>
                                 </Row>
-                                <Row className='mb-4'>
+                                <Row className="mb-4">
                                     <Col>
                                         <FormField
                                             className="fw-bold"
                                             name="forHoursSpentTotal"
-                                            type="hidden"
-                                            classNameForSpan="fw-bold px-4"
-                                            prefixReactNode={<span className='fw-bold'>Всего за потраченные часы</span>}
+                                            as={NumericPositiveDecimal2Format}
+                                            displayType="text"
+                                            prefixReactNode={<span className="fw-bold">Всего за потраченные часы</span>}
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                            showValInSpan={true}
                                             value={values.pricePerHour * values.hoursSpent}
                                         />
                                     </Col>
@@ -170,16 +165,16 @@ export default function PictureEdit(props: {
                                 />
                                 <FormField
                                     name="bayFullPrice"
-                                    type="number"
-                                    prefixReactNode={<span className='fw-bold'>Продаю за</span>}
+                                    as={NumericPositiveDecimal2Format}
+                                    prefixReactNode={<span className="fw-bold">Продаю за</span>}
                                     postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                     placeholder="Введите цену продажи"
                                 />
                             </Form>
                             <Form.Group className="text-center pb-2">
-                                <Button variant="primary" type='submit' className='me-3' onClick={submitForm}>Сохранить</Button >
-                                {forAdd && <Button variant="secondary" className='me-3' onClick={handleReset}>Сброс</Button>}
-                                <Button variant="secondary" className='me-3' onClick={props.onClose}>Закрыть</Button>
+                                <Button variant="primary" type="submit" className="me-3" onClick={submitForm}>Сохранить</Button >
+                                {forAdd && <Button variant="secondary" className="me-3" onClick={handleReset}>Сброс</Button>}
+                                <Button variant="secondary" className="me-3" onClick={props.onClose}>Закрыть</Button>
                             </Form.Group>
                         </>
                     )}

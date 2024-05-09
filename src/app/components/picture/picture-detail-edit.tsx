@@ -3,6 +3,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Formik } from 'formik';
 import { PictureDetailI, PictureDetailISchema } from '@shared/interfaces/pictureI'
 import FormField from '@components/form/form-field';
+import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
 
 
 export default function PictureDetailEdit(props: {
@@ -53,7 +54,7 @@ export default function PictureDetailEdit(props: {
                                         <FormField
                                             className="mb-3"
                                             name="price"
-                                            type="number"
+                                            as={NumericPositiveDecimal2Format}
                                             label="Цена"
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
                                             placeholder="Введите цену"

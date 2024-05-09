@@ -57,17 +57,18 @@ export const PictureDetailISchema = Yup.object().shape({
     name: Yup.string()
         .required('Обязательное поле'),
     price: Yup.number()
-        .required('Обязательное поле'),
+        .required('Обязательное поле')
+        .min(0, 'Значение должно быть больше или равно 0')
 })
 
 export const PictureISchema = Yup.object().shape({
     id: Yup.string()
         .default(''),
     height: Yup.number()
-        .min(10, 'Значение должно быть меньше или равно 10')
+        .min(10, 'Значение должно быть больше или равно 10')
         .required('Обязательное поле'),
     width: Yup.number()
-        .min(10, 'Значение должно быть меньше или равно 10')
+        .min(10, 'Значение должно быть больше или равно 10')
         .required('Обязательное поле'),
     diamondForm: Yup.string()
         .oneOf(diamondForms)
@@ -81,15 +82,15 @@ export const PictureISchema = Yup.object().shape({
         .of(PictureDetailISchema),
     detailsSumTotal: Yup.number()
         .required('Обязательное поле')
-        .min(0, 'Значение должно быть меньше или равно 0'),
+        .min(0, 'Значение должно быть больше или равно 0'),
     pricePerHour: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0'),
+        .min(0, 'Значение должно быть больше или равно 0'),
     hoursSpent: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0'),
+        .min(0, 'Значение должно быть больше или равно 0'),
     forHoursSpentTotal: Yup.number()
         .required('Обязательное поле'),
     bayFullPrice: Yup.number()
-        .min(0, 'Значение должно быть меньше или равно 0')
+        .min(0, 'Значение должно быть больше или равно 0')
         .required('Обязательное поле'),
     comment: Yup.string()
 })
