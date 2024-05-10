@@ -1,123 +1,167 @@
 import React from 'react'
 import { Form, InputGroup } from 'react-bootstrap'
-import { useField } from 'formik'
+import { FieldHelperProps, FieldInputProps, FieldMetaProps, useField } from 'formik'
 import { BaseFormat } from '@components/inputs/types'
 
 
+type Props = {
+    name?: string,
+    value?: any,
+    inputType?: string,
+    inputDisplayType: "input" | "text" | undefined,
+    inputPlaceholder?: string,
+    field?: FieldInputProps<any>,
+    meta?: FieldMetaProps<any>,
+    helpers?: FieldHelperProps<any>,
+    as?: React.ElementType,
+    isValid: boolean,
+    isInvalid: boolean,
+    isBaseFormat: boolean,
+    inputGroupTextClassName?: string,
+}
+
+function InputFormat(p: Props) {
+    return (
+        <Form.Control
+            as={p.as}
+            size="sm"
+            name={p.name}
+            type={p.inputType}
+
+            value={p.value ?? p.field?.value}
+            isValid={p.isValid}
+            isInvalid={p.isInvalid}
+            placeholder={p.inputPlaceholder}
+
+            {...(p.isBaseFormat && {
+                displayType: p.inputDisplayType,
+                helpers: p.helpers,
+            })}
+            {...(!p.isBaseFormat && {
+                onChange: p.field?.onChange,
+                onBlur: p.field?.onBlur
+            })}
+        />
+    )
+}
+
+function InputGroupTextFormat(p: Props) {
+    return (
+        <InputGroup.Text
+            as={p.as}
+            size="sm"
+
+            name={p.name}
+            className={p.inputGroupTextClassName}
+            value={p.value ?? p.field?.value}
+
+            {...(p.isBaseFormat && {
+                displayType: 'text',
+                helpers: p.helpers,
+            })}
+        >
+            {p.value ?? p.field?.value}
+        </InputGroup.Text>
+    )
+}
+
 type FormFieldProps = {
-    name: string,
-    type?: string,
+    name?: string,
     label?: string,
     className?: string,
     as?: React.ElementType,
-    placeholder?: string,
-    disabled?: boolean,
-    showValInSpan?: boolean,
-    classNameForSpan?: string | undefined
     prefixReactNode?: React.ReactNode
     postfixReactNode?: React.ReactNode
     value?: any,
-    displayType?: 'input' | 'text'
+
+    addInputGroupInput?: boolean,
+    addInputGroupText?: boolean,
+    inputGroupTextClassName?: string,
+
+    addInput?: boolean,
+    inputClassName?: string,
+    inputType?: string,
+    inputPlaceholder?: string,
+
+    addText?: boolean,
+    addHiddenInput?: boolean
 }
 
-export default function FormField({ className, classNameForSpan, prefixReactNode, postfixReactNode, name,
-    label, type, as, showValInSpan, value, displayType = 'input' }: FormFieldProps) {
-    const [field, meta, helpers] = useField(name)
+export default function FormField(ffp: FormFieldProps) {
 
-    field.value = value ?? field.value
-    const isValid = meta.touched && meta.error === undefined;
-    const isInvalid = meta.touched && meta.error !== undefined;
-    const propAs = as
-    const isBaseFormat: boolean = typeof propAs === typeof BaseFormat
+    const [field, meta, helpers] = ffp.name ? useField(ffp.name) : [undefined, undefined, undefined]
+
+    const p: Props = {
+        name: ffp.name,
+        value:ffp.value,
+        inputType :ffp.inputType,
+        inputPlaceholder :ffp.inputPlaceholder,
+        inputDisplayType: 'input',
+        field :field,
+        meta :meta,
+        helpers :helpers,
+        as :ffp.as,
+        isValid: meta ? (meta.touched && meta?.error === undefined) : true,
+        isInvalid:meta ? (meta?.touched && meta?.error !== undefined) : false,
+        isBaseFormat: typeof ffp.as === typeof BaseFormat,
+        inputGroupTextClassName: ffp.inputGroupTextClassName,
+    }
+
 
     return (
-        <Form.Group className={className}>
-            {label &&
-                <Form.Label>{label}</Form.Label>
-            }
-            {showValInSpan &&
-                <span className={classNameForSpan}>{field.value}</span>
+        <Form.Group className={ffp.className}>
+            {ffp.label &&
+                <Form.Label>{ffp.label}</Form.Label>
             }
 
-            {!showValInSpan &&
+            {(ffp.addInputGroupInput || ffp.addInputGroupText ||
+            ffp.prefixReactNode || ffp.postfixReactNode) &&
                 <InputGroup size="sm" className='mb-1'>
-                    {prefixReactNode &&
+                    {ffp.prefixReactNode &&
                         <InputGroup.Text className='p-1'>
-                            {prefixReactNode}
+                            {ffp.prefixReactNode}
                         </InputGroup.Text>
                     }
 
-                    {displayType === 'input' &&
-                        <Form.Control
-                            as={propAs}
-                            size="sm"
-                            name={name}
-                            type={type}
-
-                            value={field.value}
-                            isValid={isValid}
-                            isInvalid={isInvalid}
-
-                            {...(isBaseFormat && {
-                                displayType: 'input',
-                                helpers: helpers,
-                            })}
-                            {...(!isBaseFormat && {
-                                onChange: field.onChange,
-                                onBlur: field.onBlur
-                            })}
-                        />
+                    {ffp.addInputGroupInput &&
+                        <InputFormat {...p} />
                     }
 
-                    {displayType === 'text' &&
-                        <InputGroup.Text
-                            as={propAs}
-                            size="sm"
-
-                            name={name}
-                            value={field.value}
-
-                            {...(isBaseFormat && {
-                                displayType: 'text',
-                                helpers: helpers,
-                            })}
-                        >
-                            {field.value}
-                        </InputGroup.Text>
+                    {ffp.addInputGroupText &&
+                        <InputGroupTextFormat {...p} />
                     }
 
-                    {postfixReactNode &&
+                    {ffp.postfixReactNode &&
                         <InputGroup.Text className='p-1'>
-                            {postfixReactNode}
+                            {ffp.postfixReactNode}
                         </InputGroup.Text>
                     }
                 </InputGroup>
             }
 
-            {
-                showValInSpan || (!showValInSpan && displayType === 'text') &&
-                <Form.Control
-                    as={propAs}
-                    size="sm"
-                    name={name}
-                    type="hidden"
-                    value={field.value}
-
-                    isValid={isValid}
-                    isInvalid={isInvalid}
-
-                    {...(isBaseFormat && {
-                        displayType: 'input',
-                        helpers: helpers,
-                    })}
-                    {...(!isBaseFormat && {
-                        onChange: field.onChange,
-                        onBlur: field.onBlur
-                    })}
-                />
+            {ffp.addInput &&
+                <InputFormat {...p} />
             }
 
-            {isInvalid && <Form.Text className="text-danger">{meta.error}</Form.Text>}
+            {ffp.addText &&
+                <InputFormat {...{
+                    ...p,
+                    inputPlaceholder: undefined,
+                    displayType: 'text',
+                }} />
+            }
+
+            {ffp.addHiddenInput &&
+                <InputFormat {...{
+                    ...p,
+                    inputPlaceholder: undefined,
+                    inputType: "hidden"
+                }} />
+            }
+
+            {p.isInvalid &&
+                <Form.Text className="text-danger">{p.meta?.error}</Form.Text>
+            }
         </Form.Group >
     )
 }

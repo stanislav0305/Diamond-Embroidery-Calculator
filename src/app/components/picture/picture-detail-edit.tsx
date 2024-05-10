@@ -35,9 +35,9 @@ export default function PictureDetailEdit(props: {
                                     <Col>
                                         <FormField
                                             name="id"
-                                            type="hidden"
                                             prefixReactNode={<span>#</span>}
-                                            showValInSpan={true}
+                                            addInputGroupText
+                                            addHiddenInput
                                         />
                                     </Col>
                                 </Row>
@@ -47,7 +47,8 @@ export default function PictureDetailEdit(props: {
                                             className="mb-3"
                                             name="name"
                                             label="Название"
-                                            placeholder="Введите название матаниала"
+                                            inputPlaceholder="Введите название матаниала"
+                                            addInput
                                         />
                                     </Col>
                                     <Col>
@@ -57,7 +58,8 @@ export default function PictureDetailEdit(props: {
                                             as={NumericPositiveDecimal2Format}
                                             label="Цена"
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                            placeholder="Введите цену"
+                                            addInputGroupInput
+                                            inputPlaceholder="Введите цену"
                                         />
                                     </Col>
                                 </Row>

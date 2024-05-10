@@ -26,6 +26,8 @@ export default function PictureEdit(props: {
         setDetails(details)
     }
 
+    const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
+
     return (
         <>
             <Card>
@@ -48,15 +50,17 @@ export default function PictureEdit(props: {
                                     <Col>
                                         <FormField
                                             name="id"
-                                            displayType="text"
                                             prefixReactNode={<span>#</span>}
+                                            addInputGroupText
+                                            addHiddenInput
                                         />
                                     </Col>
                                     <Col sm="7">
                                         <FormField
                                             name="created"
-                                            displayType="text"
                                             prefixReactNode={<span>Создана</span>}
+                                            addInputGroupText
+                                            addHiddenInput
                                         />
                                     </Col>
                                 </Row>
@@ -65,8 +69,9 @@ export default function PictureEdit(props: {
                                     <Col sm="7">
                                         <FormField
                                             name="updated"
-                                            displayType="text"
                                             prefixReactNode={<span>Обновлена</span>}
+                                            addInputGroupText
+                                            addHiddenInput
                                         />
                                     </Col>
                                 </Row>
@@ -76,6 +81,7 @@ export default function PictureEdit(props: {
                                             name="height"
                                             as={IntPositiveFormat}
                                             prefixReactNode={<span className="fw-bold">Высота</span>}
+                                            addInputGroupInput
                                             postfixReactNode={<span className="fw-bold">см</span>}
                                         />
                                     </Col>
@@ -84,6 +90,7 @@ export default function PictureEdit(props: {
                                             name="width"
                                             as={IntPositiveFormat}
                                             prefixReactNode={<span className="fw-bold">Ширина</span>}
+                                            addInputGroupInput
                                             postfixReactNode={<span className="fw-bold">см</span>}
                                         />
                                     </Col>
@@ -118,10 +125,11 @@ export default function PictureEdit(props: {
                                             className="mt-1 fw-bold"
                                             name="detailsSumTotal"
                                             as={NumericPositiveDecimal2Format}
-                                            displayType="text"
                                             prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
+                                            addInputGroupText
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                            value={details.reduce((sum, pd) => sum + pd.price, 0)}
+                                            addHiddenInput
+                                            value={detailsSumTotal}
                                         />
                                     </Col>
                                 </Row>
@@ -131,8 +139,9 @@ export default function PictureEdit(props: {
                                             name="pricePerHour"
                                             as={NumericPositiveDecimal2Format}
                                             prefixReactNode={<span>Цена за час</span>}
+                                            addInputGroupInput
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                            placeholder="Введите цену за час"
+                                            inputPlaceholder="Введите цену за час"
                                         />
                                     </Col>
                                     <Col>
@@ -140,7 +149,8 @@ export default function PictureEdit(props: {
                                             name="hoursSpent"
                                             as={IntPositiveFormat}
                                             prefixReactNode={<span>Затрачено часов</span>}
-                                            placeholder="Введите количество затрачено часов"
+                                            addInputGroupInput
+                                            inputPlaceholder="Введите количество затрачено часов"
                                         />
                                     </Col>
                                 </Row>
@@ -150,9 +160,10 @@ export default function PictureEdit(props: {
                                             className="fw-bold"
                                             name="forHoursSpentTotal"
                                             as={NumericPositiveDecimal2Format}
-                                            displayType="text"
                                             prefixReactNode={<span className="fw-bold">Всего за потраченные часы</span>}
+                                            addInputGroupText
                                             postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                            addHiddenInput
                                             value={values.pricePerHour * values.hoursSpent}
                                         />
                                     </Col>
@@ -162,13 +173,66 @@ export default function PictureEdit(props: {
                                     as="textarea"
                                     name="comment"
                                     label="Коментарий"
+                                    addInput
                                 />
+                                <Row className="mb-4">
+                                    <Col>
+                                        <Accordion>
+                                            <Accordion.Item eventKey="0">
+                                                <Accordion.Header className="fw-bold">Рекомендуемая цена</Accordion.Header>
+                                                <Accordion.Body className="p-0">
+                                                <FormField
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<span className="text-danger">Минимальная цена (за материалы)</span>}
+                                                        addInputGroupText
+                                                        inputGroupTextClassName="text-danger"
+                                                        postfixReactNode={<i className="bi bi-currency-euro text-danger"></i>}
+                                                        value={detailsSumTotal}
+                                                    />
+                                                     <FormField
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<span className="text-danger">Минимальная цена (за работу)</span>}
+                                                        addInputGroupText
+                                                        inputGroupTextClassName="text-danger"
+                                                        postfixReactNode={<i className="bi bi-currency-euro text-danger"></i>}
+                                                        value={values.pricePerHour * values.hoursSpent}
+                                                    />
+                                                    <FormField
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<span className="text-success">Цена (материалы + работа)</span>}
+                                                        addInputGroupText
+                                                        inputGroupTextClassName="text-success"
+                                                        postfixReactNode={<i className="bi bi-currency-euro text-success"></i>}
+                                                        value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
+                                                    />
+                                                    <FormField
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<span className="text-primary">Цена по формуле 1</span>}
+                                                        addInputGroupText
+                                                        inputGroupTextClassName="text-primary"
+                                                        postfixReactNode={<i className="bi bi-currency-euro text-primary"></i>}
+                                                        value={values.width * values.height * 0.014}
+                                                    />
+                                                    <FormField
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<span className="text-primary">Цена по формуле 2</span>}
+                                                        addInputGroupText
+                                                        inputGroupTextClassName="text-primary"
+                                                        postfixReactNode={<i className="bi bi-currency-euro text-primary"></i>}
+                                                        value={values.width * values.height * 0.03}
+                                                    />
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        </Accordion>
+                                    </Col>
+                                </Row>
                                 <FormField
                                     name="bayFullPrice"
                                     as={NumericPositiveDecimal2Format}
                                     prefixReactNode={<span className="fw-bold">Продаю за</span>}
+                                    addInputGroupInput
                                     postfixReactNode={<i className="bi bi-currency-euro"></i>}
-                                    placeholder="Введите цену продажи"
+                                    inputPlaceholder="Введите цену продажи"
                                 />
                             </Form>
                             <Form.Group className="text-center pb-2">
