@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
-import PictureI, { PictureDetailI } from '@shared/interfaces/pictureI'
+import PictureI from '@shared/interfaces/pictureI'
+import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import ShortUniqueId from 'short-unique-id'
 
 const uid = new ShortUniqueId({ length: 10 });
@@ -49,7 +50,7 @@ export const createPicture = (id: string): PictureI => {
         coverageArea: randInt(0, 1) ? 'total' : 'partial',
         details: details,
         detailsSumTotal: detilesSumTotal,
-
+        images: [],
         pricePerHour: pricePerHour,
         hoursSpent: hoursSpent,
         forHoursSpentTotal: hoursSpent * pricePerHour,

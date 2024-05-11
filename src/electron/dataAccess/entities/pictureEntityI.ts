@@ -1,34 +1,7 @@
 import { Schema } from 'electron-store';
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
-import { HistoryEntityI } from './historyEntity';
-
-
-export interface PictureDetailEntityI extends BasetEntityI {
-    name: string
-    price: number
-}
-
-export const pictureDetailsShema = {
-    type: 'array',
-    default: [] as PictureDetailEntityI[],
-    items: {
-        type: 'object',
-        required: ['id', 'name', 'price'],
-        properties: {
-            id: {
-                type: 'string'
-            },
-            name: {
-                type: 'string',
-            },
-            price:
-            {
-                type: 'number',
-                default: 0,
-            }
-        } as Schema<PictureDetailEntityI>
-    }
-}
+import { HistoryEntityI } from '@dataAccess/entities/historyEntity';
+import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI';
+import { PictureImageEntityI, pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI';
 
 
 const diamondFormDefault = 'circle'
@@ -48,6 +21,8 @@ export interface PictureEntityI extends HistoryEntityI {
     details: PictureDetailEntityI[]
     detailsSumTotal: number
 
+    images: PictureImageEntityI[]
+
     pricePerHour: number
     hoursSpent: number
     forHoursSpentTotal: number
@@ -55,12 +30,6 @@ export interface PictureEntityI extends HistoryEntityI {
     bayFullPrice: number
 
     comment: string
-}
-
-export const pictureDetailsDefaultSetShema = {
-    type: 'array',
-    default: [] as PictureDetailEntityI[],
-    items: pictureDetailsShema,
 }
 
 export const picturesShema = {
@@ -94,6 +63,7 @@ export const picturesShema = {
                 type: 'number',
                 default: 0,
             },
+            images: pictureImagesShema,
             pricePerHour: {
                 type: 'number',
                 default: 0
@@ -102,7 +72,7 @@ export const picturesShema = {
                 type: 'number',
                 default: 0
             },
-            forHoursSpentTotal:{
+            forHoursSpentTotal: {
                 type: 'number',
                 default: 0
             },

@@ -33,7 +33,12 @@ export default function CustomModal(props: PropsWithChildren<OptionsI>) {
 
     return (
         <>
-            <Modal show={mode === 'loading' || mode === 'loaded'} className={className + ' mt-5 '} onHide={onHide}>
+            <Modal 
+            size='lg'
+            show={mode === 'loading' || mode === 'loaded'} 
+            className={className + ' mt-5 '} 
+            onHide={onHide}
+            >
                 <ModalHeader closeButton>
                     <div className="d-inline-block align-top logo-img-25x25 me-1" />
                     <Modal.Title>{header}</Modal.Title>

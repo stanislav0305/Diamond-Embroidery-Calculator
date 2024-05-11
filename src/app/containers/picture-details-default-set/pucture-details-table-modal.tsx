@@ -1,7 +1,7 @@
 import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
-import { PictureDetailI } from '@shared/interfaces/pictureI'
-import { genId, getPictureDetailsDefaultSetDate } from '@utils/getData'
+import PictureDetailI from '@shared/interfaces/pictureDetailI'
+import { getPictureDetailsDefaultSetDate } from '@utils/getData'
 import PicturesDetailsTable from '@containers/picture/picture-details-table'
 import { InputGroup } from 'react-bootstrap'
 

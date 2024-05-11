@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { PictureDetailI, pictureDetailDefault } from '@shared/interfaces/pictureI'
+import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/pictureDetailI'
 import PicturDetailEditModal from '@containers/picture/picture-detail-edit-modal'
 import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-modal'
 

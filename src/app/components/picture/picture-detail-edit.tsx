@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Formik } from 'formik';
-import { PictureDetailI, PictureDetailISchema } from '@shared/interfaces/pictureI'
+import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'
 import FormField from '@components/form/form-field';
 import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
 
@@ -19,7 +19,7 @@ export default function PictureDetailEdit(props: {
         <>
             <Card>
                 <Formik initialValues={initVal}
-                    validationSchema={PictureDetailISchema}
+                    validationSchema={pictureDetailISchema}
                     enableReinitialize={true}
                     onSubmit={(values, { setSubmitting }) => {
                         setTimeout(() => {

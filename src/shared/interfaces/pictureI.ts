@@ -1,8 +1,9 @@
 import * as Yup from 'yup'
 import { HistoryI } from '@shared/interfaces/historyI'
-import { BaseI } from '@shared/interfaces/baseI'
 import DiamondFormType, { diamondFormDefault, diamondForms } from '@shared/types/diamondFormType'
 import CoverageAreaType, { coverageAreaDefault, coverageAreas } from '@shared/types/coverageAreaType'
+import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'
+import PictureImageI, { pictureImageISchema } from '@shared/interfaces/pictureImageI'
 
 
 export default interface PictureI extends HistoryI {
@@ -14,6 +15,8 @@ export default interface PictureI extends HistoryI {
     details: PictureDetailI[]
     detailsSumTotal: number
 
+    images: PictureImageI[]
+
     pricePerHour: number
     hoursSpent: number
     forHoursSpentTotal: number
@@ -21,11 +24,6 @@ export default interface PictureI extends HistoryI {
     bayFullPrice: number
 
     comment: string
-}
-
-export interface PictureDetailI extends BaseI {
-    name: string
-    price: number
 }
 
 export const pictureDefault: PictureI = {
@@ -36,6 +34,7 @@ export const pictureDefault: PictureI = {
     coverageArea: coverageAreaDefault,
     details: [],
     detailsSumTotal: 0,
+    images: [],
     pricePerHour: 0,
     hoursSpent: 0,
     forHoursSpentTotal: 0,
@@ -45,23 +44,7 @@ export const pictureDefault: PictureI = {
     updated: undefined
 }
 
-export const pictureDetailDefault: PictureDetailI = {
-    id: '',
-    name: '',
-    price: 0
-}
-
-export const PictureDetailISchema = Yup.object().shape({
-    id: Yup.string()
-        .default(''),
-    name: Yup.string()
-        .required('Обязательное поле'),
-    price: Yup.number()
-        .required('Обязательное поле')
-        .min(0, 'Значение должно быть больше или равно 0')
-})
-
-export const PictureISchema = Yup.object().shape({
+export const pictureISchema = Yup.object().shape({
     id: Yup.string()
         .default(''),
     height: Yup.number()
@@ -79,10 +62,12 @@ export const PictureISchema = Yup.object().shape({
         .default(coverageAreaDefault)
         .required('Обязательное поле'),
     details: Yup.array()
-        .of(PictureDetailISchema),
+        .of(pictureDetailISchema),
     detailsSumTotal: Yup.number()
         .required('Обязательное поле')
         .min(0, 'Значение должно быть больше или равно 0'),
+    images: Yup.array()
+        .of(pictureImageISchema),
     pricePerHour: Yup.number()
         .min(0, 'Значение должно быть больше или равно 0'),
     hoursSpent: Yup.number()

@@ -1,7 +1,8 @@
 import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import { EventMessagesContext } from '@contexts/event-messages-provider'
-import PictureI, { PictureDetailI, pictureDefault } from '@shared/interfaces/pictureI'
+import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
+import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
 import { genId } from '@utils/getData'
 

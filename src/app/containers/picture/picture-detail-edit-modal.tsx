@@ -1,6 +1,6 @@
 import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
-import { PictureDetailI, pictureDetailDefault } from '@shared/interfaces/pictureI'
+import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/pictureDetailI'
 import PictureDetailEdit from '@components/picture/picture-detail-edit'
 import { genId } from '@utils/getData'
 

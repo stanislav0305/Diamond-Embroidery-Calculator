@@ -1,6 +1,6 @@
 import Store, { Schema } from 'electron-store';
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import { PictureDetailEntityI, pictureDetailsDefaultSetShema } from '@dataAccess/entities/pictureEntityI';
+import { PictureDetailEntityI, pictureDetailsDefaultSetShema } from '@dataAccess/entities/pictureDetailEntityI';
 
 
 interface StoreShemaI {
