@@ -14,25 +14,20 @@ interface PropsI {
 
 export default function PictureImageItem(props: PropsI) {
     const { img, setMainImage, removeImage, createSrc } = props
-  
+
     return (
-        <ListGroup.Item key={`img-${img.id}`} action variant="success">
+        <ListGroup.Item as="li" key={`img-${img.id}`} action variant="success">
             <Card className='m-1' style={{ flexDirection: 'row' }}>
                 <Card.Img
-                    style={{ maxWidth: "80px", maxHeight: "80px" }}
+                    style={{ maxWidth: "82px", maxHeight: "82px" }}
+                    className='m-1'
                     src={createSrc(img)}
                 />
-                <ListGroup className="list-group-flush" style={{ width: "90%" }}>
-                    <ListGroup.Item>
+                <ListGroup as="ul" className="list-group-flush" style={{ width: "90%" }}>
+                    <ListGroup.Item as="li">
                         <Row>
                             <Col sm={10}>
                                 <span>Файл</span>
-                                {img.isLoaded &&
-                                    <Badge bg="success">загружен</Badge>
-                                }
-                                {!img.isLoaded &&
-                                    <Badge bg="warning" text="dark">ожидает загрузку</Badge>
-                                }
                                 <span>: {
                                     img.isLoaded ?
                                         `${img.id}.${img.ext}`
@@ -41,7 +36,7 @@ export default function PictureImageItem(props: PropsI) {
                             </Col>
                             <Col>
                                 <Button
-                                key={`btn-set-main-image-${img.id}`}
+                                    key={`btn-set-main-image-${img.id}`}
                                     as="a"
                                     variant={img.isMain ? "outline-warning" : "outline-secondary"}
                                     size="sm"
@@ -50,7 +45,7 @@ export default function PictureImageItem(props: PropsI) {
                                 >
                                 </Button>
                                 <Button
-                                key={`btn-remove-imagen-${img.id}`}
+                                    key={`btn-remove-imagen-${img.id}`}
                                     as="a"
                                     variant="outline-danger"
                                     size="sm"
@@ -61,7 +56,15 @@ export default function PictureImageItem(props: PropsI) {
                             </Col>
                         </Row>
                     </ListGroup.Item>
-                    <ListGroup.Item>Размер: {(img.size / ONE_MB_IN_BYTES).toFixed(2)} Mb</ListGroup.Item>
+                    <ListGroup.Item as="li">
+                        {img.isLoaded &&
+                            <Badge bg="success" className='me-1'>загружен</Badge>
+                        }
+                        {!img.isLoaded &&
+                            <Badge bg="warning" text="dark" className='me-1'>ожидает загрузку</Badge>
+                        }
+                        <span>Размер: {(img.size / ONE_MB_IN_BYTES).toFixed(2)} Mb</span>
+                    </ListGroup.Item>
                 </ListGroup>
             </Card>
         </ListGroup.Item>

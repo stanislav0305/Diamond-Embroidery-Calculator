@@ -53,11 +53,8 @@ export default class PictureEdit extends React.Component<Props, State> {
         }
     }
 
-    componentWillUnmount = async () => {
-        const keys = [...Object.keys(this.objectURLsMap)]
-        keys.forEach(key => {
-            this.removeObjectURL(key)
-        })
+    componentWillUnmount = () => {
+        this.removeAllObjectURLs()
     }
 
     onDetailsChenge = (details: PictureDetailI[]) => {
@@ -93,6 +90,15 @@ export default class PictureEdit extends React.Component<Props, State> {
         this.objectURLsMap.delete(pictureImageId)
     }
 
+    removeAllObjectURLs = () => {
+        const keys = [...Object.keys(this.objectURLsMap)]
+        keys.forEach(key => {
+            this.removeObjectURL(key)
+        })
+    }
+
+    //---------------------------------------------------------------
+    
     createPictereImage = (file: File, arrayBuffer: ArrayBuffer, isMain: boolean) => {
         return {
             id: uid.rnd(),
@@ -239,7 +245,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                     <Row>
                                         <Col>
                                             <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
-                                            <ListGroup>
+                                            <ListGroup as="ul">
                                                 {images.length > 0 && images.map(img => (
                                                     <PictureImageItem
                                                         key={img.id}
