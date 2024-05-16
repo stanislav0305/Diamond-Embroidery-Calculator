@@ -1,19 +1,16 @@
 import { app } from 'electron'
-import { MainWindow } from '@general/window'
-import { NativeTheme } from '@general/nativeTheme'
-import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
-import ThemeI from '@shared/interfaces/themeI'
-import { PicturesChannelGroup } from '@ipc/picturesChannelGroup'
-import { ThemeChannelGroup } from '@ipc/themeChannelGroup'
-import { AppChannelGroup } from '@ipc/appChannelGroup'
-import { MainWindowChannelGroup } from '@ipc/mainWindowChannelGroup'
-import { IpcChannelsRegister } from '@ipc/ipcChannelsRegister'
+import MainWindow from '@general/window'
+import NativeTheme from '@general/nativeTheme'
+import ThemeChannelGroup from '@ipc/themeChannelGroup'
+import AppChannelGroup from '@ipc/appChannelGroup'
+import MainWindowChannelGroup from '@ipc/mainWindowChannelGroup'
+import PicturesChannelGroup from '@ipc/picturesChannelGroup'
 
 
 export class Application {
-    private mainWindow: MainWindow | null = null
     private nativeTheme: NativeTheme | null = null
-
+    private mainWindow: MainWindow | null = null
+    
     constructor() {
         app.on('ready', this.onReady)
         app.on('window-all-closed', this.onWindowAllClosed)
@@ -27,17 +24,13 @@ export class Application {
 
     private onReady() {
         console.log('onReady...')
+        this.nativeTheme = new NativeTheme()
         this.mainWindow = new MainWindow()
 
-        const theme = themeRepo.get() as ThemeI
-        this.nativeTheme = new NativeTheme(theme.mode)
-
-        IpcChannelsRegister.add([
-            new AppChannelGroup(),
-            new MainWindowChannelGroup(this.mainWindow),
-            new ThemeChannelGroup(this.nativeTheme),
-            new PicturesChannelGroup()
-        ])
+        AppChannelGroup.registry()
+        ThemeChannelGroup.registry(this.nativeTheme)
+        MainWindowChannelGroup.registry(this.mainWindow)
+        PicturesChannelGroup.registry()
     }
 
     /*

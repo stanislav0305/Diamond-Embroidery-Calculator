@@ -48,6 +48,8 @@
       "@hooks/": ["app/utils/hooks/"],
       "@hooks/*": ["app/utils/hooks/*"],
 
+      "@electron": ["electron/"],
+      "@electron/*": ["electron/*"],
       "@dataAccess": ["electron/dataAccess"],
       "@dataAccess/*": ["electron/dataAccess/*"],
       "@general": ["electron/general"],

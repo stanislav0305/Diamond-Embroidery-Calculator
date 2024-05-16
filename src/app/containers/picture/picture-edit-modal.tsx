@@ -4,7 +4,9 @@ import { EventMessagesContext } from '@contexts/event-messages-provider'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
-import { genId } from '@utils/getData'
+import { AppSettingsContext } from '@contexts/app-settings-context-provider'
+import { ProcessingResultI } from '@shared/interfaces/ProcessingResultI'
+
 
 interface PicturEditModalProps {
   onSaved: (forAdd: boolean, picture: PictureI) => void,
@@ -32,6 +34,42 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     }
   }
 
+  componentDidMount() {
+    window.api.pictures.on.pictureFilesLoaded((_event, info: ProcessingResultI) => {
+      const hasError = info.notProcessed > 0
+      if (hasError) {
+        console.error(`pictureFilesLoaded: Not all images loaded! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
+      }
+
+      const description = `Изображений: отправлено: ${info.sended}, не сохранено: ${info.notProcessed}, сохранено: ${info.done}`
+      this.context.addMessage(
+        'PictureFilesLoaded',
+        hasError,
+        description,
+        description
+      )
+    })
+
+    window.api.pictures.on.pictureFilesRemoved((_event, info: ProcessingResultI) => {
+      const hasError = info.notProcessed > 0
+      if (hasError) {
+        console.error(`pictureFilesRemoved: Not all images removed! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
+      }
+
+      const description = `Изображений: отправлено: ${info.sended}, не удалено: ${info.notProcessed}, удалено: ${info.done}`
+      this.context.addMessage(
+        'PictureFilesRemoved',
+        hasError,
+        description,
+        description
+      )
+    })
+  }
+
+  componentWillUnmount = async () => {
+    await window.api.pictures.off.pictureFilesLoaded()
+  }
+
   onOpen = (picture: PictureI) => {
     const forAdd = !picture.id
     //this.toogle('loading', forAdd)
@@ -42,26 +80,48 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     this.toogle('closed')
   }
 
-  onSave = (picture: PictureI) => {
+  onSave = async (picture: PictureI) => {
     const forAdd = !picture.id
-    const now = new Date().toLocaleString()
+    
     const p = {
       ...picture,
-      id: picture.id || genId(),
-      created: forAdd ? now : picture.created,
-      updated: !forAdd ? now : picture.updated,
-    }
-
-    //this.toogle('loading', forAdd, picture)
+      images: [...picture.images]
+    } as PictureI
 
     //сохроняем в базу данных
-    console.log(JSON.stringify(p, null, 2));
+    console.log('sended picture:', JSON.stringify(p, null, 2));
 
-    this.toogle('closed')
-    forAdd ? this.context.addMessage('PictureCreated') : this.context.addMessage('PictureUpdated')
+    this.toogle('loading', forAdd, picture)
+    if (forAdd) {
+      await window.api.pictures.create(p)
+        .then(pp => {
+          const hasError = !pp
+          this.context.addMessage('PictureCreated', hasError)
+          this.toogle('closed')
 
-    //обновляем таблицу
-    this.props.onSaved(forAdd, p)
+          //обновляем таблицу
+          pp && this.props.onSaved(forAdd, pp)
+        })
+        .catch(e => {
+          this.context.addMessage('PictureCreated', true)
+          this.toogle('error', forAdd, picture)
+        })
+
+    } else {
+      await window.api.pictures.update(p)
+        .then(pp => {
+          const hasError = !pp
+          this.context.addMessage('PictureUpdated', hasError)
+          this.toogle('closed')
+
+          //обновляем таблицу
+          pp && this.props.onSaved(forAdd, pp)
+        })
+        .catch(e => {
+          this.context.addMessage('PictureUpdated', true)
+          this.toogle('error', forAdd, picture)
+        })
+    }
   }
 
   toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null) => {
@@ -82,10 +142,15 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       <CustomModal header={forAdd ? 'Добавление картины' : 'Редактирование картины'}
         mode={mode}
         onHide={this.toogle}>
-        <PictureEdit data={picture}
-          onSave={this.onSave}
-          onClose={this.onClose}
-        />
+        <AppSettingsContext.Consumer>
+          {(appSettingsContext) => (
+            <PictureEdit data={picture}
+              pictureImagesPath={appSettingsContext.appSettings.paths.pictureImagesPath}
+              onSave={this.onSave}
+              onClose={this.onClose}
+            />
+          )}
+        </AppSettingsContext.Consumer>
       </CustomModal >
     )
   }

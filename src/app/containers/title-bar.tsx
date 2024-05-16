@@ -1,33 +1,30 @@
 import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import './title-bar'
-import { ThemeContext } from '@contexts/theme-context-provider'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import AppSettings from '@components/app-settings'
 import ThemeSwitch from '@containers/theme-switch'
-import AppSettingsI from '@shared/interfaces/appSettingsI'
+import { AppSettingsContext } from '@contexts/app-settings-context-provider'
 
+interface PropsI {
+    themeName: string
+}
 
-interface TitleBarIState {
+interface StateI {
     isMaximized: boolean,
     appSettingsModal: {
-        mode: ModalMode,
-        data: AppSettingsI | undefined
+        mode: ModalMode
     }
 }
 
-export default class TitleBar extends React.Component<{}, TitleBarIState> {
-    static contextType = ThemeContext
-    context!: React.ContextType<typeof ThemeContext>
-
-    constructor(props: {}) {
+export default class TitleBar extends React.Component<PropsI, StateI> {
+    constructor(props: PropsI) {
         super(props)
 
         this.state = {
             isMaximized: false,
             appSettingsModal: {
-                mode: 'closed',
-                data: undefined
+                mode: 'closed'
             }
         }
     }
@@ -76,46 +73,66 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
     appSettingsModal = {
         onOpen: (event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
-
-            this.appSettingsModal.toogle('loading')
-            window.api.app.getSettings()
-                .then((data: AppSettingsI) => {
-                    this.appSettingsModal.toogle('loaded', data)
-                })
+            this.appSettingsModal.toogle('loaded')
         },
         onClose: (event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault()
-
             this.appSettingsModal.toogle('closed')
         },
-        toogle: (mode: ModalMode = 'closed', data: AppSettingsI | undefined = undefined) => {
+        toogle: (mode: ModalMode = 'closed') => {
             this.setState({
                 ...this.state,
                 appSettingsModal: {
-                    mode,
-                    data
+                    mode
                 }
             })
         }
     }
 
     render() {
-        const { name } = this.context?.theme ?? {}
         const { isMaximized, appSettingsModal } = this.state
-        const { mode, data } = appSettingsModal
+        const { mode } = appSettingsModal
+        const { themeName } = this.props
 
         return (
             <>
-                <Navbar bg={name} data-bs-theme={name} className='title-bar p-0'>
+                <Navbar bg={themeName}
+                    data-bs-theme={themeName}
+                    className='title-bar p-0'
+                >
                     <Navbar.Brand>
                         <div className="d-inline-block align-top logo-img-30x30 mx-1" />
                     </Navbar.Brand>
                     <h6 className="mt-2">Калькулятор алмазной вышевки</h6>
                     <Nav className="ms-auto">
-                        <Button as="a" variant="outline-secondary" size="sm" className='bi bi-gear me-3' onClick={this.appSettingsModal.onOpen}></Button>
-                        <Button as="a" variant="outline-secondary" size="sm" className='bi bi-dash-lg me-1' onClick={this.onClickMinimize}></Button>
-                        <Button as="a" variant="outline-secondary" size="sm" className={`bi ${isMaximized ? 'bi-copy rotate-180-deg' : 'bi-square'} me-1`} onClick={this.onClickMaximize}></Button>
-                        <Button as="a" variant="outline-danger" size="sm" className='bi bi-x-lg me-1' onClick={this.onClickAppClose}></Button>
+                        <Button as="a"
+                            variant="outline-secondary"
+                            size="sm"
+                            className='bi bi-gear me-3'
+                            onClick={this.appSettingsModal.onOpen}
+                        >
+                        </Button>
+                        <Button as="a"
+                            variant="outline-secondary"
+                            size="sm"
+                            className='bi bi-dash-lg me-1'
+                            onClick={this.onClickMinimize}
+                        >
+                        </Button>
+                        <Button as="a"
+                            variant="outline-secondary"
+                            size="sm"
+                            className={`bi ${isMaximized ? 'bi-copy rotate-180-deg' : 'bi-square'} me-1`}
+                            onClick={this.onClickMaximize}
+                        >
+                        </Button>
+                        <Button as="a"
+                            variant="outline-danger"
+                            size="sm"
+                            className='bi bi-x-lg me-1'
+                            onClick={this.onClickAppClose}
+                        >
+                        </Button>
                     </Nav>
                 </Navbar>
                 <CustomModal header='Настройки'
@@ -123,7 +140,11 @@ export default class TitleBar extends React.Component<{}, TitleBarIState> {
                     onClose={this.appSettingsModal.onClose}
                     onHide={this.appSettingsModal.toogle}>
                     <ThemeSwitch></ThemeSwitch>
-                    <AppSettings appSettings={data} />
+                    <AppSettingsContext.Consumer>
+                        {(appSettingsContext) => (
+                            <AppSettings appSettings={appSettingsContext.appSettings} />
+                        )}
+                    </AppSettingsContext.Consumer>
                 </CustomModal >
             </>
         )

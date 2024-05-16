@@ -7,9 +7,9 @@ interface StoreShemaI {
     pictureDetailsDefaultSet: PictureDetailEntityI[]
 }
 
-class PictureDetailsDefaultSetStoreRepo extends BaseStoreRepo<StoreShemaI, PictureDetailEntityI> {
+class PictureDetailsDefaultSetStoreRepo extends BaseStoreRepo<StoreShemaI> {
     constructor() {
-        super('pictureDetailsDefaultSetStore', 'pictureDetailsDefaultSet')
+        super('pictureDetailsDefaultSetStore')
     }
 
     protected override getStoreOptions(): Store.Options<StoreShemaI> {
@@ -32,6 +32,8 @@ class PictureDetailsDefaultSetStoreRepo extends BaseStoreRepo<StoreShemaI, Pictu
             pictureDetailsDefaultSet: pictureDetailsDefaultSetShema
         } as Schema<StoreShemaI>
     }
+
+    //'pictureDetailsDefaultSet'
 }
 
 export const pictureDetailsDefaultSetStoreRepo = new PictureDetailsDefaultSetStoreRepo()

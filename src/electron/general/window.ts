@@ -1,12 +1,12 @@
-import { BrowserWindow } from 'electron'
-import { iconPath, preloadJsPath, indexHtmlPath, isDev } from '@general/constst'
+import { BrowserWindow, WebContents } from 'electron'
+import { ICON_PATH, PRELOAD_JS_PATH, INDEX_HTML_PATH, IS_DEV } from '@general/consts'
 
 
 const defaultProps: Electron.BrowserWindowConstructorOptions = {
     height: 600,
     width: 800,
     frame: false,
-    icon: iconPath,
+    icon: ICON_PATH,
     webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -23,7 +23,7 @@ abstract class BaseWindow {
             ...options
         })
 
-        if (isDev) {
+        if (IS_DEV) {
             this._window.webContents.openDevTools()
         }
 
@@ -43,15 +43,19 @@ abstract class BaseWindow {
     }
 }
 
-export class MainWindow extends BaseWindow {
+export default class MainWindow extends BaseWindow {
     constructor() {
-        super(indexHtmlPath, {
+        super(INDEX_HTML_PATH, {
             webPreferences: {
-                preload: preloadJsPath
+                preload: PRELOAD_JS_PATH
             }
         })
 
         this._window.on('unmaximize', () => this.onUnmaximize)
+    }
+
+    public get webContents(): WebContents {
+        return this._window.webContents
     }
 
     private onUnmaximize() {

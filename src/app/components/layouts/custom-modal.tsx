@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'react-bootst
 import { Defaults } from '@utils/defaults'
 
 
-export type ModalMode = 'loading' | 'loaded' | 'closed'
+export type ModalMode = 'loading' | 'loaded' | 'closed' | 'error'
 
 interface OptionsI {
     header: string,
@@ -33,21 +33,24 @@ export default function CustomModal(props: PropsWithChildren<OptionsI>) {
 
     return (
         <>
-            <Modal 
-            size='lg'
-            show={mode === 'loading' || mode === 'loaded'} 
-            className={className + ' mt-5 '} 
-            onHide={onHide}
+            <Modal
+                size='lg'
+                show={mode === 'loading' || mode === 'loaded' || mode === 'error'}
+                className={className + ' mt-5 '}
+                onHide={onHide}
             >
                 <ModalHeader closeButton>
                     <div className="d-inline-block align-top logo-img-25x25 me-1" />
                     <Modal.Title>{header}</Modal.Title>
                 </ModalHeader>
                 <ModalBody>
-                    {mode === 'loading' &&
+                    {(mode === 'loading' || mode === 'error') &&
                         <div className='text-center'>
-                            <Spinner color="primary" style={{ height: '3rem', width: '3rem' }}></Spinner>
-                            <h6>Загрузка...</h6>
+                            <Spinner color={mode === 'loading' ? 'primary' : 'danger'} style={{ height: '3rem', width: '3rem' }}></Spinner>
+                            <h6 className={mode === 'loading' ? 'primary' : 'danger'}>
+                                {mode === 'loading' && <>Загрузка...</>}
+                                {mode === 'error' && <>Произошла ошибка</>}
+                            </h6>
                         </div>
                     }
                     {mode === 'loaded' &&

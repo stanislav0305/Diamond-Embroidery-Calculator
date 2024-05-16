@@ -165,6 +165,7 @@ module.exports = (env, argv) => {
         resolve: {
           extensions: ['.tsx', '.ts', '.js'],
           alias: {
+            "@electron":  path.resolve(__dirname, 'src', 'electron'),
             "@dataAccess": path.resolve(__dirname, 'src', 'electron', 'dataAccess'),
             "@general": path.resolve(__dirname, 'src', 'electron', 'general'),
             "@ipc": path.resolve(__dirname, 'src', 'electron', 'ipc'),

@@ -1,38 +1,31 @@
-import { IpcMainInvokeEvent } from 'electron';
-import { IpcChannelGroupI, IpcRequestBase } from '@ipc/ipcChannelGroupI'
-import { MainWindow } from '@general/window'
+import { ipcMain } from 'electron'
+import MainWindow from '@general/window'
+import Chanels from '@shared/interfaces/ipc/chanels'
 
 
-interface IpcRequestMainWindow extends IpcRequestBase {
-}
+export default class MainWindowChannelGroup {
+    private static mainWindow: MainWindow
 
-export class MainWindowChannelGroup extends IpcChannelGroupI<MainWindowChannelGroup, IpcRequestMainWindow, void> {
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) => void>
-    public mainWindow: MainWindow
+    public static registry(mainWindow: MainWindow) {
+        MainWindowChannelGroup.mainWindow = mainWindow
 
-    constructor(mainWindow: MainWindow) {
-        super()
-        this.baseName = 'window'
-        this.mainWindow = mainWindow
-        this.handles = new Map([
-            [`${this.baseName}:minimize`, MainWindowChannelGroup.minimize],
-            [`${this.baseName}:maximize`, MainWindowChannelGroup.maximize],
-            [`${this.baseName}:unmaximize`, MainWindowChannelGroup.unmaximize]
-        ])
+        ipcMain.handle(Chanels.window_minimize, () => MainWindowChannelGroup.minimize())
+        ipcMain.handle(Chanels.window_maximize, () => MainWindowChannelGroup.maximize())
+        ipcMain.handle(Chanels.window_unmaximize, () => MainWindowChannelGroup.unmaximize())
     }
 
-    public static minimize(event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) {
-        console.info(`${owner.baseName}:minimize`)
-        owner.mainWindow.minimize()
+    private static minimize() {
+        console.info(Chanels.window_minimize)
+        MainWindowChannelGroup.mainWindow.minimize()
     }
 
-    public static maximize(event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) {
-        console.info(`${owner.baseName}:maximize`)
-        owner.mainWindow.maximize()
+    private static maximize() {
+        console.info(Chanels.window_maximize)
+        MainWindowChannelGroup.mainWindow.maximize()
     }
 
-    public static unmaximize(event: IpcMainInvokeEvent, owner: MainWindowChannelGroup) {
-        console.info(`${owner.baseName}:unmaximize`)
-        owner.mainWindow.unmaximize()
+    private static unmaximize() {
+        console.info(Chanels.window_unmaximize)
+        MainWindowChannelGroup.mainWindow.unmaximize()
     }
 }

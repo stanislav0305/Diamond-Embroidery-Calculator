@@ -2,18 +2,25 @@ import React from 'react'
 import { Card, ListGroup } from 'react-bootstrap'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 
-interface AppSettingsPropsI {
-    appSettings: AppSettingsI | undefined
+interface PropsI {
+    appSettings: AppSettingsI
 }
 
-export default function AppSettings(props: AppSettingsPropsI | undefined) {
-    if (props?.appSettings === undefined) return null
-
+export default function AppSettings(props: PropsI) {
     const { appSettings } = props
+    
     return (
         <>
             <Card>
                 <ListGroup className='list-group-flush'>
+                    <ListGroup.Item>
+                        <label className='me-2'>Путь к папке с проектом:</label>
+                        {appSettings.paths.projectPath}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <label className='me-2'>Путь к папке с изображениями:</label>
+                        {appSettings.paths.pictureImagesPath}
+                    </ListGroup.Item>
                     <ListGroup.Item>
                         <label className='me-2'>Путь к логам:</label>
                         {appSettings.paths.logPath}

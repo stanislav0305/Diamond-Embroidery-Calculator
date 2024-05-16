@@ -1,0 +1,1 @@
+export type ActionType = 'created' | 'updated' | 'removed' | 'info' | 'error'

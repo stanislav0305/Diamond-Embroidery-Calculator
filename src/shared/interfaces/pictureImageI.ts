@@ -3,26 +3,32 @@ import { BaseI } from '@shared/interfaces/baseI'
 
 
 export default interface PictureImageI extends BaseI {
+    name: string,
+    type: string,
     ext: string,
     size: number,
     isMain: boolean,
     isLoaded: boolean,
-    file: File
+    arrayBuffer: ArrayBuffer
 }
 
 export const pictureImageDefault: PictureImageI = {
     id: '',
+    name: '',
+    type: '',
     ext: '',
     size: 0,
     isMain: false,
     isLoaded: false,
-    file: {} as File
+    arrayBuffer: {} as ArrayBuffer
 }
 
 export const pictureImageISchema = Yup.object().shape({
     id: Yup.string()
         .default('')
         .required('Обязательное поле'),
+    name: Yup.string(),
+    type: Yup.string(),
     ext: Yup.string()
         .default(''),
     size: Yup.number()
@@ -33,5 +39,5 @@ export const pictureImageISchema = Yup.object().shape({
         .default(false),
     isLoaded: Yup.boolean()
         .default(false),
-    file: Yup.object()
+    arrayBuffer: Yup.object()
 })

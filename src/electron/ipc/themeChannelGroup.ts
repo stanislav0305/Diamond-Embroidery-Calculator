@@ -1,56 +1,33 @@
-import { IpcMainInvokeEvent } from 'electron';
-import { IpcChannelGroupI, IpcRequestBase, IpcResponseBase } from '@ipc/ipcChannelGroupI'
-import { NativeTheme } from '@general/nativeTheme'
+import { IpcMainInvokeEvent, ipcMain } from 'electron';
+import NativeTheme from '@general/nativeTheme'
 import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
-import ThemeI from '@shared/interfaces/themeI';
-import { ThemeEntityI } from '@dataAccess/entities/themeEntityI';
+import ThemeI from '@shared/interfaces/themeI'
+import Chanels from '@shared/interfaces/ipc/chanels'
 
 
-interface IpcRequestTheme extends IpcRequestBase, ThemeI {
-}
+export default class ThemeChannelGroup {
+    private static nativeTheme: NativeTheme
 
-interface IpcResponseTheme extends IpcResponseBase, ThemeI {
-}
+    public static registry(nativeTheme: NativeTheme) {
+        ThemeChannelGroup.nativeTheme = nativeTheme
 
-export class ThemeChannelGroup extends IpcChannelGroupI<ThemeChannelGroup, IpcRequestTheme, IpcResponseTheme> {
-    public nativeTheme: NativeTheme
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: ThemeChannelGroup, request: IpcRequestTheme)
-        => IpcResponseTheme | void>
-
-    constructor(nativeTheme: NativeTheme) {
-        super()
-        this.baseName = 'theme'
-        this.nativeTheme = nativeTheme
-
-        this.handles = new Map ([
-            [`${this.baseName}:getCurrent`, ThemeChannelGroup.getCurrent],
-            [`${this.baseName}:set`, ThemeChannelGroup.set]
-        ])
-        
+        ipcMain.handle(Chanels.theme_set, (event: IpcMainInvokeEvent, model: ThemeI) => ThemeChannelGroup.set(event, model))
+        ipcMain.handle(Chanels.theme_getCurrent, () => ThemeChannelGroup.getCurrent())
     }
 
-    public static set(event: IpcMainInvokeEvent, owner: ThemeChannelGroup, request: ThemeI): IpcResponseTheme {
-        console.info(`${owner.baseName}:set`)
-        console.log('theme', request)
+    private static set(event: IpcMainInvokeEvent, model: ThemeI): ThemeI {
+        console.info(Chanels.theme_set)
+        themeRepo.set(model)
+        ThemeChannelGroup.nativeTheme.set(model.mode)
 
-        try {
-            console.log('themeRepo=', themeRepo)
-            themeRepo.set(request as ThemeEntityI)
-        } catch (err) {
-            console.error(err);
-            throw err
-        }
-
-        owner.nativeTheme.set(request.mode)
-
-        return request as IpcResponseTheme
+        const saved = themeRepo.get()
+        return saved
     }
 
-    public static getCurrent(event: IpcMainInvokeEvent, owner: ThemeChannelGroup): IpcResponseTheme {
-        console.info(`${owner.baseName}:getSettings`)
-        const theme = themeRepo.get() as ThemeI
-        console.log('settings', theme)
+    private static getCurrent(): ThemeI {
+        console.info(Chanels.theme_getCurrent)
+        const theme = themeRepo.get()
 
-        return theme as IpcResponseTheme
+        return theme
     }
 }

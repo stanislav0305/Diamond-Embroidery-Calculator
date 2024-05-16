@@ -1,11 +1,14 @@
 import { Schema } from 'electron-store';
-import { BasetEntityI } from "./baseEntityI";
+import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
 
 
 export interface PictureImageEntityI extends BasetEntityI {
+    name: string,
+    type: string,
     ext: string,
     size: number,
-    isMain: boolean
+    isMain: boolean,
+    isLoaded: boolean
 }
 
 export const pictureImagesShema = {
@@ -13,9 +16,15 @@ export const pictureImagesShema = {
     default: [] as PictureImageEntityI[],
     items: {
         type: 'object',
-        required: ['id', 'size', 'isMain'],
+        required: ['id', 'size', 'isMain', 'isLoaded'],
         properties: {
             id: {
+                type: 'string'
+            },
+            name: {
+                type: 'string'
+            },
+            type: {
                 type: 'string'
             },
             ext: {
@@ -26,9 +35,13 @@ export const pictureImagesShema = {
                 type: 'number',
                 default: 0,
             },
-            isMain:{
-                type:'boolean',
-                default:false
+            isMain: {
+                type: 'boolean',
+                default: false
+            },
+            isLoaded: {
+                type: 'boolean',
+                default: false
             }
         } as Schema<PictureImageEntityI>
     }

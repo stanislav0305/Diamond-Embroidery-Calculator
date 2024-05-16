@@ -1,4 +1,4 @@
-import IContextBridgeApi from '@shared/interfaces/contextBridgeApiI'
+import IContextBridgeApi from '@shared/interfaces/ipc/contextBridgeApiI'
 export { }
 
 

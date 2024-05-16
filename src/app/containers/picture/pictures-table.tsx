@@ -1,8 +1,8 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
-import getData, { getPictureDetailsDefaultSetDate } from '@utils/getData'
+import { getPictureDetailsDefaultSetDate } from '@utils/getData'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
@@ -13,7 +13,13 @@ import PicturRemoveModal from '@containers/picture/picture-remove-modal'
 
 export default function PicturesTable() {
 
-  const [data, setData] = React.useState<PictureI[]>(getData(35))
+  const [data, setData] = React.useState<PictureI[]>([])
+
+  useEffect(() => {
+    window.api.pictures.getAll()
+      .then(result => setData(result))
+  }, [])
+
 
 
   const columns = useMemo<MRT_ColumnDef<PictureI>[]>(

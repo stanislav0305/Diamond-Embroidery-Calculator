@@ -1,36 +1,25 @@
-import { IpcMainInvokeEvent } from 'electron';
-import { IpcChannelGroupI, IpcRequestBase, IpcResponseBase } from '@ipc/ipcChannelGroupI'
-import { appSettingsRepo } from  '@dataAccess/repositories/appSettingsRepo'
-import AppSettingsI from '@shared/interfaces/appSettingsI';
-import { app } from '../main'
+import { ipcMain } from 'electron';
+import { appSettingsRepo } from '@dataAccess/repositories/appSettingsRepo'
+import AppSettingsI from '@shared/interfaces/appSettingsI'
+import Chanels from '@shared/interfaces/ipc/chanels'
+import { app } from '@electron/main';
 
-interface IpcRequestApp extends IpcRequestBase, AppSettingsI {
-}
 
-interface IpcResponseAppSettings extends IpcResponseBase, AppSettingsI {
-}
-
-export class AppChannelGroup extends IpcChannelGroupI<AppChannelGroup, IpcRequestApp, IpcResponseAppSettings> {
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: AppChannelGroup) => IpcResponseAppSettings | void>
-
-    constructor() {
-        super()
-        this.baseName = 'app'
-        this.handles = new Map([
-            [`${this.baseName}:getSettings`, AppChannelGroup.getSettings],
-            [`${this.baseName}:close`, AppChannelGroup.close]
-        ])
+export default class AppChannelGroup {
+    public static registry() {
+        ipcMain.handle(Chanels.app_getSettings, () => AppChannelGroup.getSettings());
+        ipcMain.handle(Chanels.app_close, () => AppChannelGroup.close());
     }
 
-    public static getSettings(event: IpcMainInvokeEvent, owner: AppChannelGroup) : IpcResponseAppSettings {
-        console.info(`${owner.baseName}:getSettings`)
-        const settings = appSettingsRepo.get() as AppSettingsI
+    private static getSettings(): AppSettingsI {
+        console.info(Chanels.app_getSettings)
+        const settings = appSettingsRepo.get()
         console.log('settings', settings)
         return settings
     }
 
-    public static close(event: IpcMainInvokeEvent, owner: AppChannelGroup) {
-        console.info(`${owner.baseName}:close`)
+    private static close() {
+        console.info(Chanels.app_close)
         app.exit()
     }
 }

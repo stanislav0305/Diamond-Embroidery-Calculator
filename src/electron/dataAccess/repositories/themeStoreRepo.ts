@@ -1,15 +1,16 @@
 import Store, { Schema } from 'electron-store';
-import { ThemeEntityI } from '@dataAccess/entities/themeEntityI'
+import { ThemeEntityI, themeShema } from '@dataAccess/entities/themeEntityI'
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
+import ThemeI from '@shared/interfaces/themeI';
 
 
-interface StoreShemaI { 
+interface StoreShemaI {
     theme: ThemeEntityI
 }
 
-class ThemeStoreRepo extends BaseStoreRepo<StoreShemaI, ThemeEntityI> {
+class ThemeStoreRepo extends BaseStoreRepo<StoreShemaI>{
     constructor() {
-        super('mainConfig', 'theme')
+        super('mainConfig')
     }
 
     protected override getStoreOptions(): Store.Options<StoreShemaI> {
@@ -32,23 +33,20 @@ class ThemeStoreRepo extends BaseStoreRepo<StoreShemaI, ThemeEntityI> {
 
     protected override getSchema(): Schema<StoreShemaI> {
         return {
-            theme: {
-                type: 'object',
-                properties: {
-                    mode: {
-                        type: 'string',
-                        enum: ['light', 'dark', 'auto'],
-                        default: 'auto'
-                    },
-                    name: {
-                        type: 'string',
-                        default: 'cerulean'
-                    },
-                } as Schema<ThemeEntityI>,
-                default: {},
-                required: ['mode', 'name'],
-            } 
+            theme: themeShema
         } as Schema<StoreShemaI>
+    }
+
+    public get(): ThemeI {
+        const entity = this.store.get('theme') as ThemeEntityI
+        const model = { ...entity } as ThemeI
+
+        return model
+    }
+
+    public set(model: ThemeI) {
+        const entity = { ...model } as ThemeEntityI
+        this.store.set('theme', entity)
     }
 }
 

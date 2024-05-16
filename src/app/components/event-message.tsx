@@ -1,6 +1,7 @@
 import React from 'react'
 import { Toast } from 'react-bootstrap'
-import { Variant } from 'react-bootstrap/esm/types';
+import { Variant } from 'react-bootstrap/esm/types'
+import { ActionType } from '@shared/types/actionType'
 
 
 export interface EventMessagePropsI {
@@ -11,15 +12,18 @@ export interface EventMessagePropsI {
     description: string,
     secAgo: number,
     show: boolean,
+    hasError: boolean,
+    errorDescription: string,
+    additionalDescription: string,
     onClose: (id: string, e?: React.MouseEvent | React.KeyboardEvent) => void,
 }
 
-type ActionType = 'created' | 'updated' | 'removed' | 'info'
 export const actionIconCss: Map<ActionType, string> = new Map<ActionType, string>([
     ['created', 'bi-plus-square-fill'],
     ['updated', 'bi-pencil-fill'],
     ['removed', 'bi-trash3-fill'],
     ['info', 'bi-info-circle-fill'],
+    ['error', 'exclamation-triangle-fill']
 ])
 
 export default function EventMessage(props: EventMessagePropsI) {

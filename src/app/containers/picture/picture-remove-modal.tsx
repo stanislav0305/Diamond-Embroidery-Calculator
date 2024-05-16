@@ -34,16 +34,25 @@ export default class PicturRemoveModal extends React.Component<PicturRemoveModal
         this.toogle('closed')
     }
 
-    onConfirm = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onConfirm = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         const id = this.state.id
 
-        //удаление из базы данных
-        //...
+        this.toogle('loading')
 
-        this.toogle('closed')
-        this.context.addMessage('PictureRemoved')
-        this.props.onRemoved(id)
+        await window.api.pictures.delete(id)
+            .then(removed => {
+                const hasError = !removed
+                this.context.addMessage('PictureRemoved', hasError)
+                this.toogle('closed')
+
+                //обновляем таблицу
+                removed && this.props.onRemoved(id)
+            })
+            .catch(e => {
+                this.context.addMessage('PictureRemoved', true)
+                this.toogle('error')
+            })
     }
 
     toogle = (mode: ModalMode = 'closed', id?: string) => {

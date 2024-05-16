@@ -1,10 +1,10 @@
 import React, { createContext, PropsWithChildren } from 'react'
 import EventMessage, { EventMessagePropsI } from '@components/event-message'
 import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/eventMessagePropsFactory'
-
+import { EVENT_MESSAGES } from '@shared/consts'
 
 type EventMessagesContextType = {
-    addMessage: (t: EventMessageTyepe) => void,
+    addMessage: (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => void,
 }
 
 export const EventMessagesContext = createContext<EventMessagesContextType>({} as EventMessagesContextType)
@@ -15,7 +15,6 @@ type EventMessagesProviderState = {
 
 export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>, EventMessagesProviderState> {
     timeRef: number | undefined = undefined
-    readonly VISIBLE_DELAY_IN_SEC: number = 25
 
     constructor(props: PropsWithChildren) {
         super(props)
@@ -34,8 +33,10 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         }
     }
 
-    addMessage = (t: EventMessageTyepe) => {
-        this.addPropsWithAutoClose(EventMessagePropsFactory.getProps(t, this.onClose))
+    addMessage = (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => {
+        const props = EventMessagePropsFactory.getProps(t, this.onClose, hasError ?? false, errorDescription, additionalDescription)
+        console.log('props', props)
+        this.addPropsWithAutoClose(props)
     }
 
     addPropsWithAutoClose = (p: EventMessagePropsI) => {
@@ -67,7 +68,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
 
                 eventMessagesProps.forEach(el => {
                     const secAgo = el.secAgo + 1
-                    const show = secAgo < this.VISIBLE_DELAY_IN_SEC
+                    const show = secAgo < EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC
 
                     if (show) {
                         const newP = {

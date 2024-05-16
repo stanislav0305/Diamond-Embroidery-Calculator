@@ -33,9 +33,12 @@ export interface PictureEntityI extends HistoryEntityI {
 }
 
 export const picturesShema = {
-    type: 'array',
-    default: [] as PictureEntityI[],
-    items: {
+    type: 'object',
+    default: {},
+    propertyNames: {
+        pattern: "^[A-Za-z0-9_]*$"
+    },
+    additionalProperties: {
         type: 'object',
         required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'forHoursSpentTotal', 'bayFullPrice', 'created'],
         properties: {

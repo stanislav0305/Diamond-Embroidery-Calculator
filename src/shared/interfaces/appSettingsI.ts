@@ -6,6 +6,8 @@ export default interface AppSettingsI {
     },
     paths: {
         logPath: string,
-        mainConfigPath: string
+        mainConfigPath: string,
+        projectPath: string,
+        pictureImagesPath: string
     }
 }

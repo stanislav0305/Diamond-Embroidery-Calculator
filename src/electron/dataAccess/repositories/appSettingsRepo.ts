@@ -1,11 +1,13 @@
 import LogMainHelper from '@mainUtils/helpers/logMainHelper'
 import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
 import { AppSettingsEntityI } from '@dataAccess/entities/appSettingsEntityI'
+import { IMAGES_PATH, PROJECT_PATH } from '@general/consts'
+import AppSettingsI from '@shared/interfaces/appSettingsI'
 
 
 class AppSettingsRepo {
     get() {
-        return {
+        const entity = {
             versions: {
                 node: process.versions.node,
                 chrome: process.versions.chrome,
@@ -13,9 +15,13 @@ class AppSettingsRepo {
             },
             paths: {
                 logPath: LogMainHelper.path,
-                mainConfigPath: themeRepo.path
+                mainConfigPath: themeRepo.path,
+                projectPath: PROJECT_PATH,
+                pictureImagesPath: IMAGES_PATH
             }
         } as AppSettingsEntityI
+
+        return { ...entity } as AppSettingsI
     }
 }
 

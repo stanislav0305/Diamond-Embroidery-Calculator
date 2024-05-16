@@ -1,41 +1,63 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
 import ThemeI from '@shared/interfaces/themeI'
 import PictureI from '@shared/interfaces/pictureI'
-import ContextBridgeApiI from '@shared/interfaces/contextBridgeApiI'
+import ContextBridgeApiI from '@shared/interfaces/ipc/contextBridgeApiI'
+import Chanels from '@shared/interfaces/ipc/chanels'
+import { ProcessingResultI } from '@shared/interfaces/ProcessingResultI'
 
+
+const fCatch = (e: Error) => {
+  console.error(e)
+  throw e
+}
 
 const API: ContextBridgeApiI = {
   theme: {
-    getCurrent: () => ipcRenderer.invoke('theme:getCurrent').catch((e: Error) => console.error(e)),
-    set: (settings: ThemeI) => ipcRenderer.invoke('theme:set', settings).catch((e: Error) => console.error(e))
+    getCurrent: () => ipcRenderer.invoke(Chanels.theme_getCurrent).catch(e => fCatch(e)),
+    set: (settings: ThemeI) => ipcRenderer.invoke(Chanels.theme_set, settings).catch(e => fCatch(e)),
   },
   app: {
-    getSettings: () => ipcRenderer.invoke('app:getSettings').catch((e: Error) => console.error(e)),
-    close: () => ipcRenderer.invoke('app:close').catch((e: Error) => console.error(e))
+    getSettings: () => ipcRenderer.invoke(Chanels.app_getSettings).catch(e => fCatch(e)),
+    close: () => ipcRenderer.invoke(Chanels.app_close).catch(e => fCatch(e))
   },
   window: {
-    minimize: () => ipcRenderer.invoke('window:minimize').catch((e: Error) => console.error(e)),
-    maximize: () => ipcRenderer.invoke('window:maximize').catch((e: Error) => console.error(e)),
-    unmaximize: () => ipcRenderer.invoke('window:unmaximize').catch((e: Error) => console.error(e)),
+    minimize: () => ipcRenderer.invoke(Chanels.window_minimize).catch(e => fCatch(e)),
+    maximize: () => ipcRenderer.invoke(Chanels.window_maximize).catch(e => fCatch(e)),
+    unmaximize: () => ipcRenderer.invoke(Chanels.window_unmaximize).catch(e => fCatch(e)),
     on: {
       unmaximized: (listener: (event: IpcRendererEvent, ...args: any[]) => void) => {
-        ipcRenderer.on('unmaximized', listener)
+        ipcRenderer.on(Chanels.unmaximized, listener)
       }
     },
     off: {
       unmaximized: () => {
-        ipcRenderer.removeAllListeners('unmaximized')
+        ipcRenderer.removeAllListeners(Chanels.unmaximized)
       }
     }
   },
   pictures: {
-    getAll: () => ipcRenderer.invoke('pictures:getAll').catch((e: Error) => console.error(e)),
-    create: (picture: PictureI) => ipcRenderer.invoke('pictures:create', picture).catch((e: Error) => console.error(e)),
-    read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch((e: Error) => console.error(e)),
-    update: (picture: PictureI) => ipcRenderer.invoke('pictures:update', picture).catch((e: Error) => console.error(e)),
-    delete: (id: string) => ipcRenderer.invoke('pictures:delete', id).catch((e: Error) => console.error(e)),
+    getAll: () => ipcRenderer.invoke(Chanels.pictures_getAll).catch(e => fCatch(e)),
+    create: (picture: PictureI) => ipcRenderer.invoke(Chanels.pictures_create, picture).catch(e => fCatch(e)),
+    read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch(e => fCatch(e)),
+    update: (picture: PictureI) => ipcRenderer.invoke(Chanels.pictures_update, picture).catch(e => fCatch(e)),
+    delete: (id: string) => ipcRenderer.invoke(Chanels.pictures_delete, id).catch(e => fCatch(e)),
+    on: {
+      pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
+        ipcRenderer.on(Chanels.pictureFilesLoaded, listener)
+      },
+      pictureFilesRemoved: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
+        ipcRenderer.on(Chanels.pictureFilesRemoved, listener)
+      }
+    },
+    off: {
+      pictureFilesLoaded: () => {
+        ipcRenderer.removeAllListeners(Chanels.pictureFilesLoaded)
+      },
+      pictureFilesRemoved: () => {
+        ipcRenderer.removeAllListeners(Chanels.pictureFilesRemoved)
+      }
+    }
   }
 }
-
 
 contextBridge.exposeInMainWorld('api', API)

@@ -6,7 +6,7 @@ import { MAX_IMAGE_SIZE_IN_MB, ONE_MB_IN_BYTES } from '@shared/consts'
 
 type Props = {
     className?: string,
-    onAddImage: (file: File) => void
+    onAddImage: (file: File, arrayBuffer: ArrayBuffer) => void,
 }
 
 export default function ImageDropzone(props: Props) {
@@ -15,13 +15,12 @@ export default function ImageDropzone(props: Props) {
         acceptedFiles.forEach(file => {
             const reader = new FileReader()
 
-            reader.onabort = () => console.warn('File reading was aborted !!!')
-            reader.onerror = () => console.warn('File reading has failed !!!')
+            reader.onabort = () => console.warn(`File '${file.name}' reading was aborted !!!`)
+            reader.onerror = () => console.warn(`File '${file.name}' reading has failed !!!`)
             reader.onload = () => {
-                console.log('File onload...')
-                props.onAddImage(file)
-                //const binaryStr = reader.result
-                //console.log(binaryStr)
+                console.log(`File '${file.name}' onload...`)
+                const arrayBuffer = reader.result as ArrayBuffer
+                props.onAddImage(file, arrayBuffer)
             }
 
             reader.readAsArrayBuffer(file)
@@ -43,9 +42,9 @@ export default function ImageDropzone(props: Props) {
         <Container className={`text-center border p-1 ${className}`} >
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                {!isDragActive && <p className="text-muted">Перетащите сюда несколько файлов или щелкните, чтобы выбрать файлы.</p>}
-                {isDragActive && !isDragReject && <p className="text-success">Теперь отпусти чтобы загрузить!</p>}
-                {isDragReject && <p className="text-danger">Тип файла не принят! Можно загружать только изображения!</p>}
+                {!isDragActive && <small className="text-muted small">Перетащите сюда несколько файлов или щелкните, чтобы выбрать файл(ы).</small>}
+                {isDragActive && !isDragReject && <small className="text-success small">Теперь отпусти чтобы приложить файл(ы)!</small>}
+                {isDragReject && <small className="text-danger small">Тип файла не принят! Можно загружать только изображения!</small>}
                 <ListGroup>
                     {fileRejections.length > 0 && fileRejections.map(rejection => (
                         <ListGroup.Item key={`rejection-${rejection.file.name}`} action variant="danger">

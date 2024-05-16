@@ -1,69 +1,64 @@
-import { IpcMainInvokeEvent } from 'electron';
-import { IpcChannelGroupI, IpcRequestBase, IpcResponseBase } from '@ipc/ipcChannelGroupI'
+import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import { picturesRepo } from '@dataAccess/repositories/picturesStoreRepo'
-import PictureI from '@shared/interfaces/pictureI';
-import { PictureEntityI } from '@dataAccess/entities/pictureEntityI';
+import PictureI from '@shared/interfaces/pictureI'
+import PictureImageFilesHelper from '@mainUtils/helpers/pictureImageFilesHelper'
+import Chanels from '@shared/interfaces/ipc/chanels'
+import IdHelper from '@electron/utils/helpers/idHelper'
 
 
-interface IpcRequestPicture extends IpcRequestBase, PictureI {
-}
-
-interface IpcResponsePicture extends IpcResponseBase, PictureI {
-
-}
-
-type IpcRequestPictureT = string | IpcRequestPicture
-type IpcResponsePictureT = boolean | IpcResponsePicture | IpcResponsePicture[]
-
-
-
-export class PicturesChannelGroup extends IpcChannelGroupI<PicturesChannelGroup, IpcRequestPictureT, IpcResponsePictureT> {
-    public handles: Map<string, (event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT)
-        => IpcResponsePictureT>
-
-    constructor() {
-        super()
-        this.baseName = 'pictures'
-        this.handles = new Map([
-            [`${this.baseName}:getAll`, PicturesChannelGroup.getAll],
-            [`${this.baseName}:create`, PicturesChannelGroup.create],
-            [`${this.baseName}:read`, PicturesChannelGroup.read],
-            [`${this.baseName}:update`, PicturesChannelGroup.update],
-            [`${this.baseName}:delete`, PicturesChannelGroup.delete]
-        ]) 
+export default class PicturesChannelGroup {
+    public static registry() {
+        ipcMain.handle(Chanels.pictures_getAll, () => PicturesChannelGroup.getAll())
+        ipcMain.handle(Chanels.pictures_create, (event: IpcMainInvokeEvent, model: PictureI) => PicturesChannelGroup.createOrUpdate(event, model))
+        ipcMain.handle(Chanels.pictures_update, (event: IpcMainInvokeEvent, model: PictureI) => PicturesChannelGroup.createOrUpdate(event, model))
+        ipcMain.handle(Chanels.pictures_delete, (event: IpcMainInvokeEvent, id: string) => PicturesChannelGroup.delete(event, id))
     }
 
-    public static getAll(event: IpcMainInvokeEvent, owner: PicturesChannelGroup): PictureI[] {
-        console.info(`${owner.baseName}:getAll`)
-        const arr = picturesRepo.get() as PictureI[]
-        console.log('pictures:', arr)
+    private static getAll(): PictureI[] {
+        console.info(Chanels.pictures_getAll)
+        const arr = picturesRepo.getAll()
 
         return arr
     }
 
-    public static create(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        console.info(`${owner.baseName}:create`)
-         const model = request as PictureI
-         const entity = model as PictureEntityI
+    private static createOrUpdate(event: IpcMainInvokeEvent, model: PictureI): PictureI {
+        console.info(Chanels.pictures_create)
 
-        picturesRepo.setArrayRow(entity)
+        const forCreate = !model.id 
+        const now = new Date().toLocaleString()
+        const [images, result] = PictureImageFilesHelper.save(model.images)
 
-        return entity as IpcResponsePicture
+        model = {
+            ...model,
+            id: forCreate ? IdHelper.genId() : model.id,
+            created: forCreate ? now : model.created,
+            updated: !forCreate ? now : model.updated,
+            images: images
+        }
+       
+        //send to render
+        if (result.sended > 0) {
+            event.sender.send(Chanels.pictureFilesLoaded, result)
+        }
+
+        picturesRepo.createOrUpdate(model)
+
+        const newModel = picturesRepo.getOne(model.id)
+        return newModel
     }
 
-    public static read(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        const id = request as string
-        return {} as IpcResponsePicture
+    private static delete(event: IpcMainInvokeEvent, id: string) {
+        console.info(Chanels.pictures_delete)
+
+        const model = picturesRepo.getOne(id)
+        const result = PictureImageFilesHelper.remove(model.images)
+
+        //send to render
+        if (result.sended > 0) {
+            event.sender.send(Chanels.pictureFilesRemoved, result)
+        }
+
+        picturesRepo.delete(id)
+        return !picturesRepo.has(id)
     }
-
-    public static update(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        return {} as IpcResponsePicture
-    }
-
-    public static delete(event: IpcMainInvokeEvent, owner: PicturesChannelGroup, request: IpcRequestPictureT): IpcResponsePictureT {
-        const id = request as string
-
-        return false
-    }
-
 }
