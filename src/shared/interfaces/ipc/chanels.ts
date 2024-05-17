@@ -14,6 +14,10 @@ export default class Chanels {
     static pictures_create = 'pictures:create'
     static pictures_update = 'pictures:update'
     static pictures_delete = 'pictures:delete'
+
     static pictureFilesLoaded = 'pictureFilesLoaded'
     static pictureFilesRemoved = 'pictureFilesRemoved'
+
+    static picturesDefaultSet_get = 'picturesDefaultSet:get'
+    static picturesDefaultSet_set = 'picturesDefaultSet:set'
 }

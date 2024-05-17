@@ -6,11 +6,13 @@ import FormField from '@components/form/form-field';
 import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
 
 
-export default function PictureDetailEdit(props: {
+interface PropsI {
     data: PictureDetailI,
     onSave: (data: PictureDetailI) => void,
     onClose: () => void
-}) {
+}
+
+export default function PictureDetailEdit(props: PropsI) {
     if (props === undefined) return null
     const forAdd = props.data === null
     const initVal = props.data

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
-import { getPictureDetailsDefaultSetDate } from '@utils/getData'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
@@ -190,11 +189,22 @@ export default function PicturesTable() {
   //------------------------------------------------------------------------------
 
   const pictureEditModalRef = useRef<PicturEditModal>({} as PicturEditModal)
-  const openPictureEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
+  const openPictureEditModal = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
-
     const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
-    picture.details = id ? picture.details : getPictureDetailsDefaultSetDate(10)
+
+    if (id) {
+      picture.details = picture.details
+    }
+    else if (!id || !picture) {
+      await window.api.picturesDefaultSet.get()
+        .then(defaultSet => {
+          picture.details = defaultSet.details
+          picture.detailsSumTotal = defaultSet.detailsSumTotal
+          picture.pricePerHour = defaultSet.pricePerHour
+        })
+    }
+
     pictureEditModalRef.current.onOpen(picture)
   }
 

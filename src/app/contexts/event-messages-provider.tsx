@@ -35,7 +35,6 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
 
     addMessage = (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => {
         const props = EventMessagePropsFactory.getProps(t, this.onClose, hasError ?? false, errorDescription, additionalDescription)
-        console.log('props', props)
         this.addPropsWithAutoClose(props)
     }
 

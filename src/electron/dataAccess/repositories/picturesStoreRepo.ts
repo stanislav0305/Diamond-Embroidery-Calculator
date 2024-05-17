@@ -1,39 +1,10 @@
-import Store, { Schema } from 'electron-store';
-import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import { PictureEntityI, picturesShema } from '@dataAccess/entities/pictureEntityI';
-import PictureI from '@shared/interfaces/pictureI';
+
+import { PictureEntityI } from '@dataAccess/entities/pictureEntityI'
+import PictureI from '@shared/interfaces/pictureI'
+import { PicturesBaseStoreRepo } from '@dataAccess/repositories/picturesBaseStoreRepo'
 
 
-interface StoreShemaI {
-    pictures: {}
-}
-
-class PicturesStoreRepo extends BaseStoreRepo<StoreShemaI> {
-    constructor() {
-        super('picturesStore')
-    }
-
-    protected override getStoreOptions(): Store.Options<StoreShemaI> {
-        return {
-            schema: this.getSchema(),
-            name: this.storeName,
-            beforeEachMigration: (store, context) => {
-                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`);
-            },
-            migrations: {
-                '0.0.1': store => {
-                    store.set('pictures', {});
-                },
-            },
-        }
-    }
-
-    protected override getSchema(): Schema<StoreShemaI> {
-        return {
-            pictures: picturesShema
-        } as Schema<StoreShemaI>
-    }
-
+class PicturesStoreRepo extends PicturesBaseStoreRepo {
     public getAll(): PictureI[] {
         const entities = this.store.get('pictures')
         const models = Object.entries(entities).map(([key, entity]) => {
@@ -56,7 +27,7 @@ class PicturesStoreRepo extends BaseStoreRepo<StoreShemaI> {
     }
 
     public createOrUpdate(model: PictureI) {
-        const entity = { ...model } as PictureEntityI
+        const entity = { ...JSON.parse(JSON.stringify(model)) } as PictureEntityI
         this.store.set(`pictures.${model.id}`, entity)
     }
 

@@ -3,7 +3,8 @@ import ThemeI from '@shared/interfaces/themeI'
 import PictureI from '@shared/interfaces/pictureI'
 import ContextBridgeApiI from '@shared/interfaces/ipc/contextBridgeApiI'
 import Chanels from '@shared/interfaces/ipc/chanels'
-import { ProcessingResultI } from '@shared/interfaces/ProcessingResultI'
+import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 
 
 const fCatch = (e: Error) => {
@@ -35,11 +36,15 @@ const API: ContextBridgeApiI = {
       }
     }
   },
+  picturesDefaultSet: {
+    get: ()  => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
+    set: (model: PicturesDefaultSetI) => ipcRenderer.invoke(Chanels.picturesDefaultSet_set, model).catch(e => fCatch(e)),
+  },
   pictures: {
     getAll: () => ipcRenderer.invoke(Chanels.pictures_getAll).catch(e => fCatch(e)),
-    create: (picture: PictureI) => ipcRenderer.invoke(Chanels.pictures_create, picture).catch(e => fCatch(e)),
+    create: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_create, model).catch(e => fCatch(e)),
     read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch(e => fCatch(e)),
-    update: (picture: PictureI) => ipcRenderer.invoke(Chanels.pictures_update, picture).catch(e => fCatch(e)),
+    update: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_update, model).catch(e => fCatch(e)),
     delete: (id: string) => ipcRenderer.invoke(Chanels.pictures_delete, id).catch(e => fCatch(e)),
     on: {
       pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {

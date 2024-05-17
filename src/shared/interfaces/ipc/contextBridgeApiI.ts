@@ -2,7 +2,8 @@ import { IpcRendererEvent } from 'electron'
 import ThemeI from '@shared/interfaces/themeI'
 import PictureI from '@shared/interfaces/pictureI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
-import { ProcessingResultI } from '../ProcessingResultI'
+import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 
 
 export default interface ContextBridgeApiI {
@@ -25,14 +26,18 @@ export default interface ContextBridgeApiI {
       unmaximized: () => void
     }
   },
+  picturesDefaultSet: {
+    get: () => Promise<PicturesDefaultSetI>
+    set: (model: PicturesDefaultSetI) => Promise<PicturesDefaultSetI>
+  },
   pictures: {
     getAll: () => Promise<PictureI[]>
-    create: (picture: PictureI) => Promise<PictureI | undefined> //Promise<PictureI>
+    create: (model: PictureI) => Promise<PictureI>
     read: (id: string) => Promise<PictureI>
-    update: (picture: PictureI) => Promise<PictureI>
+    update: (model: PictureI) => Promise<PictureI>
     delete: (id: string) => Promise<boolean>
     on: {
-      pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void,
+      pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void
       pictureFilesRemoved: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void
     },
     off: {

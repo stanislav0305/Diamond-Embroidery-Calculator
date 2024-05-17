@@ -3,6 +3,7 @@ import ShortUniqueId from "short-unique-id";
 
 export type EventMessageTyepe = 'PictureCreated' | 'PictureUpdated' | 'PictureRemoved'
     | 'PictureFilesLoaded' | 'PictureFilesRemoved'
+    | 'PicturesDefaultSetSaved'
 
 const baseModel = {
     show: true,
@@ -42,6 +43,7 @@ export default class EventMessagePropsFactory {
             case 'PictureRemoved': return this.getPictureRemovedProps(p)
             case 'PictureFilesLoaded': return this.getPictureFilesLoadedProps(p)
             case 'PictureFilesRemoved': return this.getPictureFilesRemovedProps(p)
+            case 'PicturesDefaultSetSaved': return this.getPicturesDefaultSetSavedProps(p)
         }
     }
 
@@ -72,7 +74,7 @@ export default class EventMessagePropsFactory {
             action: 'updated',
             variant: 'success',
             title: 'Редактирование картины',
-            description: 'Картина сохронена!',
+            description: 'Картина сохранена!',
             errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные картины не сохранены коректно.'
         } as EventMessagePropsI)
     }
@@ -98,13 +100,23 @@ export default class EventMessagePropsFactory {
     }
 
     static getPictureFilesRemovedProps(p: EventMessagePropsI) {
-        p.additionalDescription
         return Object.assign({ ...p }, {
             action: 'info',
             variant: 'success',
             title: 'Удаление изображений картины',
             description: 'Все изображения удалены успешно! ' + p.additionalDescription ?? '',
             errorDescription: p.errorDescription ?? 'Произошла ошибка!'
+        } as EventMessagePropsI)
+    }
+
+    static getPicturesDefaultSetSavedProps(p: EventMessagePropsI) {
+        p.additionalDescription
+        return Object.assign({ ...p }, {
+            action: 'updated',
+            variant: 'success',
+            title: 'Редактирование данных по умолчанию',
+            description: 'Данные сохранены!',
+            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные по умолчанию не сохранены коректно.'
         } as EventMessagePropsI)
     }
 }

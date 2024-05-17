@@ -3,7 +3,7 @@ import { picturesRepo } from '@dataAccess/repositories/picturesStoreRepo'
 import PictureI from '@shared/interfaces/pictureI'
 import PictureImageFilesHelper from '@mainUtils/helpers/pictureImageFilesHelper'
 import Chanels from '@shared/interfaces/ipc/chanels'
-import IdHelper from '@electron/utils/helpers/idHelper'
+import IdHelper from '@shared/helpers/idHelper'
 
 
 export default class PicturesChannelGroup {

@@ -2,7 +2,7 @@ import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/pictureDetailI'
 import PictureDetailEdit from '@components/picture/picture-detail-edit'
-import { genId } from '@utils/getData'
+import IdHelper from '@shared/helpers/idHelper'
 
 
 interface PicturDetailEditModalProps {
@@ -37,15 +37,13 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
 
   onSave = (pictureDetail: PictureDetailI) => {
     const forAdd = !pictureDetail.id
-    pictureDetail.id = pictureDetail.id || genId()
-    //this.toogle('loading', forAdd, picture)
+    pictureDetail.id = pictureDetail.id || IdHelper.genId()
 
-    //сохроняем в базу данных
     console.log(JSON.stringify(pictureDetail, null, 2));
 
     this.toogle('closed')
 
-    //обновляем таблицу
+    //сохраняем и обновляем таблицу
     this.props.onSaved(forAdd, pictureDetail)
   }
 

@@ -29,8 +29,6 @@ export const pictureDetailsShema = {
     }
 }
 
-export const pictureDetailsDefaultSetShema = {
-    type: 'array',
-    default: [] as PictureDetailEntityI[],
-    items: pictureDetailsShema,
+export const pictureDefaultSetShema = {
+    details: pictureDetailsShema,
 }

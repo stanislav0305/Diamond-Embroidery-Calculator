@@ -1,7 +1,8 @@
-import { Schema } from 'electron-store';
-import { HistoryEntityI } from '@dataAccess/entities/historyEntity';
-import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI';
-import { PictureImageEntityI, pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI';
+import { Schema } from 'electron-store'
+import { HistoryEntityI } from '@dataAccess/entities/historyEntity'
+import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI'
+import { PictureImageEntityI, pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI'
+import { PicturesDefaultSetEntityI, picturesDefaultSetShema } from '@dataAccess/entities/picturesDefaultSetEntity'
 
 
 const diamondFormDefault = 'circle'
@@ -95,3 +96,13 @@ export const picturesShema = {
         } as Schema<PictureEntityI>
     }
 }
+
+export interface PicturesStoreShemaI {
+    picturesDefaultSet: PicturesDefaultSetEntityI,
+    pictures: {}
+}
+
+export const picturesStoreShema = {
+    picturesDefaultSet: picturesDefaultSetShema,
+    pictures: picturesShema
+} as Schema<PicturesStoreShemaI>

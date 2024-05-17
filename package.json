@@ -40,7 +40,6 @@
     }
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
     "css-loader": "^6.8.1",
     "electron": "^27.0.4",
     "electron-builder": "^24.6.4",

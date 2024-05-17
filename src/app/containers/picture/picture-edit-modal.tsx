@@ -5,7 +5,7 @@ import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
-import { ProcessingResultI } from '@shared/interfaces/ProcessingResultI'
+import { ProcessingResultI } from '@shared/interfaces/processingResultI'
 
 
 interface PicturEditModalProps {
@@ -66,13 +66,13 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     })
   }
 
-  componentWillUnmount = async () => {
-    await window.api.pictures.off.pictureFilesLoaded()
+  componentWillUnmount = () => {
+    window.api.pictures.off.pictureFilesLoaded()
+    window.api.pictures.off.pictureFilesRemoved()
   }
 
   onOpen = (picture: PictureI) => {
     const forAdd = !picture.id
-    //this.toogle('loading', forAdd)
     this.toogle('loaded', forAdd, picture)
   }
 
@@ -82,16 +82,15 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
 
   onSave = async (picture: PictureI) => {
     const forAdd = !picture.id
-    
+
     const p = {
       ...picture,
       images: [...picture.images]
     } as PictureI
 
-    //сохроняем в базу данных
     console.log('sended picture:', JSON.stringify(p, null, 2));
-
     this.toogle('loading', forAdd, picture)
+    
     if (forAdd) {
       await window.api.pictures.create(p)
         .then(pp => {
