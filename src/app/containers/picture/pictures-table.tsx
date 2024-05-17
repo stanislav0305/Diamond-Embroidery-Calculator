@@ -8,6 +8,7 @@ import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
 import { Row } from '@tanstack/react-table'
 import PicturEditModal from '@containers/picture/picture-edit-modal'
 import PicturRemoveModal from '@containers/picture/picture-remove-modal'
+import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
 
 
 export default function PicturesTable() {
@@ -230,6 +231,14 @@ export default function PicturesTable() {
 
   //------------------------------------------------------------------------------
 
+  const pictureDetailsDefaultSetModalRef = useRef<PictureDefaultSetModal>({} as PictureDefaultSetModal)
+  const openPicturDetailsTableModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    pictureDetailsDefaultSetModalRef.current.onOpen()
+  }
+
+  //------------------------------------------------------------------------------
+
   return (
     <>
       <h4>Картины</h4>
@@ -238,14 +247,23 @@ export default function PicturesTable() {
           variant="outline-success"
           size="sm"
           className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
+          title='Добавить картинe'
           onClick={(e) => openPictureEditModal(e, '')}
         >
+        </Button>
+        <Button as="a"
+          variant='outline-primary'
+          size="sm"
+          className='bi bi-text-center position-absolute mt-2 ms-5 z-index-10'
+          title='Данные по умолчанию'
+          onClick={openPicturDetailsTableModal}>
         </Button>
         <MaterialReactTable table={table} />
       </div>
 
       <PicturEditModal ref={pictureEditModalRef} onSaved={onSavedPicture} />
       <PicturRemoveModal ref={pictureRemoveModalRef} onRemoved={onRemovedPicture} />
+      <PictureDefaultSetModal ref={pictureDetailsDefaultSetModalRef} />
     </>
   )
 }
