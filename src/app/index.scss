@@ -36,6 +36,21 @@ $bg-img-logo: url('@assets/diamond.ico');
     z-index: 20;
 }
 
-.accordion-button{
+.accordion-button {
     padding: 6px !important;
+}
+
+
+.accordion-button {
+    background-color: var(--bs-primary) !important;
+}
+
+.accordion-body {
+    border: 1px solid var(--bs-primary) !important;
+}
+
+.input-group-bg-primary {
+    .input-group-text {
+        background-color: var(--bs-primary) !important;
+    }
 }

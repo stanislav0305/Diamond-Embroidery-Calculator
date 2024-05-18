@@ -302,7 +302,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                     <Accordion.Header className="fw-bold">
                                                         Материалы картины
                                                     </Accordion.Header>
-                                                    <Accordion.Body className="p-0">
+                                                    <Accordion.Body className="p-1">
                                                         <PicturesDetailsTable
                                                             pictureDetails={details}
                                                             onDetailsChenge={this.onDetailsChenge}
@@ -311,7 +311,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                 </Accordion.Item>
                                             </Accordion>
                                             <FormField
-                                                className="mt-1 fw-bold"
+                                                className="mt-1 fw-bold input-group-bg-primary"
                                                 name="detailsSumTotal"
                                                 as={NumericPositiveDecimal2Format}
                                                 prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
@@ -369,7 +369,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                             <Accordion>
                                                 <Accordion.Item eventKey="0">
                                                     <Accordion.Header className="fw-bold">Рекомендуемая цена</Accordion.Header>
-                                                    <Accordion.Body className="p-0">
+                                                    <Accordion.Body className="p-1">
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
                                                             prefixReactNode={<span className="text-danger">Минимальная цена (за материалы)</span>}
