@@ -4,12 +4,12 @@ import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 
 
 interface PicturRemoveModalProps {
-    onRemoved: (id: string) => void,
+    onRemoved: (id: string) => void
 }
 
 interface PicturRemoveModalState {
-    mode: ModalMode,
-    id: string,
+    mode: ModalMode
+    id: string
 }
 
 export default class PicturRemoveModal extends React.Component<PicturRemoveModalProps, PicturRemoveModalState> {

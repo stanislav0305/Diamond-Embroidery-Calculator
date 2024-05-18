@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import { BaseI } from '@shared/interfaces/baseI'
+import BaseI from '@shared/interfaces/baseI'
 
 
 export default interface PictureDetailI extends BaseI {

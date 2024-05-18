@@ -1,11 +1,11 @@
 import { Schema } from 'electron-store'
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import BasetEntityI from '@dataAccess/entities/baseEntityI'
 import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI'
 
 
-export interface PicturesDefaultSetEntityI extends BasetEntityI{
-    details: PictureDetailEntityI[],
-    detailsSumTotal: number,
+export default interface PicturesDefaultSetEntityI extends BasetEntityI{
+    details: PictureDetailEntityI[]
+    detailsSumTotal: number
     pricePerHour: number
 }
 

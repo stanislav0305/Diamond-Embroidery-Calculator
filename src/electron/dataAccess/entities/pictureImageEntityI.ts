@@ -1,13 +1,13 @@
-import { Schema } from 'electron-store';
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import { Schema } from 'electron-store'
+import BasetEntityI from '@dataAccess/entities/baseEntityI'
 
 
-export interface PictureImageEntityI extends BasetEntityI {
-    name: string,
-    type: string,
-    ext: string,
-    size: number,
-    isMain: boolean,
+export default interface PictureImageEntityI extends BasetEntityI {
+    name: string
+    type: string
+    ext: string
+    size: number
+    isMain: boolean
     isLoaded: boolean
 }
 

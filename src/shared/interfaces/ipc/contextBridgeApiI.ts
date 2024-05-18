@@ -2,7 +2,7 @@ import { IpcRendererEvent } from 'electron'
 import ThemeI from '@shared/interfaces/themeI'
 import PictureI from '@shared/interfaces/pictureI'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
-import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 
 

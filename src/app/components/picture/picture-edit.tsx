@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup } from 'react-bootstrap'
-import { Formik } from 'formik';
+import { Formik } from 'formik'
 import ShortUniqueId from 'short-unique-id'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
@@ -13,21 +13,21 @@ import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-d
 import IntPositiveFormat from '@components/inputs/int-positive-format'
 import ImageDropzone from '@components/image-dropzone'
 import PictureImageI from '@shared/interfaces/pictureImageI'
-import PictureImageItem from '@components/picture/picture-image-item';
+import PictureImageItem from '@components/picture/picture-image-item'
 
 
-const uid = new ShortUniqueId({ length: 10 });
+const uid = new ShortUniqueId({ length: 10 })
 
 interface Props {
-    data: PictureI,
-    pictureImagesPath: string,
-    onSave: (data: PictureI) => void,
+    data: PictureI
+    pictureImagesPath: string
+    onSave: (data: PictureI) => void
     onClose: () => void
 }
 
 interface State {
-    forAdd: boolean,
-    initVal: PictureI,
+    forAdd: boolean
+    initVal: PictureI
     details: PictureDetailI[]
     images: PictureImageI[]
     mainImageSrc: string | undefined
@@ -189,7 +189,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                 values.details = details
                                 values.images = images
                                 this.props.onSave(values)
-                            }, 400);
+                            }, 400)
                         }}
                     >
                         {({ values, errors, touched, handleReset, submitForm }) => (

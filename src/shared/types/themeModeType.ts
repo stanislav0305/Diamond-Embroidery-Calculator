@@ -1,9 +1,9 @@
-export const themeModes = ['light', 'dark', 'auto'] as const;
-type ThemeModeType = typeof themeModes[number];
+export const themeModes = ['light', 'dark', 'auto'] as const
+type ThemeModeType = typeof themeModes[number]
 export default ThemeModeType
 
 export interface ThemeModeDataI {
-    css: string,
+    css: string
     ruName: string
 }
 

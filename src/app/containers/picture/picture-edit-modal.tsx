@@ -5,17 +5,17 @@ import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
-import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
 
 
 interface PicturEditModalProps {
-  onSaved: (forAdd: boolean, picture: PictureI) => void,
+  onSaved: (forAdd: boolean, picture: PictureI) => void
 }
 
 interface PicturEditModalState {
-  mode: ModalMode,
-  forAdd: boolean,
-  picture: PictureI,
+  mode: ModalMode
+  forAdd: boolean
+  picture: PictureI
   details: PictureDetailI[]
 }
 
@@ -88,7 +88,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       images: [...picture.images]
     } as PictureI
 
-    console.log('sended picture:', JSON.stringify(p, null, 2));
+    console.log('sended picture:', JSON.stringify(p, null, 2))
     this.toogle('loading', forAdd, picture)
     
     if (forAdd) {

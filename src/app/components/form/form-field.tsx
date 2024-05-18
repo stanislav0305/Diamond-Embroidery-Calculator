@@ -5,19 +5,19 @@ import { BaseFormat } from '@components/inputs/types'
 
 
 type Props = {
-    name?: string,
-    value?: any,
-    inputType?: string,
-    inputDisplayType: "input" | "text" | undefined,
-    inputPlaceholder?: string,
-    field?: FieldInputProps<any>,
-    meta?: FieldMetaProps<any>,
-    helpers?: FieldHelperProps<any>,
-    as?: React.ElementType,
-    isValid: boolean,
-    isInvalid: boolean,
-    isBaseFormat: boolean,
-    inputGroupTextClassName?: string,
+    name?: string
+    value?: any
+    inputType?: string
+    inputDisplayType: "input" | "text" | undefined
+    inputPlaceholder?: string
+    field?: FieldInputProps<any>
+    meta?: FieldMetaProps<any>
+    helpers?: FieldHelperProps<any>
+    as?: React.ElementType
+    isValid: boolean
+    isInvalid: boolean
+    isBaseFormat: boolean
+    inputGroupTextClassName?: string
 }
 
 function InputFormat(p: Props) {
@@ -66,24 +66,24 @@ function InputGroupTextFormat(p: Props) {
 }
 
 type FormFieldProps = {
-    name?: string,
-    label?: string,
-    className?: string,
-    as?: React.ElementType,
+    name?: string
+    label?: string
+    className?: string
+    as?: React.ElementType
     prefixReactNode?: React.ReactNode
     postfixReactNode?: React.ReactNode
-    value?: any,
+    value?: any
 
-    addInputGroupInput?: boolean,
-    addInputGroupText?: boolean,
-    inputGroupTextClassName?: string,
+    addInputGroupInput?: boolean
+    addInputGroupText?: boolean
+    inputGroupTextClassName?: string
 
-    addInput?: boolean,
-    inputClassName?: string,
-    inputType?: string,
-    inputPlaceholder?: string,
+    addInput?: boolean
+    inputClassName?: string
+    inputType?: string
+    inputPlaceholder?: string
 
-    addText?: boolean,
+    addText?: boolean
     addHiddenInput?: boolean
 }
 

@@ -4,7 +4,7 @@ import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/picture
 
 export default interface PicturesDefaultSetI {
     details: PictureDetailI[]
-    detailsSumTotal: number,
+    detailsSumTotal: number
     pricePerHour: number
 }
 

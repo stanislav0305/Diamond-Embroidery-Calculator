@@ -39,7 +39,7 @@ class PicturesStoreRepo extends PicturesBaseStoreRepo {
         const newEntities: any = {}
         newEntitiesPropArr.forEach(obj => {
             const s = obj[0] as string
-            newEntities[s] = obj[1];
+            newEntities[s] = obj[1]
         })
 
         this.store.set('pictures', newEntities)

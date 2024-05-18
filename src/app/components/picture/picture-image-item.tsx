@@ -2,7 +2,7 @@
 import React from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import PictureImageI from '@shared/interfaces/pictureImageI'
-import { ONE_MB_IN_BYTES } from '@shared/consts';
+import { ONE_MB_IN_BYTES } from '@shared/consts'
 
 
 interface PropsI {

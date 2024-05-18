@@ -1,4 +1,4 @@
-import { IpcMainInvokeEvent, ipcMain } from 'electron';
+import { IpcMainInvokeEvent, ipcMain } from 'electron'
 import NativeTheme from '@general/nativeTheme'
 import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
 import ThemeI from '@shared/interfaces/themeI'

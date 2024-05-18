@@ -1,6 +1,6 @@
 import LogMainHelper from '@mainUtils/helpers/logMainHelper'
 import { themeRepo } from '@dataAccess/repositories/themeStoreRepo'
-import { AppSettingsEntityI } from '@dataAccess/entities/appSettingsEntityI'
+import AppSettingsEntityI from '@dataAccess/entities/appSettingsEntityI'
 import { IMAGES_PATH, PROJECT_PATH } from '@general/consts'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 

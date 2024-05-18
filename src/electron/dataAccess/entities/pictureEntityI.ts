@@ -1,17 +1,17 @@
 import { Schema } from 'electron-store'
-import { HistoryEntityI } from '@dataAccess/entities/historyEntity'
+import HistoryEntityI from '@dataAccess/entities/historyEntity'
 import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI'
-import { PictureImageEntityI, pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI'
-import { PicturesDefaultSetEntityI, picturesDefaultSetShema } from '@dataAccess/entities/picturesDefaultSetEntity'
+import PictureImageEntityI, { pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI'
+import PicturesDefaultSetEntityI, { picturesDefaultSetShema } from '@dataAccess/entities/picturesDefaultSetEntity'
 
 
 const diamondFormDefault = 'circle'
 const diamondForms = ['circle', 'square']
-export type DiamondFormType = typeof diamondForms[number];
+export type DiamondFormType = typeof diamondForms[number]
 
 const coverageAreaDefault = 'total'
 const coverageAreas = ['total', 'partial']
-export type CoverageAreaType = typeof coverageAreas[number];
+export type CoverageAreaType = typeof coverageAreas[number]
 
 export interface PictureEntityI extends HistoryEntityI {
     height: number
@@ -98,7 +98,7 @@ export const picturesShema = {
 }
 
 export interface PicturesStoreShemaI {
-    picturesDefaultSet: PicturesDefaultSetEntityI,
+    picturesDefaultSet: PicturesDefaultSetEntityI
     pictures: {}
 }
 

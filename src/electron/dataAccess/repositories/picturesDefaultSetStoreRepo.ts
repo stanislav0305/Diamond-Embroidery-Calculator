@@ -1,6 +1,6 @@
 import { PicturesBaseStoreRepo } from '@dataAccess/repositories/picturesBaseStoreRepo'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
-import { PicturesDefaultSetEntityI } from '../entities/picturesDefaultSetEntity'
+import PicturesDefaultSetEntityI from '../entities/picturesDefaultSetEntity'
 
 
 class PicturesDefaultSetStoreRepo extends PicturesBaseStoreRepo {

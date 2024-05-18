@@ -10,7 +10,7 @@ type EventMessagesContextType = {
 export const EventMessagesContext = createContext<EventMessagesContextType>({} as EventMessagesContextType)
 
 type EventMessagesProviderState = {
-    eventMessagesProps: EventMessagePropsI[],
+    eventMessagesProps: EventMessagePropsI[]
 }
 
 export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>, EventMessagesProviderState> {
@@ -40,7 +40,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
 
     addPropsWithAutoClose = (p: EventMessagePropsI) => {
         const { eventMessagesProps } = this.state
-        if (eventMessagesProps.findIndex(el => el.elementiId === p.elementiId) >= 0) return;
+        if (eventMessagesProps.findIndex(el => el.elementiId === p.elementiId) >= 0) return
 
         const isTimerWorking = eventMessagesProps.length > 0
 

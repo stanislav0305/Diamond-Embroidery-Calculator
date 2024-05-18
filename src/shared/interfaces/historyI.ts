@@ -1,7 +1,7 @@
-import { BaseI } from '@shared/interfaces/baseI'
+import BaseI from '@shared/interfaces/baseI'
 
 
-export interface HistoryI extends BaseI {
-    created: string,
+export default interface HistoryI extends BaseI {
+    created: string
     updated?: string
 }

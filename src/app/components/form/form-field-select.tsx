@@ -1,24 +1,24 @@
 import React, { ReactNode } from 'react'
 import { Form } from 'react-bootstrap'
-import { useField } from 'formik';
+import { useField } from 'formik'
 
 
 type MainProps<OptionsTypes extends Map<string, string>> = { 
-    name: string,
-    label: string,
-    placeholder?: string,
-    options: OptionsTypes,
-    disabled?: boolean,
+    name: string
+    label: string
+    placeholder?: string
+    options: OptionsTypes
+    disabled?: boolean
 }
 
 type FormFieldSelectProps<OptionsTypes extends Map<string, string>> = React.HTMLAttributes<HTMLSelectElement> & MainProps<OptionsTypes>
 
 export default function FormFieldSelect<OT extends Map<string, string>>({ className, name, label, options, placeholder, ...props }: FormFieldSelectProps<OT>) {
     const [field, meta] = useField(name)
-    const isValid = meta.touched && meta.error === undefined;
-    const isInvalid = meta.touched && meta.error !== undefined;
+    const isValid = meta.touched && meta.error === undefined
+    const isInvalid = meta.touched && meta.error !== undefined
 
-    const optionsObjs: ReactNode[] = [];
+    const optionsObjs: ReactNode[] = []
     options.forEach((value, key) =>
         optionsObjs.push(<option key={key} value={key}>{value}</option>)
     )

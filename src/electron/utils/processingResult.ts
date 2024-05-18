@@ -9,6 +9,6 @@ export class ProcessingResult {
     
     public get notProcessed() {
         this._notProcessed = this.sended - this.done
-        return this._notProcessed;
+        return this._notProcessed
     }
 }

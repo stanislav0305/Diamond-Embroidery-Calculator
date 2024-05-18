@@ -7,13 +7,13 @@ import { Defaults } from '@utils/defaults'
 export type ModalMode = 'loading' | 'loaded' | 'closed' | 'error'
 
 interface OptionsI {
-    header: string,
-    className?: string,
-    mode?: ModalMode,
-    confirmBtnText?: string,
-    onConfirm?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void),
-    closeBtnText?: string,
-    onClose?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void),
+    header: string
+    className?: string
+    mode?: ModalMode
+    confirmBtnText?: string
+    onConfirm?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void)
+    closeBtnText?: string
+    onClose?: null | ((event: React.MouseEvent<HTMLButtonElement>) => void)
     onHide: () => void
 }
 

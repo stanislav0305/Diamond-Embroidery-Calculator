@@ -1,3 +1,3 @@
-export interface BaseI{
+export default interface BaseI{
     id: string
 }

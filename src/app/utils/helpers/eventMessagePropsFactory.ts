@@ -1,5 +1,5 @@
 import { EventMessagePropsI } from "@components/event-message"
-import ShortUniqueId from "short-unique-id";
+import ShortUniqueId from "short-unique-id"
 
 export type EventMessageTyepe = 'PictureCreated' | 'PictureUpdated' | 'PictureRemoved'
     | 'PictureFilesLoaded' | 'PictureFilesRemoved'
@@ -24,7 +24,7 @@ export default class EventMessagePropsFactory {
 
     static addBasePropsPart(onClose: (id: string, e?: React.MouseEvent | React.KeyboardEvent) => void, hasError: boolean,
         errorDescription: string | undefined, additionalDescription: string | undefined) {
-        const uid = new ShortUniqueId({ length: 10 });
+        const uid = new ShortUniqueId({ length: 10 })
         const props = Object.assign({ ...baseModel }, {
             elementiId: uid.rnd(),
             hasError,

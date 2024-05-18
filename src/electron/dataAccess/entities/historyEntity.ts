@@ -1,7 +1,7 @@
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import BasetEntityI from '@dataAccess/entities/baseEntityI'
 
 
-export interface HistoryEntityI extends BasetEntityI {
-    created: string,
-    updated?: string,
+export default interface HistoryEntityI extends BasetEntityI {
+    created: string
+    updated?: string
 }

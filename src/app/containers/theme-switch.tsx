@@ -1,8 +1,8 @@
 import React from 'react'
-import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap'
 import { ThemeContext } from '@contexts/theme-context-provider'
 import ThemeNameType, { themeNames } from '@shared/types/themeNameType'
-import ThemeModeType, { themeModesDataMap } from '@shared/types/themeModeType';
+import ThemeModeType, { themeModesDataMap } from '@shared/types/themeModeType'
 
 
 export default class ThemeSwitch extends React.Component {

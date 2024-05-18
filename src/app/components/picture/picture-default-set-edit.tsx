@@ -1,21 +1,21 @@
 import React from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
-import { Formik } from 'formik';
+import { Formik } from 'formik'
 import PicturesDefaultSetI, { picturesDefaultSetDefaultISchema } from '@shared/interfaces/picturesDefaultSetI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PicturesDetailsTable from '@containers/picture/picture-details-table'
 import FormField from '@components/form/form-field'
-import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
+import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format'
 
 
 interface Props {
-    data: PicturesDefaultSetI,
-    onSave: (data: PicturesDefaultSetI) => void,
+    data: PicturesDefaultSetI
+    onSave: (data: PicturesDefaultSetI) => void
     onClose: () => void
 }
 
 interface State {
-    initVal: PicturesDefaultSetI,
+    initVal: PicturesDefaultSetI
     details: PictureDetailI[]
 }
 
@@ -61,7 +61,7 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
 
                                 values.details = details
                                 this.props.onSave(values)
-                            }, 400);
+                            }, 400)
                         }}
                     >
                         {({ values, errors, touched, submitForm }) => (

@@ -1,6 +1,6 @@
 import React from 'react'
 import { NumericFormat } from 'react-number-format'
-import { BaseFormat, Props } from '@components/inputs/types';
+import { BaseFormat, Props } from '@components/inputs/types'
 
 
 export default class IntPositiveFormat extends BaseFormat {
@@ -22,7 +22,7 @@ export default class IntPositiveFormat extends BaseFormat {
         allowLeadingZeros={false}
         valueIsNumericString={true}
         onValueChange={(values) => {
-          const { floatValue } = values;
+          const { floatValue } = values
           console.log(`onValueChange: ${floatValue ?? 0}`)
           helpers?.setValue(floatValue ?? 0)
         }}

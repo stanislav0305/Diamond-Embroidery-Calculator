@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { IMAGES_PATH } from '@general/consts';
+import { IMAGES_PATH } from '@general/consts'
 
 
 export default class DirectoryHelper {
@@ -8,8 +8,8 @@ export default class DirectoryHelper {
     public static createFolderIfNeed() {
         const path = IMAGES_PATH
         if (!fs.existsSync(path)) {
-            fs.mkdirSync(path);
-            console.log(`Folder ${path} created successfully!`);
+            fs.mkdirSync(path)
+            console.log(`Folder ${path} created successfully!`)
         }
     }
 }

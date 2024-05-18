@@ -3,7 +3,7 @@ import ThemeI from '@shared/interfaces/themeI'
 import PictureI from '@shared/interfaces/pictureI'
 import ContextBridgeApiI from '@shared/interfaces/ipc/contextBridgeApiI'
 import Chanels from '@shared/interfaces/ipc/chanels'
-import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 
 

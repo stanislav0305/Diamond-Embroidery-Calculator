@@ -5,8 +5,8 @@ import { MAX_IMAGE_SIZE_IN_MB, ONE_MB_IN_BYTES } from '@shared/consts'
 
 
 type Props = {
-    className?: string,
-    onAddImage: (file: File, arrayBuffer: ArrayBuffer) => void,
+    className?: string
+    onAddImage: (file: File, arrayBuffer: ArrayBuffer) => void
 }
 
 export default function ImageDropzone(props: Props) {

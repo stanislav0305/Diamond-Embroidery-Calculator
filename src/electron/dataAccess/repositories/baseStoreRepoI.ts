@@ -1,5 +1,5 @@
 
-import Store, { Schema } from 'electron-store';
+import Store, { Schema } from 'electron-store'
 
 
 export abstract class BaseStoreRepo<S extends Record<string, any>>{

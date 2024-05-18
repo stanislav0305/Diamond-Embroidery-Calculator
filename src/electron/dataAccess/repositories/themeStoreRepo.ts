@@ -1,7 +1,7 @@
-import Store, { Schema } from 'electron-store';
-import { ThemeEntityI, themeShema } from '@dataAccess/entities/themeEntityI'
+import Store, { Schema } from 'electron-store'
+import ThemeEntityI, { themeShema } from '@dataAccess/entities/themeEntityI'
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import ThemeI from '@shared/interfaces/themeI';
+import ThemeI from '@shared/interfaces/themeI'
 
 
 interface StoreShemaI {
@@ -18,14 +18,14 @@ class ThemeStoreRepo extends BaseStoreRepo<StoreShemaI>{
             schema: this.getSchema(),
             name: this.storeName,
             beforeEachMigration: (store, context) => {
-                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`);
+                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`)
             },
             migrations: {
                 '0.0.1': store => {
                     store.set('theme', {
                         mode: 'auto',
                         name: 'cerulean'
-                    } as ThemeEntityI);
+                    } as ThemeEntityI)
                 },
             },
         }

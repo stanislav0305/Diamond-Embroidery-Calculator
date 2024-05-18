@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import { HistoryI } from '@shared/interfaces/historyI'
+import HistoryI from '@shared/interfaces/historyI'
 import DiamondFormType, { diamondFormDefault, diamondForms } from '@shared/types/diamondFormType'
 import CoverageAreaType, { coverageAreaDefault, coverageAreas } from '@shared/types/coverageAreaType'
 import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'

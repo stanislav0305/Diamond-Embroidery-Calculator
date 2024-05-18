@@ -1,7 +1,7 @@
-import Store, { Schema } from 'electron-store';
+import Store, { Schema } from 'electron-store'
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import { PicturesStoreShemaI, picturesStoreShema } from '@dataAccess/entities/pictureEntityI';
-import { PictureDetailEntityI } from '../entities/pictureDetailEntityI';
+import { PicturesStoreShemaI, picturesStoreShema } from '@dataAccess/entities/pictureEntityI'
+import { PictureDetailEntityI } from '../entities/pictureDetailEntityI'
 
 
 export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
@@ -14,7 +14,7 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
             schema: this.getSchema(),
             name: this.storeName,
             beforeEachMigration: (store, context) => {
-                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`);
+                console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`)
             },
             migrations: {
                 '0.0.1': store => {

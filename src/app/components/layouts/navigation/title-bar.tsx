@@ -11,7 +11,7 @@ interface PropsI {
 }
 
 interface StateI {
-    isMaximized: boolean,
+    isMaximized: boolean
     appSettingsModal: {
         mode: ModalMode
     }

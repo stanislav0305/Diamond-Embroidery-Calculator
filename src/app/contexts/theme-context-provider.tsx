@@ -3,14 +3,14 @@ import ThemeI from '@shared/interfaces/themeI'
 import ThemeModeType from '@shared/types/themeModeType'
 
 type ThemeContextType = {
-  theme: ThemeI,
+  theme: ThemeI
   setTheme: (theme: ThemeI) => void
 }
 
 export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
 
 type ThemeProviderState = {
-  theme: ThemeI,
+  theme: ThemeI
   isLoaded: boolean
 }
 

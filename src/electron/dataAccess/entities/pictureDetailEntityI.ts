@@ -1,5 +1,5 @@
-import { Schema } from 'electron-store';
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import { Schema } from 'electron-store'
+import BasetEntityI from '@dataAccess/entities/baseEntityI'
 
 
 export interface PictureDetailEntityI extends BasetEntityI {

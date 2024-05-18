@@ -7,9 +7,9 @@ import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-m
 
 
 interface PictureDetailsProps {
-    pictureDetails: PictureDetailI[],
-    onDetailsChenge?: (details: PictureDetailI[]) => void,
-    onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void,
+    pictureDetails: PictureDetailI[]
+    onDetailsChenge?: (details: PictureDetailI[]) => void
+    onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void
     onRemovedPictureDetail?: (id: string) => void
 }
 

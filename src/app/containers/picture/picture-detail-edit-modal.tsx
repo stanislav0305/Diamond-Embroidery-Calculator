@@ -6,12 +6,12 @@ import IdHelper from '@shared/helpers/idHelper'
 
 
 interface PicturDetailEditModalProps {
-  onSaved: (forAdd: boolean, picture: PictureDetailI) => void,
+  onSaved: (forAdd: boolean, picture: PictureDetailI) => void
 }
 
 interface PicturDetailEditModalState {
-  mode: ModalMode,
-  forAdd: boolean,
+  mode: ModalMode
+  forAdd: boolean
   pictureDetail: PictureDetailI
 }
 
@@ -39,7 +39,7 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
     const forAdd = !pictureDetail.id
     pictureDetail.id = pictureDetail.id || IdHelper.genId()
 
-    console.log(JSON.stringify(pictureDetail, null, 2));
+    console.log(JSON.stringify(pictureDetail, null, 2))
 
     this.toogle('closed')
 

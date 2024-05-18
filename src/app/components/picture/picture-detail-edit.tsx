@@ -1,14 +1,14 @@
 import React from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
-import { Formik } from 'formik';
+import { Formik } from 'formik'
 import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'
-import FormField from '@components/form/form-field';
-import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format';
+import FormField from '@components/form/form-field'
+import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format'
 
 
 interface PropsI {
-    data: PictureDetailI,
-    onSave: (data: PictureDetailI) => void,
+    data: PictureDetailI
+    onSave: (data: PictureDetailI) => void
     onClose: () => void
 }
 
@@ -27,7 +27,7 @@ export default function PictureDetailEdit(props: PropsI) {
                         setTimeout(() => {
                             setSubmitting(false)
                             props.onSave(values)
-                        }, 400);
+                        }, 400)
                     }}
                 >
                     {({ handleReset, submitForm }) => (

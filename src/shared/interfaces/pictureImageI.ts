@@ -1,14 +1,14 @@
 import * as Yup from 'yup'
-import { BaseI } from '@shared/interfaces/baseI'
+import BaseI from '@shared/interfaces/baseI'
 
 
 export default interface PictureImageI extends BaseI {
-    name: string,
-    type: string,
-    ext: string,
-    size: number,
-    isMain: boolean,
-    isLoaded: boolean,
+    name: string
+    type: string
+    ext: string
+    size: number
+    isMain: boolean
+    isLoaded: boolean
     arrayBuffer: ArrayBuffer
 }
 

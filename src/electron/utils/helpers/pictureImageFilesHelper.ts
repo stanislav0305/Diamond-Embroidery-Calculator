@@ -4,7 +4,7 @@ import DirectoryHelper from "@mainUtils/helpers/directoryHelper"
 import FileHelper from "@mainUtils/helpers/fileHelper"
 import PictureImageI from "@shared/interfaces/pictureImageI"
 import { ProcessingResult } from '@mainUtils/processingResult'
-import { ProcessingResultI } from '@shared/interfaces/processingResultI'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
 
 
 export default class PictureImageFilesHelper {

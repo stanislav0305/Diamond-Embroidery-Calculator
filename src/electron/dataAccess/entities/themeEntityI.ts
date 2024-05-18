@@ -1,10 +1,10 @@
-import { Schema } from 'electron-store';
-import { BasetEntityI } from '@dataAccess/entities/baseEntityI'
+import { Schema } from 'electron-store'
+import BasetEntityI from '@dataAccess/entities/baseEntityI'
 
 
 export type ThemeModesType = 'light' | 'dark' | 'auto'
 
-export interface ThemeEntityI extends BasetEntityI {
+export default interface ThemeEntityI extends BasetEntityI {
     mode: ThemeModesType
     name: string
 }

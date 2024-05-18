@@ -6,7 +6,7 @@ import { EventMessagesContext } from '@contexts/event-messages-provider'
 
 
 interface State {
-    mode: ModalMode,
+    mode: ModalMode
     model: PicturesDefaultSetI
 }
 
@@ -43,7 +43,7 @@ export default class PictureDefaultSetModal extends React.Component<{}, State> {
 
         const model = { ...formData } as PicturesDefaultSetI
 
-        console.log('sended to save:', JSON.stringify(model, null, 2));
+        console.log('sended to save:', JSON.stringify(model, null, 2))
         this.toogle('loading', model)
 
         await window.api.picturesDefaultSet.set(model)
