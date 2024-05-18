@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react'
-import { Button } from 'react-bootstrap'
+import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import { Button, Image } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
@@ -9,10 +9,12 @@ import { Row } from '@tanstack/react-table'
 import PicturEditModal from '@containers/picture/picture-edit-modal'
 import PicturRemoveModal from '@containers/picture/picture-remove-modal'
 import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
+import PictureImageI from '@shared/interfaces/pictureImageI'
+import { AppSettingsContext } from '@contexts/app-settings-context-provider'
+
 
 
 export default function PicturesTable() {
-
   const [data, setData] = React.useState<PictureI[]>([])
 
   useEffect(() => {
@@ -21,10 +23,31 @@ export default function PicturesTable() {
   }, [])
 
 
+  const appSettingsContext = useContext(AppSettingsContext)
+  const pictureImagesPath = appSettingsContext.appSettings.paths.pictureImagesPath
+  function getImgSrcOrDefault(img: PictureImageI | undefined) {
+    const src = !img ? ' ' : `${pictureImagesPath}/${img!.id}.${img!.ext}`
+    return src
+  }
 
   const columns = useMemo<MRT_ColumnDef<PictureI>[]>(
     () =>
       [
+        {
+          header: 'Фото',
+          enableColumnFilter: false,
+          enableSorting: false,
+          size: 82,
+          accessorFn: (row) => `${getImgSrcOrDefault(row.images.find(i => i.isMain))}`,
+          Cell: ({ cell }) => (
+            <Image
+              className="bg-secondary"
+              style={{ minWidth: "82px", minHeight: "82px" }}
+              thumbnail
+              src={cell.getValue<string>()}
+            />
+          ),
+        },
         {
           header: '#',
           accessorKey: 'id',
