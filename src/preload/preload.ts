@@ -37,7 +37,7 @@ const API: ContextBridgeApiI = {
     }
   },
   picturesDefaultSet: {
-    get: ()  => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
+    get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
     set: (model: PicturesDefaultSetI) => ipcRenderer.invoke(Chanels.picturesDefaultSet_set, model).catch(e => fCatch(e)),
   },
   pictures: {
@@ -46,6 +46,17 @@ const API: ContextBridgeApiI = {
     read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch(e => fCatch(e)),
     update: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_update, model).catch(e => fCatch(e)),
     delete: (id: string) => ipcRenderer.invoke(Chanels.pictures_delete, id).catch(e => fCatch(e)),
+    images: {
+      download: (fileName: string) => ipcRenderer.invoke(Chanels.pictures_images_download, fileName).catch(e => fCatch(e)),
+      on: {
+        dowloaded: (listener: (event: IpcRendererEvent, result: boolean) => void) => {
+          ipcRenderer.on(Chanels.pictures_images_downloaded, listener)
+        }
+      },
+      off: {
+        dowloaded: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_downloaded) }
+      }
+    },
     on: {
       pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
         ipcRenderer.on(Chanels.pictureFilesLoaded, listener)
@@ -55,12 +66,8 @@ const API: ContextBridgeApiI = {
       }
     },
     off: {
-      pictureFilesLoaded: () => {
-        ipcRenderer.removeAllListeners(Chanels.pictureFilesLoaded)
-      },
-      pictureFilesRemoved: () => {
-        ipcRenderer.removeAllListeners(Chanels.pictureFilesRemoved)
-      }
+      pictureFilesLoaded: () => { ipcRenderer.removeAllListeners(Chanels.pictureFilesLoaded) },
+      pictureFilesRemoved: () => { ipcRenderer.removeAllListeners(Chanels.pictureFilesRemoved) }
     }
   }
 }

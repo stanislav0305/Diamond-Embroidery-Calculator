@@ -14,6 +14,7 @@ import IntPositiveFormat from '@components/inputs/int-positive-format'
 import ImageDropzone from '@components/image-dropzone'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import PictureImageItem from '@components/picture/picture-image-item'
+import { EventMessagesContext } from '@contexts/event-messages-provider'
 
 
 const uid = new ShortUniqueId({ length: 10 })
@@ -34,12 +35,14 @@ interface State {
 }
 
 export default class PictureEdit extends React.Component<Props, State> {
+    static contextType = EventMessagesContext
+    context!: React.ContextType<typeof EventMessagesContext>
     objectURLsMap: Map<string, string> = new Map<string, string>()
 
     constructor(props: Props) {
         super(props)
 
-        let  { data } = this.props
+        let { data } = this.props
         data = JSON.parse(JSON.stringify(data)) as PictureI
 
         const mainImg = data.images.find(i => i.isMain)
@@ -52,9 +55,19 @@ export default class PictureEdit extends React.Component<Props, State> {
             mainImageSrc: this.createSrc(mainImg)
         }
     }
+    componentDidMount() {
+        window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
+            const hasErroror = !result
+            this.context.addMessage(
+                'PictureFilesDonwnloaded',
+                hasErroror
+            )
+        })
+    }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         this.removeAllObjectURLs()
+        window.api.pictures.images.off.dowloaded()
     }
 
     onDetailsChenge = (details: PictureDetailI[]) => {
@@ -98,7 +111,7 @@ export default class PictureEdit extends React.Component<Props, State> {
     }
 
     //---------------------------------------------------------------
-    
+
     createPictereImage = (file: File, arrayBuffer: ArrayBuffer, isMain: boolean) => {
         return {
             id: uid.rnd(),
@@ -125,6 +138,11 @@ export default class PictureEdit extends React.Component<Props, State> {
                 mainImageSrc: isMain ? this.createSrc(newImg) : prev.mainImageSrc
             }
         })
+    }
+
+    downloadImage = (e: React.MouseEvent, fileName: string) => {
+        e.preventDefault()
+        window.api.pictures.images.download(fileName)
     }
 
     setMainImage = (e: React.MouseEvent, id: string) => {
@@ -251,6 +269,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                         key={img.id}
                                                         img={img}
                                                         createSrc={this.createSrc}
+                                                        downloadImage={this.downloadImage}
                                                         setMainImage={this.setMainImage}
                                                         removeImage={this.removeImage}
                                                     />

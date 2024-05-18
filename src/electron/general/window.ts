@@ -1,4 +1,4 @@
-import { BrowserWindow, WebContents } from 'electron'
+import { BrowserWindow, dialog } from 'electron'
 import { ICON_PATH, PRELOAD_JS_PATH, INDEX_HTML_PATH, IS_DEV } from '@general/consts'
 
 
@@ -30,6 +30,19 @@ abstract class BaseWindow {
         this._window.loadFile(filePath)
     }
 
+    public getBrowserWindow(): BrowserWindow {
+        return this._window
+    }
+
+    public showOpenDialog(
+        properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' 
+        | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>
+    ): Promise<Electron.OpenDialogReturnValue> {
+        return dialog.showOpenDialog(this._window, {
+            properties: properties
+        })
+    }
+
     public maximize() {
         this._window.maximize()
     }
@@ -52,10 +65,6 @@ export default class MainWindow extends BaseWindow {
         })
 
         this._window.on('unmaximize', () => this.onUnmaximize)
-    }
-
-    public get webContents(): WebContents {
-        return this._window.webContents
     }
 
     private onUnmaximize() {

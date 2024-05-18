@@ -4,6 +4,19 @@ import fs from 'fs'
 export default class FileHelper {
     constructor() { }
 
+    public static copy(src: string, dest: string) {
+        try {
+            fs.copyFileSync(src, dest)
+            console.log(`File ${dest} copied.`)
+
+        } catch (err) {
+            console.error(`File from ${src} to ${dest} not copied. Errors: ${JSON.stringify(err)}`)
+            return false
+        }
+
+        return true
+    }
+
     public static write(newFilePath: string, buffer: Buffer) {
         try {
             fs.writeFileSync(newFilePath, buffer)

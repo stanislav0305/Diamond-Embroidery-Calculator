@@ -2,7 +2,7 @@ import { EventMessagePropsI } from "@components/event-message"
 import ShortUniqueId from "short-unique-id"
 
 export type EventMessageTyepe = 'PictureCreated' | 'PictureUpdated' | 'PictureRemoved'
-    | 'PictureFilesLoaded' | 'PictureFilesRemoved'
+    | 'PictureFilesLoaded' | 'PictureFilesRemoved' | 'PictureFilesDonwnloaded'
     | 'PicturesDefaultSetSaved'
 
 const baseModel = {
@@ -43,6 +43,7 @@ export default class EventMessagePropsFactory {
             case 'PictureRemoved': return this.getPictureRemovedProps(p)
             case 'PictureFilesLoaded': return this.getPictureFilesLoadedProps(p)
             case 'PictureFilesRemoved': return this.getPictureFilesRemovedProps(p)
+            case 'PictureFilesDonwnloaded': return this.getPictureFilesDonwnloadedProps(p)
             case 'PicturesDefaultSetSaved': return this.getPicturesDefaultSetSavedProps(p)
         }
     }
@@ -104,7 +105,17 @@ export default class EventMessagePropsFactory {
             action: 'info',
             variant: 'success',
             title: 'Удаление изображений картины',
-            description: 'Все изображения удалены успешно! ' + p.additionalDescription ?? '',
+            description: 'Все изображения удалены успешно! ' + (p.additionalDescription ?? ''),
+            errorDescription: p.errorDescription ?? 'Произошла ошибка!'
+        } as EventMessagePropsI)
+    }
+
+    static getPictureFilesDonwnloadedProps(p: EventMessagePropsI) {
+        return Object.assign({ ...p }, {
+            action: 'info',
+            variant: 'success',
+            title: 'Загрузка изображения картины',
+            description: 'Изображения загружено успешно! ' + (p.additionalDescription ?? ''),
             errorDescription: p.errorDescription ?? 'Произошла ошибка!'
         } as EventMessagePropsI)
     }

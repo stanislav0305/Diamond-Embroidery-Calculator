@@ -36,6 +36,15 @@ export default interface ContextBridgeApiI {
     read: (id: string) => Promise<PictureI>
     update: (model: PictureI) => Promise<PictureI>
     delete: (id: string) => Promise<boolean>
+    images: {
+      download: (fileName: string) => Promise<void>,
+      on: {
+        dowloaded: (listener: (event: IpcRendererEvent, result: boolean) => void) => void
+      },
+      off: {
+        dowloaded: () => void
+      }
+    },
     on: {
       pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void
       pictureFilesRemoved: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void

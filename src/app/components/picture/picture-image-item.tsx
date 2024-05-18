@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import PictureImageI from '@shared/interfaces/pictureImageI'
@@ -9,11 +8,12 @@ interface PropsI {
     img: PictureImageI
     removeImage: (e: React.MouseEvent, id: string) => void
     setMainImage: (e: React.MouseEvent, id: string) => void
+    downloadImage: (e: React.MouseEvent, id: string) => void
     createSrc: (pi: PictureImageI) => string
 }
 
 export default function PictureImageItem(props: PropsI) {
-    const { img, setMainImage, removeImage, createSrc } = props
+    const { img, setMainImage, removeImage, downloadImage, createSrc } = props
 
     return (
         <ListGroup.Item as="li" key={`img-${img.id}`} action variant="success">
@@ -26,7 +26,7 @@ export default function PictureImageItem(props: PropsI) {
                 <ListGroup as="ul" className="list-group-flush" style={{ width: "90%" }}>
                     <ListGroup.Item as="li">
                         <Row>
-                            <Col sm={10}>
+                            <Col sm={9}>
                                 <span>Файл</span>
                                 <span>: {
                                     img.isLoaded ?
@@ -34,7 +34,18 @@ export default function PictureImageItem(props: PropsI) {
                                         : `${img.name}.${img.ext} -&gt; ${img.id}.${img.ext}`
                                 }</span>
                             </Col>
-                            <Col>
+                            <Col className='text-end'>
+                                {img.isLoaded &&
+                                    <Button
+                                        key={`btn-download-${img.id}`}
+                                        as="a"
+                                        variant="outline-secondary"
+                                        size="sm"
+                                        className="ms-1 bi bi-download"
+                                        onClick={(e) => downloadImage(e, `${img.id}.${img.ext}`)}
+                                    >
+                                    </Button>
+                                }
                                 <Button
                                     key={`btn-set-main-image-${img.id}`}
                                     as="a"
