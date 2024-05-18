@@ -9,7 +9,7 @@ import MainPage from '@components/pages/main-page'
 export default function App() {
     return (
         <div className="d-flex flex-column min-vh-100">
-            <Container className="overflow-auto">
+            <div className="overflow-auto">
                 <header>
                     <ThemeContext.Consumer>
                         {(themeContext) => (
@@ -20,7 +20,7 @@ export default function App() {
                 <main>
                     <MainPage />
                 </main>
-            </Container>
+            </div>
             <Footer />
         </div >
     )

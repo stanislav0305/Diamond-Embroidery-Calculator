@@ -1,12 +1,12 @@
 import { app } from 'electron'
 import MainWindow from '@general/window'
 import NativeTheme from '@general/nativeTheme'
-import ThemeChannelGroup from '@ipc/themeChannelGroup'
-import AppChannelGroup from '@ipc/appChannelGroup'
-import MainWindowChannelGroup from '@ipc/mainWindowChannelGroup'
-import PicturesChannelGroup from '@ipc/picturesChannelGroup'
-import PicturesDefaultSetChannelGroup from '@electron/ipc/picturesDefaultSetChannelGroup'
-import PicturesImagesChannelGroup from '@electron/ipc/picturesImagesChannelGroup'
+import ThemeChannelGroup from '@ipc/theme.channelGroup'
+import AppChannelGroup from '@ipc/app.channelGroup'
+import MainWindowChannelGroup from '@ipc/mainWindow.channelGroup'
+import PicturesChannelGroup from '@ipc/pictures.channelGroup'
+import PicturesDefaultSetChannelGroup from '@ipc/picturesDefaultSet.channelGroup'
+import PicturesImagesChannelGroup from '@ipc/picturesImages.channelGroup'
 
 
 export class Application {

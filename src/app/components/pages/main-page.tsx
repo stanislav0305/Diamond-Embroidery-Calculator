@@ -5,8 +5,8 @@ import PicturesTable from '@containers/picture/pictures-table'
 
 export default function MainPage() {
     return (
-        <Container className='position-relative'>
+        <div className='position-relative m-1'>
             <PicturesTable />
-        </Container>
+        </div>
     )
 }

@@ -35,7 +35,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
   }
 
   componentDidMount() {
-    window.api.pictures.on.pictureFilesLoaded((_event, info: ProcessingResultI) => {
+    window.api.pictures.images.on.loaded((_event, info: ProcessingResultI) => {
       const hasError = info.notProcessed > 0
       if (hasError) {
         console.error(`pictureFilesLoaded: Not all images loaded! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
@@ -50,7 +50,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       )
     })
 
-    window.api.pictures.on.pictureFilesRemoved((_event, info: ProcessingResultI) => {
+    window.api.pictures.images.on.removed((_event, info: ProcessingResultI) => {
       const hasError = info.notProcessed > 0
       if (hasError) {
         console.error(`pictureFilesRemoved: Not all images removed! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
@@ -67,8 +67,8 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
   }
 
   componentWillUnmount = () => {
-    window.api.pictures.off.pictureFilesLoaded()
-    window.api.pictures.off.pictureFilesRemoved()
+    window.api.pictures.images.off.loaded()
+    window.api.pictures.images.off.removed()
   }
 
   onOpen = (picture: PictureI) => {

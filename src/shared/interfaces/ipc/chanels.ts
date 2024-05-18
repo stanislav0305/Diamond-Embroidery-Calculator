@@ -18,8 +18,8 @@ export default class Chanels {
     static pictures_images_download = 'pictures:images:download'
     static pictures_images_downloaded = 'pictures:images:downloaded'
 
-    static pictureFilesLoaded = 'pictureFilesLoaded'
-    static pictureFilesRemoved = 'pictureFilesRemoved'
+    static pictures_images_loaded = 'pictures:images:loaded'
+    static pictures_images_removed = 'pictures:images:removed'
 
     static picturesDefaultSet_get = 'picturesDefaultSet:get'
     static picturesDefaultSet_set = 'picturesDefaultSet:set'

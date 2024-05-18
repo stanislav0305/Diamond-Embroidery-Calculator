@@ -38,7 +38,7 @@ export default class PicturesChannelGroup {
        
         //send to render
         if (result.sended > 0) {
-            event.sender.send(Chanels.pictureFilesLoaded, result)
+            event.sender.send(Chanels.pictures_images_loaded, result)
         }
 
         picturesRepo.createOrUpdate(model)
@@ -55,7 +55,7 @@ export default class PicturesChannelGroup {
 
         //send to render
         if (result.sended > 0) {
-            event.sender.send(Chanels.pictureFilesRemoved, result)
+            event.sender.send(Chanels.pictures_images_removed, result)
         }
 
         picturesRepo.delete(id)

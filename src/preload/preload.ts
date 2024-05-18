@@ -51,23 +51,19 @@ const API: ContextBridgeApiI = {
       on: {
         dowloaded: (listener: (event: IpcRendererEvent, result: boolean) => void) => {
           ipcRenderer.on(Chanels.pictures_images_downloaded, listener)
+        },
+        loaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
+          ipcRenderer.on(Chanels.pictures_images_loaded, listener)
+        },
+        removed: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
+          ipcRenderer.on(Chanels.pictures_images_removed, listener)
         }
       },
       off: {
-        dowloaded: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_downloaded) }
+        dowloaded: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_downloaded) },
+        loaded: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_loaded) },
+        removed: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_removed) }
       }
-    },
-    on: {
-      pictureFilesLoaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
-        ipcRenderer.on(Chanels.pictureFilesLoaded, listener)
-      },
-      pictureFilesRemoved: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => {
-        ipcRenderer.on(Chanels.pictureFilesRemoved, listener)
-      }
-    },
-    off: {
-      pictureFilesLoaded: () => { ipcRenderer.removeAllListeners(Chanels.pictureFilesLoaded) },
-      pictureFilesRemoved: () => { ipcRenderer.removeAllListeners(Chanels.pictureFilesRemoved) }
     }
   }
 }
