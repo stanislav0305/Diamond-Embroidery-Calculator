@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Formik } from 'formik'
 import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'
 import FormField from '@components/form/form-field'
@@ -37,7 +37,7 @@ export default function PictureDetailEdit(props: PropsI) {
                                     <Col>
                                         <FormField
                                             name="id"
-                                            prefixReactNode={<span>#</span>}
+                                            prefixReactNode={<InputGroup.Text className="p-1">#</InputGroup.Text>}
                                             addInputGroupText
                                             addHiddenInput
                                         />
@@ -59,7 +59,11 @@ export default function PictureDetailEdit(props: PropsI) {
                                             name="price"
                                             as={NumericPositiveDecimal2Format}
                                             label="Цена"
-                                            postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                            postfixReactNode={
+                                                <InputGroup.Text className="p-1">
+                                                    <i className="bi bi-currency-euro"></i>
+                                                </InputGroup.Text>
+                                            }
                                             addInputGroupInput
                                             inputPlaceholder="Введите цену"
                                         />

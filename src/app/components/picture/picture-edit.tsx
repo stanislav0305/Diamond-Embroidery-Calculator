@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup } from 'react-bootstrap'
-import { Formik } from 'formik'
+import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup, InputGroup } from 'react-bootstrap'
+import { Formik, FormikProps } from 'formik'
 import ShortUniqueId from 'short-unique-id'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
@@ -15,18 +15,19 @@ import ImageDropzone from '@components/image-dropzone'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import PictureImageItem from '@components/picture/picture-image-item'
 import { EventMessagesContext } from '@contexts/event-messages-provider'
+import PictureHoursSpentCalculatorModal from '@containers/picture/picture-hours-spent-calculator-modal'
 
 
 const uid = new ShortUniqueId({ length: 10 })
 
-interface Props {
+interface PropsI {
     data: PictureI
     pictureImagesPath: string
     onSave: (data: PictureI) => void
     onClose: () => void
 }
 
-interface State {
+interface StateI {
     forAdd: boolean
     initVal: PictureI
     details: PictureDetailI[]
@@ -34,12 +35,14 @@ interface State {
     mainImageSrc: string | undefined
 }
 
-export default class PictureEdit extends React.Component<Props, State> {
+export default class PictureEdit extends React.Component<PropsI, StateI> {
     static contextType = EventMessagesContext
     context!: React.ContextType<typeof EventMessagesContext>
+    pictureHoursSpentCalculatorModalRef = React.createRef<PictureHoursSpentCalculatorModal>()
+    formicRef = React.createRef<FormikProps<PictureI>>()
     objectURLsMap: Map<string, string> = new Map<string, string>()
 
-    constructor(props: Props) {
+    constructor(props: PropsI) {
         super(props)
 
         let { data } = this.props
@@ -55,6 +58,7 @@ export default class PictureEdit extends React.Component<Props, State> {
             mainImageSrc: this.createSrc(mainImg)
         }
     }
+
     componentDidMount() {
         window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
             const hasErroror = !result
@@ -189,6 +193,19 @@ export default class PictureEdit extends React.Component<Props, State> {
         })
     }
 
+    //---------------------------------------------------------------
+
+    openPictureHoursSpentCalculatorModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, hoursSpent: number) => {
+        e.preventDefault()
+        this.pictureHoursSpentCalculatorModalRef.current!.onOpen(hoursSpent)
+    }
+
+    onSaveHoursSpentCalculator = (hoursSpent: number) => {
+        this.formicRef.current!.setFieldValue('hoursSpent', hoursSpent)
+    }
+
+    //---------------------------------------------------------------
+
     render() {
         const { forAdd, initVal, details, images, mainImageSrc } = this.state
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
@@ -196,7 +213,8 @@ export default class PictureEdit extends React.Component<Props, State> {
         return (
             <>
                 <Card>
-                    <Formik initialValues={initVal}
+                    <Formik innerRef={this.formicRef}
+                        initialValues={initVal}
                         validationSchema={pictureISchema}
                         enableReinitialize={true}
                         errors
@@ -229,7 +247,7 @@ export default class PictureEdit extends React.Component<Props, State> {
                                             ))}
                                 </div>
                                 <Form className="p-1">
-                                    <Row>
+                                    <Row className="mb-4">
                                         <Col>
                                             <Image
                                                 className="bg-secondary"
@@ -242,25 +260,25 @@ export default class PictureEdit extends React.Component<Props, State> {
                                         <Col sm="7">
                                             <FormField
                                                 name="id"
-                                                prefixReactNode={<span>#</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">#</InputGroup.Text>}
                                                 addInputGroupText
                                                 addHiddenInput
                                             />
                                             <FormField
                                                 name="created"
-                                                prefixReactNode={<span>Создана</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Создана</InputGroup.Text>}
                                                 addInputGroupText
                                                 addHiddenInput
                                             />
                                             <FormField
                                                 name="updated"
-                                                prefixReactNode={<span>Обновлена</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Обновлена</InputGroup.Text>}
                                                 addInputGroupText
                                                 addHiddenInput
                                             />
                                         </Col>
                                     </Row>
-                                    <Row>
+                                    <Row className="mb-4">
                                         <Col>
                                             <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
                                             <ListGroup as="ul">
@@ -277,24 +295,27 @@ export default class PictureEdit extends React.Component<Props, State> {
                                             </ListGroup>
                                         </Col>
                                     </Row>
-
                                     <Row className="mb-4">
                                         <Col>
                                             <FormField
                                                 name="height"
                                                 as={IntPositiveFormat}
-                                                prefixReactNode={<span className="fw-bold">Высота</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Высота</InputGroup.Text>}
                                                 addInputGroupInput
-                                                postfixReactNode={<span className="fw-bold">см</span>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">см</InputGroup.Text>
+                                                }
                                             />
                                         </Col>
                                         <Col>
                                             <FormField
                                                 name="width"
                                                 as={IntPositiveFormat}
-                                                prefixReactNode={<span className="fw-bold">Ширина</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Ширина</InputGroup.Text>}
                                                 addInputGroupInput
-                                                postfixReactNode={<span className="fw-bold">см</span>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">см</InputGroup.Text>
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -333,9 +354,17 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                 className="mt-1 fw-bold input-group-bg-primary"
                                                 name="detailsSumTotal"
                                                 as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
+                                                prefixReactNode={
+                                                    <InputGroup.Text className="p-1 fw-bold">
+                                                        Всего за материалы
+                                                    </InputGroup.Text>
+                                                }
                                                 addInputGroupText
-                                                postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        <i className="bi bi-currency-euro"></i>
+                                                    </InputGroup.Text>
+                                                }
                                                 addHiddenInput
                                                 value={detailsSumTotal}
                                             />
@@ -346,19 +375,35 @@ export default class PictureEdit extends React.Component<Props, State> {
                                             <FormField
                                                 name="pricePerHour"
                                                 as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<span>Цена за час</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Цена за час</InputGroup.Text>}
                                                 addInputGroupInput
-                                                postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        <i className="bi bi-currency-euro"></i>
+                                                    </InputGroup.Text>
+                                                }
                                                 inputPlaceholder="Введите цену за час"
                                             />
                                         </Col>
-                                        <Col>
+                                        <Col className="text-end">
                                             <FormField
+                                                className="d-inline-block"
                                                 name="hoursSpent"
                                                 as={IntPositiveFormat}
-                                                prefixReactNode={<span>Затрачено часов</span>}
+                                                prefixReactNode={<InputGroup.Text className="p-1">Затрачено часов</InputGroup.Text>}
                                                 addInputGroupInput
                                                 inputPlaceholder="Введите количество затрачено часов"
+                                                postfixReactNode={
+                                                    <Button
+                                                        as="a"
+                                                        variant="outline-warning"
+                                                        size="sm"
+                                                        className="d-inline-block bi bi-calculator-fill"
+                                                        onClick={(e) => this.openPictureHoursSpentCalculatorModal(e, values.hoursSpent)}
+                                                    >
+                                                        Посчитать время
+                                                    </Button>
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -368,9 +413,17 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                 className="fw-bold"
                                                 name="forHoursSpentTotal"
                                                 as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<span className="fw-bold">Всего за потраченные часы</span>}
+                                                prefixReactNode={
+                                                    <InputGroup.Text className="p-1 fw-bold">
+                                                        Всего за потраченные часы
+                                                    </InputGroup.Text>
+                                                }
                                                 addInputGroupText
-                                                postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        <i className="bi bi-currency-euro"></i>
+                                                    </InputGroup.Text>
+                                                }
                                                 addHiddenInput
                                                 value={values.pricePerHour * values.hoursSpent}
                                             />
@@ -391,42 +444,82 @@ export default class PictureEdit extends React.Component<Props, State> {
                                                     <Accordion.Body className="p-1">
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={<span className="text-danger">Минимальная цена (за материалы)</span>}
+                                                            prefixReactNode={
+                                                                <InputGroup.Text className="p-1 text-danger">
+                                                                    Минимальная цена (за материалы)
+                                                                </InputGroup.Text>
+                                                            }
                                                             addInputGroupText
-                                                            inputGroupTextClassName="text-danger"
-                                                            postfixReactNode={<i className="bi bi-currency-euro text-danger"></i>}
+                                                            inputGroupValueClassName="text-danger"
+                                                            postfixReactNode={
+                                                                <InputGroup.Text className="p-1">
+                                                                    <i className="bi bi-currency-euro text-danger"></i>
+                                                                </InputGroup.Text>
+                                                            }
                                                             value={detailsSumTotal}
                                                         />
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={<span className="text-danger">Минимальная цена (за работу)</span>}
+                                                            prefixReactNode={
+                                                                <InputGroup.Text className="p-1 text-danger">
+                                                                    Минимальная цена (за работу)
+                                                                </InputGroup.Text>
+                                                            }
                                                             addInputGroupText
-                                                            inputGroupTextClassName="text-danger"
-                                                            postfixReactNode={<i className="bi bi-currency-euro text-danger"></i>}
+                                                            inputGroupValueClassName="text-danger"
+                                                            postfixReactNode={
+                                                                <InputGroup.Text className="p-1">
+                                                                    <i className="bi bi-currency-euro text-danger"></i>
+                                                                </InputGroup.Text>
+                                                            }
                                                             value={values.pricePerHour * values.hoursSpent}
                                                         />
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={<span className="text-success">Цена (материалы + работа)</span>}
+                                                            prefixReactNode={
+                                                                <InputGroup.Text className="p-1 text-success">
+                                                                    Цена (материалы + работа)
+                                                                </InputGroup.Text>
+                                                            }
                                                             addInputGroupText
-                                                            inputGroupTextClassName="text-success"
-                                                            postfixReactNode={<i className="bi bi-currency-euro text-success"></i>}
+                                                            inputGroupValueClassName="text-success"
+                                                            postfixReactNode={
+                                                                <InputGroup.Text className="p-1">
+                                                                    <i className="bi bi-currency-euro text-success"></i>
+                                                                </InputGroup.Text>
+                                                            }
                                                             value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
                                                         />
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={<span className="text-primary">Цена по формуле 1</span>}
+                                                            prefixReactNode={
+                                                                <InputGroup.Text className="p-1 text-primary">
+                                                                    Цена по формуле 1
+                                                                </InputGroup.Text>
+                                                            }
                                                             addInputGroupText
-                                                            inputGroupTextClassName="text-primary"
-                                                            postfixReactNode={<i className="bi bi-currency-euro text-primary"></i>}
+                                                            inputGroupValueClassName="text-primary"
+                                                            postfixReactNode={
+                                                                <InputGroup.Text className="p-1">
+                                                                    <i className="bi bi-currency-euro text-primary"></i>
+                                                                </InputGroup.Text>
+                                                            }
                                                             value={values.width * values.height * 0.014}
                                                         />
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={<span className="text-primary">Цена по формуле 2</span>}
+                                                            prefixReactNode={
+                                                                <InputGroup.Text className="p-1 text-primary">
+                                                                    Цена по формуле 2
+                                                                </InputGroup.Text>
+                                                            }
                                                             addInputGroupText
-                                                            inputGroupTextClassName="text-primary"
-                                                            postfixReactNode={<i className="bi bi-currency-euro text-primary"></i>}
+                                                            inputGroupValueClassName="text-primary"
+                                                            postfixReactNode={
+                                                                <InputGroup.Text className="p-1">
+                                                                    <i className="bi bi-currency-euro text-primary"></i>
+                                                                </InputGroup.Text>
+                                                            }
                                                             value={values.width * values.height * 0.03}
                                                         />
                                                     </Accordion.Body>
@@ -436,10 +529,19 @@ export default class PictureEdit extends React.Component<Props, State> {
                                     </Row>
                                     <FormField
                                         name="bayFullPrice"
+                                        inputClassName="fw-bold"
                                         as={NumericPositiveDecimal2Format}
-                                        prefixReactNode={<span className="fw-bold">Продаю за</span>}
+                                        prefixReactNode={
+                                            <InputGroup.Text className="p-1 fw-bold">
+                                                Продаю за
+                                            </InputGroup.Text>
+                                        }
                                         addInputGroupInput
-                                        postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                        postfixReactNode={
+                                            <InputGroup.Text className="p-1">
+                                                <i className="bi bi-currency-euro"></i>
+                                            </InputGroup.Text>
+                                        }
                                         inputPlaceholder="Введите цену продажи"
                                     />
                                 </Form>
@@ -452,6 +554,8 @@ export default class PictureEdit extends React.Component<Props, State> {
                         )}
                     </Formik>
                 </Card >
+
+                <PictureHoursSpentCalculatorModal ref={this.pictureHoursSpentCalculatorModalRef} onSaved={this.onSaveHoursSpentCalculator} />
             </>
         )
     }

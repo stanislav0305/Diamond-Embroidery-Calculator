@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Formik } from 'formik'
 import PicturesDefaultSetI, { picturesDefaultSetDefaultISchema } from '@shared/interfaces/picturesDefaultSetI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
@@ -92,9 +92,17 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
                                                 className="mt-1 fw-bold"
                                                 name="detailsSumTotal"
                                                 as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<span className="fw-bold">Всего за материалы</span>}
+                                                prefixReactNode={
+                                                    <InputGroup.Text className="p-1 fw-bold">
+                                                        Всего за материалы
+                                                    </InputGroup.Text>
+                                                }
                                                 addInputGroupText
-                                                postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        <i className="bi bi-currency-euro"></i>
+                                                    </InputGroup.Text>
+                                                }
                                                 addHiddenInput
                                                 value={detailsSumTotal}
                                             />
@@ -103,9 +111,17 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
                                             <FormField
                                                 name="pricePerHour"
                                                 as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<span>Цена за час</span>}
+                                                prefixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        Цена за час
+                                                    </InputGroup.Text>
+                                                }
                                                 addInputGroupInput
-                                                postfixReactNode={<i className="bi bi-currency-euro"></i>}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        <i className="bi bi-currency-euro"></i>
+                                                    </InputGroup.Text>
+                                                }
                                                 inputPlaceholder="Введите цену за час"
                                             />
                                         </Col>

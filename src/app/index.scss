@@ -54,3 +54,8 @@ $bg-img-logo: url('@assets/diamond.ico');
         background-color: var(--bs-primary) !important;
     }
 }
+
+/* Для модальных окон в модальных окнах */
+.modal-backdrop {
+    z-index: 1055 !important;
+}

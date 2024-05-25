@@ -3,3 +3,6 @@ export const MAX_IMAGE_SIZE_IN_MB = 50
 export const EVENT_MESSAGES = {
     VISIBLE_DELAY_IN_SEC: 25
 }
+
+export const MINUTES_IN_HOUR = 60
+export const MINUTES_SEPARATOR = ':'

@@ -34,7 +34,9 @@ export default function CustomModal(props: PropsWithChildren<OptionsI>) {
     return (
         <>
             <Modal
-                size='lg'
+                size="lg"
+                backdrop="static"
+                keyboard={false}
                 show={mode === 'loading' || mode === 'loaded' || mode === 'error'}
                 className={className + ' mt-5 '}
                 onHide={onHide}

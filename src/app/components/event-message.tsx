@@ -23,7 +23,7 @@ export const actionIconCss: Map<ActionType, string> = new Map<ActionType, string
     ['updated', 'bi-pencil-fill'],
     ['removed', 'bi-trash3-fill'],
     ['info', 'bi-info-circle-fill'],
-    ['error', 'exclamation-triangle-fill']
+    ['error', 'bi-exclamation-triangle-fill']
 ])
 
 export default function EventMessage(props: EventMessagePropsI) {

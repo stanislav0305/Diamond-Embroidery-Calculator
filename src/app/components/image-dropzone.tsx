@@ -39,8 +39,8 @@ export default function ImageDropzone(props: Props) {
     } as DropzoneOptions)
 
     return (
-        <Container className={`text-center border p-1 ${className}`} >
-            <div {...getRootProps()}>
+        <Container className={`text-center border p-0 ${className}`} >
+            <div {...getRootProps()} className="p-4 d-block">
                 <input {...getInputProps()} />
                 {!isDragActive && <small className="text-muted small">Перетащите сюда несколько файлов или щелкните, чтобы выбрать файл(ы).</small>}
                 {isDragActive && !isDragReject && <small className="text-success small">Теперь отпусти чтобы приложить файл(ы)!</small>}

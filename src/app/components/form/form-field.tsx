@@ -17,7 +17,7 @@ type Props = {
     isValid: boolean
     isInvalid: boolean
     isBaseFormat: boolean
-    inputGroupTextClassName?: string
+    inputGroupValueClassName?: string
 }
 
 function InputFormat(p: Props) {
@@ -52,7 +52,7 @@ function InputGroupTextFormat(p: Props) {
             size="sm"
 
             name={p.name}
-            className={p.inputGroupTextClassName}
+            className={p.inputGroupValueClassName}
             value={p.value ?? p.field?.value}
 
             {...(p.isBaseFormat && {
@@ -76,7 +76,7 @@ type FormFieldProps = {
 
     addInputGroupInput?: boolean
     addInputGroupText?: boolean
-    inputGroupTextClassName?: string
+    inputGroupValueClassName?: string
 
     addInput?: boolean
     inputClassName?: string
@@ -93,18 +93,18 @@ export default function FormField(ffp: FormFieldProps) {
 
     const p: Props = {
         name: ffp.name,
-        value:ffp.value,
-        inputType :ffp.inputType,
-        inputPlaceholder :ffp.inputPlaceholder,
+        value: ffp.value,
+        inputType: ffp.inputType,
+        inputPlaceholder: ffp.inputPlaceholder,
         inputDisplayType: 'input',
-        field :field,
-        meta :meta,
-        helpers :helpers,
-        as :ffp.as,
+        field: field,
+        meta: meta,
+        helpers: helpers,
+        as: ffp.as,
         isValid: meta ? (meta.touched && meta?.error === undefined) : true,
-        isInvalid:meta ? (meta?.touched && meta?.error !== undefined) : false,
+        isInvalid: meta ? (meta?.touched && meta?.error !== undefined) : false,
         isBaseFormat: typeof ffp.as === typeof BaseFormat,
-        inputGroupTextClassName: ffp.inputGroupTextClassName,
+        inputGroupValueClassName: ffp.inputGroupValueClassName,
     }
 
 
@@ -115,12 +115,10 @@ export default function FormField(ffp: FormFieldProps) {
             }
 
             {(ffp.addInputGroupInput || ffp.addInputGroupText ||
-            ffp.prefixReactNode || ffp.postfixReactNode) &&
+                ffp.prefixReactNode || ffp.postfixReactNode) &&
                 <InputGroup size="sm" className='mb-1'>
-                    {ffp.prefixReactNode &&
-                        <InputGroup.Text className='p-1'>
-                            {ffp.prefixReactNode}
-                        </InputGroup.Text>
+                    {(ffp.prefixReactNode) &&
+                        ffp.prefixReactNode
                     }
 
                     {ffp.addInputGroupInput &&
@@ -131,10 +129,8 @@ export default function FormField(ffp: FormFieldProps) {
                         <InputGroupTextFormat {...p} />
                     }
 
-                    {ffp.postfixReactNode &&
-                        <InputGroup.Text className='p-1'>
-                            {ffp.postfixReactNode}
-                        </InputGroup.Text>
+                    {(ffp.postfixReactNode) &&
+                        ffp.postfixReactNode
                     }
                 </InputGroup>
             }
