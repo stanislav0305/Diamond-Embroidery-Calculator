@@ -1,7 +1,10 @@
 import React, { createContext, PropsWithChildren } from 'react'
+import { interval, map, mergeMap, Subject, take, tap, takeWhile, switchMap } from 'rxjs'
 import EventMessage, { EventMessagePropsI } from '@components/event-message'
 import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/eventMessagePropsFactory'
 import { EVENT_MESSAGES } from '@shared/consts'
+import IdHelper from '@shared/helpers/idHelper'
+
 
 type EventMessagesContextType = {
     addMessage: (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => void,
@@ -14,7 +17,10 @@ type EventMessagesProviderState = {
 }
 
 export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>, EventMessagesProviderState> {
-    timeRef: number | undefined = undefined
+    addMessageSubject = new Subject<EventMessagePropsI>()
+    renderTimerSubject = new Subject<Boolean>
+    emp = {} as { [key: string]: EventMessagePropsI }
+
 
     constructor(props: PropsWithChildren) {
         super(props)
@@ -22,77 +28,71 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         this.state = {
             eventMessagesProps: [] as EventMessagePropsI[]
         }
+
+        this.renderTimerSubject
+            .pipe(
+                switchMap(() => interval(1000)
+                    .pipe(
+                        map(() => { return Object.keys(this.emp).length }),
+                        takeWhile(Boolean),
+                    )),
+                tap(t => {
+                    console.log(`Render tick t=${t}`)
+                    const arr = Object.values(this.emp) as EventMessagePropsI[]
+                    this.setState(prev => {
+                        return {
+                            ...prev,
+                            eventMessagesProps: [...arr]
+                        }
+                    })
+                })
+            )
+            .subscribe()
+
+
+        this.addMessageSubject
+            .pipe(
+                map(p => {
+                    const key = IdHelper.genId()
+                    this.emp[key] = { ...p } as EventMessagePropsI
+                    this.renderTimerSubject.next(true)
+
+                    return key
+                }),
+                mergeMap((key: string, index: number) => {
+                    return interval(1000).pipe(
+                        take(EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC),
+                        map(t => {
+                            console.log(`Change timer t=${t} index=${index}, for key=${key}`)
+                            this.emp[key].secAgo++
+                            this.emp[key].show = this.emp[key].secAgo < EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC
+
+                            return key
+                        }),
+                        map(key => {
+                            if (!this.emp[key].show) {
+                                delete this.emp[key]
+                                console.log(`Property by key=${key} deleted`)
+                            }
+
+                            return key
+                        })
+                    )
+                }),
+            )
+            .subscribe()
+
     }
 
     componentWillUnmount(): void {
-        const { eventMessagesProps } = this.state
-
-        if (eventMessagesProps.length && this.timeRef) {
-            window.clearInterval(this.timeRef)
-            this.timeRef = undefined
-        }
+        this.addMessageSubject.unsubscribe()
+        this.renderTimerSubject.unsubscribe()
     }
+
 
     addMessage = (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => {
         const props = EventMessagePropsFactory.getProps(t, this.onClose, hasError ?? false, errorDescription, additionalDescription)
-        this.addPropsWithAutoClose(props)
-    }
-
-    addPropsWithAutoClose = (p: EventMessagePropsI) => {
-        const { eventMessagesProps } = this.state
-        if (eventMessagesProps.findIndex(el => el.elementiId === p.elementiId) >= 0) return
-
-        const isTimerWorking = eventMessagesProps.length > 0
-
-        this.setState(prev => {
-            return {
-                ...prev,
-                eventMessagesProps: [...prev.eventMessagesProps, p]
-            }
-        })
-
-        if (isTimerWorking)
-            return
-
-        let arrayIsEmpty = false
-
-        //таймер для авто закрытия событий
-        this.timeRef = window.setInterval(() => {
-            console.log('timer tic')
-
-            this.setState(prev => {
-
-                const { eventMessagesProps } = prev
-                const newProps: EventMessagePropsI[] = []
-
-                eventMessagesProps.forEach(el => {
-                    const secAgo = el.secAgo + 1
-                    const show = secAgo < EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC
-
-                    if (show) {
-                        const newP = {
-                            ...el,
-                            secAgo: secAgo,
-                            show: show
-                        } as EventMessagePropsI
-
-                        newProps.push(newP)
-                    }
-                })
-
-                arrayIsEmpty = !newProps.length
-
-                return {
-                    ...prev,
-                    eventMessagesProps: [...newProps]
-                }
-            })
-
-            if (arrayIsEmpty) {
-                window.clearInterval(this.timeRef)
-                this.timeRef = undefined
-            }
-        }, 1000)
+        this.addMessageSubject.next(props)
     }
 
     onClose = (elementiId: string, e?: React.MouseEvent | React.KeyboardEvent) => {
