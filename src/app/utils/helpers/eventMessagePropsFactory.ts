@@ -26,7 +26,7 @@ export default class EventMessagePropsFactory {
         errorDescription: string | undefined, additionalDescription: string | undefined) {
         const uid = new ShortUniqueId({ length: 10 })
         const props = Object.assign({ ...baseModel }, {
-            elementiId: uid.rnd(),
+            id: uid.rnd(),
             hasError,
             errorDescription,
             additionalDescription,

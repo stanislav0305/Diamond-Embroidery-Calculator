@@ -1,9 +1,8 @@
 import React, { createContext, PropsWithChildren } from 'react'
-import { interval, map, mergeMap, Subject, take, tap, takeWhile, switchMap } from 'rxjs'
+import { interval, map, mergeMap, Subject, tap, takeWhile, switchMap } from 'rxjs'
 import EventMessage, { EventMessagePropsI } from '@components/event-message'
 import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/eventMessagePropsFactory'
 import { EVENT_MESSAGES } from '@shared/consts'
-import IdHelper from '@shared/helpers/idHelper'
 
 
 type EventMessagesContextType = {
@@ -33,8 +32,9 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
             .pipe(
                 switchMap(() => interval(1000)
                     .pipe(
-                        map(() => { return Object.keys(this.emp).length }),
-                        takeWhile(Boolean),
+                        takeWhile(t => Object.keys(this.emp).length > 0
+                            || this.state.eventMessagesProps.length > 0
+                        ),
                     )),
                 tap(t => {
                     console.log(`Render tick t=${t}`)
@@ -42,40 +42,38 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
                     this.setState(prev => {
                         return {
                             ...prev,
-                            eventMessagesProps: [...arr]
+                            eventMessagesProps: [...arr],
                         }
                     })
                 })
             )
             .subscribe()
 
-
         this.addMessageSubject
             .pipe(
                 map(p => {
-                    const key = IdHelper.genId()
-                    this.emp[key] = { ...p } as EventMessagePropsI
+                    this.emp[p.id] = { ...p } as EventMessagePropsI
                     this.renderTimerSubject.next(true)
 
-                    return key
+                    return p.id
                 }),
-                mergeMap((key: string, index: number) => {
+                mergeMap((id: string, index: number) => {
                     return interval(1000).pipe(
-                        take(EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC),
+                        takeWhile(t => t <= EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC && !!this.emp[id]),
                         map(t => {
-                            console.log(`Change timer t=${t} index=${index}, for key=${key}`)
-                            this.emp[key].secAgo++
-                            this.emp[key].show = this.emp[key].secAgo < EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC
+                            console.log(`Change timer t=${t} index=${index}, for key=${id}`)
+                            this.emp[id].secAgo++
 
-                            return key
+                            return id
                         }),
-                        map(key => {
-                            if (!this.emp[key].show) {
-                                delete this.emp[key]
-                                console.log(`Property by key=${key} deleted`)
+                        map(id => {
+                            if ((this.emp[id].secAgo === EVENT_MESSAGES.VISIBLE_DELAY_IN_SEC + 1)
+                                || (!this.emp[id].show)) {
+                                delete this.emp[id]
+                                console.log(`Property by key=${id} deleted`)
                             }
 
-                            return key
+                            return id
                         })
                     )
                 }),
@@ -95,13 +93,10 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         this.addMessageSubject.next(props)
     }
 
-    onClose = (elementiId: string, e?: React.MouseEvent | React.KeyboardEvent) => {
+    onClose = (key: string, e?: React.MouseEvent | React.KeyboardEvent) => {
         e?.preventDefault()
 
-        this.setState({
-            ...this.state,
-            eventMessagesProps: this.state.eventMessagesProps.filter(el => el.elementiId !== elementiId)
-        })
+        this.emp[key].show = false
     }
 
     render() {
@@ -110,7 +105,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         const items: JSX.Element[] = []
 
         eventMessagesProps.forEach(p => {
-            items.push(<EventMessage key={`event-message-${p.elementiId}`} {...p} />)
+            items.push(<EventMessage key={`event-message-${p.id}`} {...p} />)
         })
 
         return (

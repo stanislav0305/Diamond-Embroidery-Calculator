@@ -5,7 +5,7 @@ import { ActionType } from '@shared/types/actionType'
 
 
 export interface EventMessagePropsI {
-    elementiId: string
+    id: string
     title: string
     action: ActionType
     variant: Variant
@@ -30,7 +30,7 @@ export default function EventMessage(props: EventMessagePropsI) {
     return (
         <Toast bg={props.variant}
             className='mt-2 mx-2'
-            onClose={(e) => props.onClose(props.elementiId, e)}
+            onClose={(e) => props.onClose(props.id, e)}
             show={props.show}
         >
             <Toast.Header>
