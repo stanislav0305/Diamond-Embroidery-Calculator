@@ -1,26 +1,37 @@
-import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Image } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
+import { MRT_Localization_RU } from 'material-react-table/locales/ru'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
-import { Row } from '@tanstack/react-table'
+import { ColumnOrderState, ColumnSort, Row, SortingState, Updater, VisibilityState } from '@tanstack/react-table'
 import PicturEditModal from '@containers/picture/picture-edit-modal'
 import PicturRemoveModal from '@containers/picture/picture-remove-modal'
 import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
-
+import TableOptionsI from '@shared/interfaces/tableOptionsI'
+import { ColumnSortI } from '@shared/interfaces/columnSortI'
 
 
 export default function PicturesTable() {
-  const [data, setData] = React.useState<PictureI[]>([])
 
   useEffect(() => {
-    window.api.pictures.getAll()
-      .then(result => setData(result))
+    window.api.pictures.tableOptions.get()
+      .then((opts: TableOptionsI) => {
+        setColumnVisibility(opts.columnVisibility)
+        setColumnOrder(opts.columnOrder)
+        setColumnSorting(opts.columnSort)
+
+        window.api.pictures.getAll()
+          .then(result => setData(result))
+      })
   }, [])
+
+
+  const [data, setData] = useState<PictureI[]>([])
 
 
   const appSettingsContext = useContext(AppSettingsContext)
@@ -35,6 +46,7 @@ export default function PicturesTable() {
       [
         {
           header: 'Фото',
+          accessorKey: 'photo',
           enableColumnFilter: false,
           enableSorting: false,
           size: 82,
@@ -83,7 +95,7 @@ export default function PicturesTable() {
         },
         {
           header: 'Форма кристала',
-          id: 'diamondForm',
+          accessorKey: 'diamondForm',
           accessorFn: row => diamondFormDataMap.get(row.diamondForm),
           filterSelectOptions: MapToArrayConverter.toDropdownOptionsValues(diamondFormDataMap),
           filterVariant: 'select',
@@ -92,7 +104,7 @@ export default function PicturesTable() {
         },
         {
           header: 'Площадь покрытия',
-          id: 'coverageArea',
+          accessorKey: 'coverageArea',
           accessorFn: row => coverageAreasDataMap.get(row.coverageArea),
           filterSelectOptions: MapToArrayConverter.toDropdownOptionsValues(coverageAreasDataMap),
           filterVariant: 'select',
@@ -135,6 +147,7 @@ export default function PicturesTable() {
         },
         {
           header: 'Продано за',
+          accessorKey: 'bayFullPrice',
           accessorFn: row => row.bayFullPrice.toLocaleString('ru-RU', {
             style: 'currency',
             currency: 'EUR'
@@ -153,12 +166,67 @@ export default function PicturesTable() {
     []
   )
 
+  //--------------------------------------------------------
+
+
+  const [columnVisibility, setColumnVisibility] = useState({})
+  const onColumnVisibilityChange = (updater: Updater<object>) => {
+    setColumnVisibility((prev) => {
+      const model = (updater instanceof Function ? updater(prev) : updater) as object
+      window.api.pictures.tableOptions.setColumnVisibility(model)
+
+      return model
+    })
+  }
+
+  const [columnOrder, setColumnOrder] = useState<string[]>([])
+  const onColumnOrderChange = (updater: Updater<ColumnOrderState>) => {
+    setColumnOrder((prev) => {
+      const model = (updater instanceof Function ? updater(prev as ColumnOrderState) : updater) as string[]
+
+      if (prev && model && prev.length > 0 && model.length > 0 &&
+        model.filter((item, index) => { return prev[index] !== item }).length > 0) {
+        //save only if arrays are defferent
+        window.api.pictures.tableOptions.setColumnOrder(model)
+      }
+
+      return model
+    })
+  }
+
+  const [columnSorting, setColumnSorting] = useState<ColumnSortI[]>([])
+  const onSortingChange = (updater: Updater<SortingState>) => {
+    setColumnSorting((prev) => {
+      const model = (updater instanceof Function ? updater(prev as SortingState) : updater) as ColumnSortI[]
+
+      if (prev && model
+        && ((prev.length !== model.length)
+          || (model.filter((item, index) => { return (prev[index].id !== item.id || prev[index].desc !== item.desc) }).length > 0))) {
+        //save only if arrays are defferent
+        window.api.pictures.tableOptions.setColumnSort(model)
+      }
+
+      return model
+    })
+  }
+
+  //--------------------------------------------------------
+
   const table = useMaterialReactTable({
     columns,
     data,
+    localization: MRT_Localization_RU,
     initialState: {
       density: 'compact',
     },
+    state: {
+      columnVisibility,
+      columnOrder,
+      sorting: columnSorting
+    },
+    onColumnVisibilityChange: onColumnVisibilityChange,
+    onColumnOrderChange: onColumnOrderChange,
+    onSortingChange: onSortingChange,
     filterFns: {
       heightWidthFilterFn: (row: Row<PictureI>, columnId: string, filterValue: number[]) => {
         const height: number = row.getValue('height')

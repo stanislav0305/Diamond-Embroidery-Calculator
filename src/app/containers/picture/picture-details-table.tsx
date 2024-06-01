@@ -1,12 +1,20 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
+import { MRT_Localization_RU } from 'material-react-table/locales/ru'
 import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/pictureDetailI'
 import PicturDetailEditModal from '@containers/picture/picture-detail-edit-modal'
 import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-modal'
+import TableOptionsI from '@shared/interfaces/tableOptionsI'
+import { columns } from '@containers/picture/picture-details-table-columns'
+import { ColumnOrderState, OnChangeFn, SortingState, VisibilityState } from '@tanstack/react-table'
 
 
 interface PictureDetailsProps {
+    tableOptions: TableOptionsI
+    onColumnVisibilityChange: OnChangeFn<VisibilityState>
+    onColumnOrderChange: OnChangeFn<ColumnOrderState>
+    onSortingChange:OnChangeFn<SortingState>
     pictureDetails: PictureDetailI[]
     onDetailsChenge?: (details: PictureDetailI[]) => void
     onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void
@@ -16,14 +24,27 @@ interface PictureDetailsProps {
 const getTable = (pictureDetails: PictureDetailI[],
     columns: MRT_ColumnDef<PictureDetailI>[],
     openPictureDetailEditModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void,
-    openPictureDetailRemoveModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void
+    openPictureDetailRemoveModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void,
+    tableOptions: TableOptionsI,
+    onColumnVisibilityChange: OnChangeFn<VisibilityState>,
+    onColumnOrderChange: OnChangeFn<ColumnOrderState>,
+    onSortingChange: OnChangeFn<SortingState>
 ) => {
     return useMaterialReactTable({
         columns,
         data: pictureDetails,
+        localization: MRT_Localization_RU,
         initialState: {
             density: 'compact',
         },
+        state: {
+            columnVisibility: tableOptions.columnVisibility,
+            columnOrder: tableOptions.columnOrder,
+            sorting: tableOptions.columnSort,
+        },
+        onColumnVisibilityChange: onColumnVisibilityChange,
+        onColumnOrderChange: onColumnOrderChange,
+        onSortingChange: onSortingChange,
         enableColumnOrdering: true,
         enableSorting: true,
         enablePagination: true,
@@ -52,37 +73,6 @@ const getTable = (pictureDetails: PictureDetailI[],
 }
 
 export default function PicturesDetailsTable(props: PictureDetailsProps) {
-
-    const columns = useMemo<MRT_ColumnDef<PictureDetailI>[]>(
-        () =>
-            [
-                {
-                    header: '#',
-                    accessorKey: 'id',
-                    sortDescFirst: false,
-                },
-                {
-                    header: 'Название',
-                    accessorKey: 'name',
-                    sortUndefined: 'last',
-                    sortDescFirst: false,
-
-                },
-                {
-                    header: 'Цена',
-                    accessorKey: 'price',
-                    accessorFn: row => row.price.toLocaleString('ru-RU', {
-                        style: 'currency',
-                        currency: 'EUR'
-                    }),
-                    filterVariant: 'range',
-                    sortUndefined: 'last',
-                    sortDescFirst: false,
-                }
-            ]
-        ,
-        []
-    )
 
     //------------------------------------------------------------------------------
 
@@ -119,7 +109,11 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
         props.pictureDetails,
         columns,
         openPictureDetailEditModal,
-        openPictureDetailRemoveModal
+        openPictureDetailRemoveModal,
+        props.tableOptions,
+        props.onColumnVisibilityChange,
+        props.onColumnOrderChange,
+        props.onSortingChange
     )
 
     return (

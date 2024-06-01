@@ -5,6 +5,7 @@ import ContextBridgeApiI from '@shared/interfaces/ipc/contextBridgeApiI'
 import Chanels from '@shared/interfaces/ipc/chanels'
 import ProcessingResultI from '@shared/interfaces/processingResultI'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
+import { ColumnSortI } from '@shared/interfaces/columnSortI'
 
 
 const fCatch = (e: Error) => {
@@ -37,13 +38,33 @@ const API: ContextBridgeApiI = {
     }
   },
   picturesDefaultSet: {
+    tableOptions: {
+      get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_get).catch(e => fCatch(e)),
+      setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
+      setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
+      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+    },
     get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
     set: (model: PicturesDefaultSetI) => ipcRenderer.invoke(Chanels.picturesDefaultSet_set, model).catch(e => fCatch(e)),
   },
+  pictureDetail: {
+    tableOptions: {
+      get: () => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_get).catch(e => fCatch(e)),
+      setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
+      setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
+      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+    }
+  },
   pictures: {
+    tableOptions: {
+      get: () => ipcRenderer.invoke(Chanels.pictures_tableOptions_get).catch(e => fCatch(e)),
+      setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
+      setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
+      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+    },
     getAll: () => ipcRenderer.invoke(Chanels.pictures_getAll).catch(e => fCatch(e)),
     create: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_create, model).catch(e => fCatch(e)),
-    read: (id: string) => ipcRenderer.invoke('pictures:read', id).catch(e => fCatch(e)),
+    read: (id: string) => ipcRenderer.invoke(Chanels.pictures_read, id).catch(e => fCatch(e)),
     update: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_update, model).catch(e => fCatch(e)),
     delete: (id: string) => ipcRenderer.invoke(Chanels.pictures_delete, id).catch(e => fCatch(e)),
     images: {

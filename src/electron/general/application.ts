@@ -7,6 +7,7 @@ import MainWindowChannelGroup from '@ipc/mainWindow.channelGroup'
 import PicturesChannelGroup from '@ipc/pictures.channelGroup'
 import PicturesDefaultSetChannelGroup from '@ipc/picturesDefaultSet.channelGroup'
 import PicturesImagesChannelGroup from '@ipc/picturesImages.channelGroup'
+import PictureDetailChannelGroup from '@electron/ipc/pictureDetail.channelGroup'
 
 
 export class Application {
@@ -33,6 +34,7 @@ export class Application {
         ThemeChannelGroup.registry(this.nativeTheme)
         MainWindowChannelGroup.registry(this.mainWindow)
         PicturesChannelGroup.registry()
+        PictureDetailChannelGroup.registry()
         PicturesDefaultSetChannelGroup.registry()
         PicturesImagesChannelGroup.registry(this.mainWindow)
     }

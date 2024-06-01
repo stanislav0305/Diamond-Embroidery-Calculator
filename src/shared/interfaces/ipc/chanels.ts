@@ -10,7 +10,18 @@ export default class Chanels {
     static window_unmaximize = 'window:unmaximize'
     static unmaximized = 'unmaximized'
 
+    static pictureDetail_tableOptions_get = 'pictureDetail:tableOptions:get'
+    static pictureDetail_tableOptions_setColumnVisibility = 'pictureDetail:tableOptions:setColumnVisibility'
+    static pictureDetail_tableOptions_setColumnOrder = 'pictureDetail:tableOptions:setColumnOrder'
+    static pictureDetail_tableOptions_setColumnSort = 'pictureDetail:tableOptions:setColumnSort'
+
+    static pictures_tableOptions_get = 'pictures:tableOptions:get'
+    static pictures_tableOptions_setColumnVisibility = 'pictures:tableOptions:setColumnVisibility'
+    static pictures_tableOptions_setColumnOrder = 'pictures:tableOptions:setColumnOrder'
+    static pictures_tableOptions_setColumnSort = 'pictures:tableOptions:setColumnSort'
+
     static pictures_getAll = 'pictures:getAll'
+    static pictures_read = 'pictures:read'
     static pictures_create = 'pictures:create'
     static pictures_update = 'pictures:update'
     static pictures_delete = 'pictures:delete'
@@ -20,6 +31,11 @@ export default class Chanels {
 
     static pictures_images_loaded = 'pictures:images:loaded'
     static pictures_images_removed = 'pictures:images:removed'
+
+    static picturesDefaultSet_tableOptions_get = 'picturesDefaultSet:tableOptions:get'
+    static picturesDefaultSet_tableOptions_setColumnVisibility = 'picturesDefaultSet:tableOptions:setColumnVisibility'
+    static picturesDefaultSet_tableOptions_setColumnOrder = 'picturesDefaultSet:tableOptions:setColumnOrder'
+    static picturesDefaultSet_tableOptions_setColumnSort = 'picturesDefaultSet:tableOptions:setColumnSort'
 
     static picturesDefaultSet_get = 'picturesDefaultSet:get'
     static picturesDefaultSet_set = 'picturesDefaultSet:set'

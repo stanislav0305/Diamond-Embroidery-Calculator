@@ -6,6 +6,9 @@ import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PicturesDetailsTable from '@containers/picture/picture-details-table'
 import FormField from '@components/form/form-field'
 import NumericPositiveDecimal2Format from '@components/inputs/numeric-positive-decimal2-format'
+import TableOptionsI from '@shared/interfaces/tableOptionsI'
+import { ColumnOrderState, SortingState, Updater, VisibilityState } from '@tanstack/react-table'
+import { ColumnSortI } from '@shared/interfaces/columnSortI'
 
 
 interface Props {
@@ -17,6 +20,7 @@ interface Props {
 interface State {
     initVal: PicturesDefaultSetI
     details: PictureDetailI[]
+    tableOptions: TableOptionsI
 }
 
 export default class PictureDefaultSetEdit extends React.Component<Props, State> {
@@ -30,7 +34,26 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
         this.state = {
             initVal: data,
             details: data.details,
+            tableOptions: {
+                columnOrder: [],
+                columnVisibility: {},
+                columnSort: [] as ColumnSortI[],
+            } as TableOptionsI,
         }
+    }
+
+    componentDidMount(): void {
+        window.api.picturesDefaultSet.tableOptions.get()
+            .then((opts: TableOptionsI) => {
+                this.setState(prev => {
+                    return {
+                        ...prev,
+                        tableOptions: {
+                            ...opts
+                        },
+                    }
+                })
+            })
     }
 
     onDetailsChenge = (details: PictureDetailI[]) => {
@@ -44,8 +67,70 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
 
     //---------------------------------------------------------------
 
+    onColumnVisibilityChange = (updater: Updater<VisibilityState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.tableOptions.columnVisibility) : updater) as object
+            window.api.picturesDefaultSet.tableOptions.setColumnVisibility(model)
+
+            return {
+                ...prev,
+                tableOptions: {
+                    ...prev.tableOptions,
+                    columnVisibility: { ...model }
+                }
+            }
+        })
+
+    }
+
+    onColumnOrderChange = (updater: Updater<ColumnOrderState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.tableOptions.columnOrder) : updater) as string[]
+
+            if (prev && model
+                && prev.tableOptions.columnOrder.length > 0 && model.length > 0
+                && model.filter((item, index) => { return prev.tableOptions.columnOrder[index] !== item }).length > 0) {
+                //save only if arrays are defferent
+                window.api.picturesDefaultSet.tableOptions.setColumnOrder(model)
+            }
+
+            return {
+                ...prev,
+                tableOptions: {
+                    ...prev.tableOptions,
+                    columnOrder: [...model]
+                }
+            }
+        })
+    }
+
+    onSortingChange = (updater: Updater<SortingState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.tableOptions.columnSort) : updater) as ColumnSortI[]
+
+            if (prev.tableOptions.columnSort && model
+                && ((prev.tableOptions.columnSort.length !== model.length)
+                    || (model.filter((item, index) => {
+                        return prev.tableOptions.columnSort[index].id !== item.id
+                            || prev.tableOptions.columnSort[index].desc !== item.desc
+                    }).length > 0))) {
+                //save only if arrays are defferent
+                window.api.picturesDefaultSet.tableOptions.setColumnSort(model)
+            }
+
+            return {
+                ...prev,
+                tableOptions: {
+                    ...prev.tableOptions,
+                    columnSort: model.map((col: ColumnSortI) => { return { ...col } })
+                }
+            }
+        })
+    }
+    //---------------------------------------------------------------
+
     render() {
-        const { initVal, details } = this.state
+        const { initVal, details, tableOptions } = this.state
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
 
         return (
@@ -85,6 +170,10 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
                                     <PicturesDetailsTable
                                         pictureDetails={details}
                                         onDetailsChenge={this.onDetailsChenge}
+                                        tableOptions={tableOptions}
+                                        onColumnVisibilityChange={this.onColumnVisibilityChange}
+                                        onColumnOrderChange={this.onColumnOrderChange}
+                                        onSortingChange={this.onSortingChange}
                                     />
                                     <Row>
                                         <Col>

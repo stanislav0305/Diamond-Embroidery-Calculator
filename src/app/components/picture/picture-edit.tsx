@@ -16,6 +16,9 @@ import PictureImageI from '@shared/interfaces/pictureImageI'
 import PictureImageItem from '@components/picture/picture-image-item'
 import { EventMessagesContext } from '@contexts/event-messages-provider'
 import PictureHoursSpentCalculatorModal from '@containers/picture/picture-hours-spent-calculator-modal'
+import TableOptionsI from '@shared/interfaces/tableOptionsI'
+import { ColumnOrderState, SortingState, Updater, VisibilityState } from '@tanstack/react-table'
+import { ColumnSortI } from '@shared/interfaces/columnSortI'
 
 
 const uid = new ShortUniqueId({ length: 10 })
@@ -31,6 +34,7 @@ interface StateI {
     forAdd: boolean
     initVal: PictureI
     details: PictureDetailI[]
+    detailsTableOptions: TableOptionsI,
     images: PictureImageI[]
     mainImageSrc: string | undefined
 }
@@ -54,12 +58,31 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
             forAdd: data.id === '',
             initVal: data,
             details: data.details,
+            detailsTableOptions: {
+                columnVisibility: {},
+                columnOrder: [],
+                columnSort: [],
+            } as TableOptionsI,
             images: data.images,
             mainImageSrc: this.createSrc(mainImg)
         }
     }
 
+
     componentDidMount() {
+        window.api.pictureDetail.tableOptions.get()
+            .then((opts: TableOptionsI) => {
+                this.setState(prev => {
+                    return {
+                        ...prev,
+                        detailsTableOptions: {
+                            ...opts
+                        },
+                    }
+                })
+            })
+
+
         window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
             const hasErroror = !result
             this.context.addMessage(
@@ -83,6 +106,69 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
         })
     }
 
+    //---------------------------------------------------------------
+
+    onColumnVisibilityChange = (updater: Updater<VisibilityState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.detailsTableOptions.columnVisibility) : updater) as object
+            window.api.pictureDetail.tableOptions.setColumnVisibility(model)
+
+            return {
+                ...prev,
+                detailsTableOptions: {
+                    ...prev.detailsTableOptions,
+                    columnVisibility: model
+                }
+            }
+        })
+
+    }
+
+    onColumnOrderChange = (updater: Updater<ColumnOrderState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.detailsTableOptions.columnOrder) : updater) as string[]
+
+            if (prev.detailsTableOptions.columnOrder && model
+                && prev.detailsTableOptions.columnOrder.length > 0 && model.length > 0
+                && model.filter((item, index) => { return prev.detailsTableOptions.columnOrder[index] !== item }).length > 0) {
+                //save only if arrays are defferent
+                window.api.pictureDetail.tableOptions.setColumnOrder(model)
+            }
+
+            return {
+                ...prev,
+                detailsTableOptions: {
+                    ...prev.detailsTableOptions,
+                    columnOrder: model
+                }
+            }
+        })
+    }
+
+    onSortingChange = (updater: Updater<SortingState>) => {
+        this.setState(prev => {
+            const model = (updater instanceof Function ? updater(prev.detailsTableOptions.columnSort) : updater) as ColumnSortI[]
+
+            if (prev.detailsTableOptions.columnSort && model
+                && ((prev.detailsTableOptions.columnSort.length !== model.length)
+                    || (model.filter((item, index) => {
+                        return prev.detailsTableOptions.columnSort[index].id !== item.id
+                            || prev.detailsTableOptions.columnSort[index].desc !== item.desc
+                    }).length > 0))) {
+                //save only if arrays are defferent
+                window.api.pictureDetail.tableOptions.setColumnSort(model)
+
+            }
+
+            return {
+                ...prev,
+                detailsTableOptions: {
+                    ...prev.detailsTableOptions,
+                    columnSort: model
+                }
+            }
+        })
+    }
     //---------------------------------------------------------------
 
     createSrc = (pi: PictureImageI | undefined): string => {
@@ -207,7 +293,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
     //---------------------------------------------------------------
 
     render() {
-        const { forAdd, initVal, details, images, mainImageSrc } = this.state
+        const { forAdd, initVal, details, detailsTableOptions, images, mainImageSrc } = this.state
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
 
         return (
@@ -346,6 +432,10 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                         <PicturesDetailsTable
                                                             pictureDetails={details}
                                                             onDetailsChenge={this.onDetailsChenge}
+                                                            tableOptions={detailsTableOptions}
+                                                            onColumnVisibilityChange={this.onColumnVisibilityChange}
+                                                            onColumnOrderChange={this.onColumnOrderChange}
+                                                            onSortingChange={this.onSortingChange}
                                                         />
                                                     </Accordion.Body>
                                                 </Accordion.Item>

@@ -35,8 +35,8 @@ abstract class BaseWindow {
     }
 
     public showOpenDialog(
-        properties?: Array<'openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' 
-        | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent'>
+        properties?: ('openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' 
+        | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent')[]
     ): Promise<Electron.OpenDialogReturnValue> {
         return dialog.showOpenDialog(this._window, {
             properties: properties
