@@ -205,10 +205,10 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
     createPictereImage = (file: File, arrayBuffer: ArrayBuffer, isMain: boolean) => {
         return {
             id: uid.rnd(),
-            //получить название файла, если оно есть
+            //get the file name if it exists
             name: file.name.indexOf('.') >= 0 ? file.name.split('.').slice(-1)[1] : '',
             type: file.type,
-            //получить расширение файла, если оно есть
+            //get the file extension if it exists
             ext: file.name.indexOf('.') >= 0 ? file.name.split('.').slice(-1)[0] : '',
             size: file.size,
             isMain,
@@ -322,8 +322,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                     }
                                     {!!Object.values(errors).length &&
                                         Object.entries(errors)
-                                            /* вначале исключаем поля для которых ненужно отображать ошибки с верху 
-                                            (они уже отображаются возле полей ввода) */
+                                            /* First, we exclude fields for which it is unnecessary to display errors at the top 
+                                            (they are already displayed near the input fields) */
                                             .filter(([key,]) => !['height', 'width', 'diamondForm', 'coverageArea',
                                                 'detailsSumTotal', 'pricePerHour', 'hoursSpent', 'forHoursSpentTotal',
                                                 'bayFullPrice', 'comment']

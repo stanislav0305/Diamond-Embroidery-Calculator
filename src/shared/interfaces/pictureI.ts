@@ -10,7 +10,7 @@ export default interface PictureI extends HistoryI {
     height: number
     width: number
     diamondForm: DiamondFormType
-    coverageArea: CoverageAreaType //площадь покрытия
+    coverageArea: CoverageAreaType
 
     details: PictureDetailI[]
     detailsSumTotal: number

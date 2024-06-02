@@ -43,7 +43,7 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
 
     this.toogle('closed')
 
-    //сохраняем и обновляем таблицу
+    //save and update the table
     this.props.onSaved(forAdd, pictureDetail)
   }
 

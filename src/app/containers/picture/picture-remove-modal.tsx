@@ -46,7 +46,7 @@ export default class PicturRemoveModal extends React.Component<PicturRemoveModal
                 this.context.addMessage('PictureRemoved', hasError)
                 this.toogle('closed')
 
-                //обновляем таблицу
+                //update the table
                 removed && this.props.onRemoved(id)
             })
             .catch(e => {

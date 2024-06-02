@@ -157,8 +157,8 @@ export default class PictureDefaultSetEdit extends React.Component<Props, State>
                                     }
                                     {!!Object.values(errors).length &&
                                         Object.entries(errors)
-                                            /* вначале исключаем поля для которых ненужно отображать ошибки с верху 
-                                            (они уже отображаются возле полей ввода) */
+                                            /* First, we exclude fields for which it is unnecessary to display errors at the top 
+                                            (they are already displayed near the input fields) */
                                             .filter(([key,]) => !['detailsSumTotal', 'pricePerHour']
                                                 .includes(key))
                                             .map(([, error]) => (

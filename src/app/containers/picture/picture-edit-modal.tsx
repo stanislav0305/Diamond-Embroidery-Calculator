@@ -98,7 +98,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
           this.context.addMessage('PictureCreated', hasError)
           this.toogle('closed')
 
-          //обновляем таблицу
+          //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {
@@ -113,7 +113,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
           this.context.addMessage('PictureUpdated', hasError)
           this.toogle('closed')
 
-          //обновляем таблицу
+          //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {

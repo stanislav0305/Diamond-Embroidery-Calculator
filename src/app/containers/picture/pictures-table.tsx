@@ -236,16 +236,16 @@ export default function PicturesTable() {
 
         let result = false
         if (!min && !max) {
-          //оба неопределены
+          //both are undefined
           result = true
         } else if (!!min && !max) {
-          //только min
+          //min only
           result = height >= min || width >= min
         } else if (!min && !!max) {
-          //только max
+          //max only
           result = height <= max || width <= max
         } else {
-          //оба определены
+          //both defined
           result = (height >= min && height <= max) || (width >= min && width <= max)
         }
 

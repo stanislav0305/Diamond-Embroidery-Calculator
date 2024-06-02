@@ -17,7 +17,7 @@ export interface PictureEntityI extends HistoryEntityI {
     height: number
     width: number
     diamondForm: DiamondFormType
-    coverageArea: CoverageAreaType //площадь покрытия
+    coverageArea: CoverageAreaType
 
     details: PictureDetailEntityI[]
     detailsSumTotal: number
@@ -57,7 +57,7 @@ export const picturesShema = {
                 enum: diamondForms,
                 default: diamondFormDefault,
             },
-            coverageArea: { //площадь покрытия
+            coverageArea: {
                 type: 'string',
                 enum: coverageAreas,
                 default: coverageAreaDefault,

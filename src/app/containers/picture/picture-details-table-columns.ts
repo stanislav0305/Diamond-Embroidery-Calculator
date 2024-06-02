@@ -1,4 +1,3 @@
-//import { useMemo } from "react"
 import { MRT_ColumnDef } from "material-react-table"
 import PictureDetailI from "@shared/interfaces/pictureDetailI"
 

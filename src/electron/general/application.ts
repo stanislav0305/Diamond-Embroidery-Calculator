@@ -13,7 +13,7 @@ import PictureDetailChannelGroup from '@electron/ipc/pictureDetail.channelGroup'
 export class Application {
     private nativeTheme: NativeTheme | null = null
     private mainWindow: MainWindow | null = null
-    
+
     constructor() {
         app.on('ready', this.onReady)
         app.on('window-all-closed', this.onWindowAllClosed)
@@ -40,9 +40,9 @@ export class Application {
     }
 
     /*
-       Возвращаем приложение в фокус, если пользователь его открыл через иконку в Dock.
-       В OS X обычно заново создают окно приложения, когда значок закрепления нажат, 
-       и другие окна приложения не открыты - когда окно приложения сново активно.
+        We return the application to focus if the user opened it through the Dock icon.
+        In OS X, it is common to re-create the application window when the dock icon is clicked,
+        and other application windows are not open - when the application window is active again.
     */
     private onActivate() {
         console.log('onActivate...')
@@ -51,10 +51,10 @@ export class Application {
 
 
     /*
-      Закрываем приложение, когда все окна закрыты.
-      В OS X это обычное дело для приложений оставаться активным до тех пор, 
-      пока пользователь не выйдет явно с помощью Cmd + Q
-      Потому если это не виндовс и все окна закрыты, то закрываем приложение
+        Close the application when all windows are closed.
+        In OS X it is common for applications to remain active until
+        until the user exits explicitly with Cmd + Q
+        Therefore, if this is not Windows and all windows are closed, then close the application
     */
     private onWindowAllClosed() {
         console.log('onWindowAllClosed...')

@@ -182,10 +182,10 @@ export default class PictureHoursSpentCalculatorModal extends React.Component<Pr
         let newItems = [] as TimeInMinutesItemI[]
 
         if (num === 0) {
-            //то добавляем в конец таблицы
+            //then add it to the end of the table
             newItems = [...items, newItem]
         } else {
-            //добавляем в середину таблицы
+            //then add it to the middle of the table
             const begin = num - 1 >= 0 ? items.slice(0, num) : [] as TimeInMinutesItemI[]
             const end = num < items.length ? items.slice(num, items.length) : [] as TimeInMinutesItemI[]
             newItems = [...begin, newItem, ...end]
