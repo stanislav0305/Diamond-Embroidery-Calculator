@@ -18,6 +18,7 @@ type Props = {
     isInvalid: boolean
     isBaseFormat: boolean
     inputGroupValueClassName?: string
+    disabled?: boolean
 }
 
 function InputFormat(p: Props) {
@@ -27,7 +28,8 @@ function InputFormat(p: Props) {
             size="sm"
             name={p.name}
             type={p.inputType}
-
+            disabled={p.disabled}
+            
             value={p.value ?? p.field?.value}
             isValid={p.isValid}
             isInvalid={p.isInvalid}
@@ -85,6 +87,8 @@ type FormFieldProps = {
 
     addText?: boolean
     addHiddenInput?: boolean
+
+    disabled?: boolean
 }
 
 export default function FormField(ffp: FormFieldProps) {
@@ -105,6 +109,7 @@ export default function FormField(ffp: FormFieldProps) {
         isInvalid: meta ? (meta?.touched && meta?.error !== undefined) : false,
         isBaseFormat: typeof ffp.as === typeof BaseFormat,
         inputGroupValueClassName: ffp.inputGroupValueClassName,
+        disabled: ffp.disabled,
     }
 
 

@@ -33,7 +33,7 @@ export default interface ContextBridgeApiI {
       get: () => Promise<TableOptionsI>
       setColumnVisibility: (model: object) => Promise<object>
       setColumnOrder: (model: string[]) => Promise<string[]>
-      setColumnSort:(model: ColumnSortI[]) => Promise<ColumnSortI[]>
+      setColumnSort: (model: ColumnSortI[]) => Promise<ColumnSortI[]>
     }
     get: () => Promise<PicturesDefaultSetI>
     set: (model: PicturesDefaultSetI) => Promise<PicturesDefaultSetI>
@@ -43,7 +43,7 @@ export default interface ContextBridgeApiI {
       get: () => Promise<TableOptionsI>
       setColumnVisibility: (model: object) => Promise<object>
       setColumnOrder: (model: string[]) => Promise<string[]>
-      setColumnSort:(model: ColumnSortI[]) => Promise<ColumnSortI[]>
+      setColumnSort: (model: ColumnSortI[]) => Promise<ColumnSortI[]>
     }
   }
   pictures: {
@@ -51,7 +51,7 @@ export default interface ContextBridgeApiI {
       get: () => Promise<TableOptionsI>
       setColumnVisibility: (model: object) => Promise<object>
       setColumnOrder: (model: string[]) => Promise<string[]>
-      setColumnSort:(model: ColumnSortI[]) => Promise<ColumnSortI[]>
+      setColumnSort: (model: ColumnSortI[]) => Promise<ColumnSortI[]>
     }
     getAll: () => Promise<PictureI[]>
     create: (model: PictureI) => Promise<PictureI>
@@ -70,6 +70,14 @@ export default interface ContextBridgeApiI {
         loaded: () => void
         removed: () => void
       }
+    }
+  }
+  similarPictures: {
+    tableOptions: {
+      get: () => Promise<TableOptionsI>
+      setColumnVisibility: (model: object) => Promise<object>
+      setColumnOrder: (model: string[]) => Promise<string[]>
+      setColumnSort: (model: ColumnSortI[]) => Promise<ColumnSortI[]>
     }
   }
 }

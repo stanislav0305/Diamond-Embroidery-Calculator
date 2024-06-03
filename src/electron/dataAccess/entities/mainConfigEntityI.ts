@@ -41,6 +41,7 @@ export interface TablesOptionsEntityI {
     pictureTable: TableOptionsEntityI
     pictureDetailTable: TableOptionsEntityI
     pictureDefaultSetTable: TableOptionsEntityI
+    similarPictureTable: TableOptionsEntityI
 }
 
 const tableOptionsShema = {
@@ -80,6 +81,7 @@ const tablesOptionsShema = {
         pictureTable: tableOptionsShema,
         pictureDetailTable: tableOptionsShema,
         pictureDefaultSetTable: tableOptionsShema,
+        similarPictureTable: tableOptionsShema,
     } as Schema<TablesOptionsEntityI>
 }
 

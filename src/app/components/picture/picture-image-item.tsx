@@ -2,9 +2,11 @@ import React from 'react'
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import { ONE_MB_IN_BYTES } from '@shared/consts'
+import { ComponentModeType } from '@utils/types/componentModeType'
 
 
 interface PropsI {
+    componentMode?: ComponentModeType
     img: PictureImageI
     removeImage: (e: React.MouseEvent, id: string) => void
     setMainImage: (e: React.MouseEvent, id: string) => void
@@ -13,7 +15,7 @@ interface PropsI {
 }
 
 export default function PictureImageItem(props: PropsI) {
-    const { img, setMainImage, removeImage, downloadImage, createSrc } = props
+    const { componentMode = 'default', img, setMainImage, removeImage, downloadImage, createSrc } = props
 
     return (
         <ListGroup.Item as="li" key={`img-${img.id}`} action variant="success">
@@ -35,7 +37,7 @@ export default function PictureImageItem(props: PropsI) {
                                 }</span>
                             </Col>
                             <Col className='text-end'>
-                                {img.isLoaded &&
+                                {(img.isLoaded && componentMode === 'default') &&
                                     <Button
                                         key={`btn-download-${img.id}`}
                                         as="a"
@@ -46,24 +48,28 @@ export default function PictureImageItem(props: PropsI) {
                                     >
                                     </Button>
                                 }
-                                <Button
-                                    key={`btn-set-main-image-${img.id}`}
-                                    as="a"
-                                    variant={img.isMain ? "outline-warning" : "outline-secondary"}
-                                    size="sm"
-                                    className={'ms-1 bi ' + (img.isMain ? 'bi-star-fill ' : 'bi-star-half ')}
-                                    onClick={(e) => setMainImage(e, img.id)}
-                                >
-                                </Button>
-                                <Button
-                                    key={`btn-remove-imagen-${img.id}`}
-                                    as="a"
-                                    variant="outline-danger"
-                                    size="sm"
-                                    className='ms-1 bi bi-trash3-fill'
-                                    onClick={(e) => removeImage(e, img.id)}
-                                >
-                                </Button>
+                                {componentMode === 'default' &&
+                                    <>
+                                        <Button
+                                            key={`btn-set-main-image-${img.id}`}
+                                            as="a"
+                                            variant={img.isMain ? "outline-warning" : "outline-secondary"}
+                                            size="sm"
+                                            className={'ms-1 bi ' + (img.isMain ? 'bi-star-fill ' : 'bi-star-half ')}
+                                            onClick={(e) => setMainImage(e, img.id)}
+                                        >
+                                        </Button>
+                                        <Button
+                                            key={`btn-remove-imagen-${img.id}`}
+                                            as="a"
+                                            variant="outline-danger"
+                                            size="sm"
+                                            className='ms-1 bi bi-trash3-fill'
+                                            onClick={(e) => removeImage(e, img.id)}
+                                        >
+                                        </Button>
+                                    </>
+                                }
                             </Col>
                         </Row>
                     </ListGroup.Item>

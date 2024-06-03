@@ -6,9 +6,11 @@ import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
 import ProcessingResultI from '@shared/interfaces/processingResultI'
+import { ComponentModeType } from '@utils/types/componentModeType'
 
 
 interface PicturEditModalProps {
+  componentMode?: ComponentModeType
   onSaved: (forAdd: boolean, picture: PictureI) => void
 }
 
@@ -21,6 +23,9 @@ interface PicturEditModalState {
 
 export default class PicturEditModal extends React.Component<PicturEditModalProps, PicturEditModalState> {
   static contextType = EventMessagesContext
+  static defaultProps = {
+    componentMode: 'default',
+  }
   context!: React.ContextType<typeof EventMessagesContext>
 
   constructor(props: PicturEditModalProps) {
@@ -90,7 +95,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
 
     console.log('sended picture:', JSON.stringify(p, null, 2))
     this.toogle('loading', forAdd, picture)
-    
+
     if (forAdd) {
       await window.api.pictures.create(p)
         .then(pp => {
@@ -135,15 +140,18 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
   }
 
   render() {
+    const { componentMode } = this.props
     const { mode, forAdd, picture } = this.state
 
     return (
-      <CustomModal header={forAdd ? 'Добавление картины' : 'Редактирование картины'}
+      <CustomModal header={componentMode === 'default' ? (forAdd ? 'Добавление картины' : 'Редактирование картины') : 'Данные картины'}
         mode={mode}
         onHide={this.toogle}>
         <AppSettingsContext.Consumer>
           {(appSettingsContext) => (
-            <PictureEdit data={picture}
+            <PictureEdit
+              componentMode={componentMode}
+              data={picture}
               pictureImagesPath={appSettingsContext.appSettings.paths.pictureImagesPath}
               onSave={this.onSave}
               onClose={this.onClose}

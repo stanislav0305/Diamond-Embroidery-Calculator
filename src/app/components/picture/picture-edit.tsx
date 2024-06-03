@@ -19,11 +19,15 @@ import PictureHoursSpentCalculatorModal from '@containers/picture/picture-hours-
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnOrderState, SortingState, Updater, VisibilityState } from '@tanstack/react-table'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
+import SimilarPicturesModal from '@containers/picture/similar-pictures-modal'
+import { ComponentModeType } from '@utils/types/componentModeType'
+import SimilarPicturesFilterI from '@shared/classes/similarPicturesFilter'
 
 
 const uid = new ShortUniqueId({ length: 10 })
 
 interface PropsI {
+    componentMode?: ComponentModeType
     data: PictureI
     pictureImagesPath: string
     onSave: (data: PictureI) => void
@@ -41,8 +45,12 @@ interface StateI {
 
 export default class PictureEdit extends React.Component<PropsI, StateI> {
     static contextType = EventMessagesContext
+    static defaultProps = {
+        componentMode: 'default',
+    }
     context!: React.ContextType<typeof EventMessagesContext>
     pictureHoursSpentCalculatorModalRef = React.createRef<PictureHoursSpentCalculatorModal>()
+    similarPicturesModalRef = React.createRef<SimilarPicturesModal>()
     formicRef = React.createRef<FormikProps<PictureI>>()
     objectURLsMap: Map<string, string> = new Map<string, string>()
 
@@ -67,7 +75,6 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
             mainImageSrc: this.createSrc(mainImg)
         }
     }
-
 
     componentDidMount() {
         window.api.pictureDetail.tableOptions.get()
@@ -292,7 +299,17 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
 
     //---------------------------------------------------------------
 
+    openSimilarPicturesModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, values: PictureI) => {
+        e.preventDefault()
+
+        const filter = new SimilarPicturesFilterI(values)
+        this.similarPicturesModalRef.current!.onOpen(filter)
+    }
+
+    //---------------------------------------------------------------
+
     render() {
+        const { componentMode } = this.props
         const { forAdd, initVal, details, detailsTableOptions, images, mainImageSrc } = this.state
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
 
@@ -366,10 +383,13 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                     </Row>
                                     <Row className="mb-4">
                                         <Col>
-                                            <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
+                                            {componentMode === 'default' &&
+                                                <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
+                                            }
                                             <ListGroup as="ul">
                                                 {images.length > 0 && images.map(img => (
                                                     <PictureImageItem
+                                                        componentMode={componentMode}
                                                         key={img.id}
                                                         img={img}
                                                         createSrc={this.createSrc}
@@ -387,7 +407,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="height"
                                                 as={IntPositiveFormat}
                                                 prefixReactNode={<InputGroup.Text className="p-1">Высота</InputGroup.Text>}
-                                                addInputGroupInput
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">см</InputGroup.Text>
                                                 }
@@ -398,7 +419,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="width"
                                                 as={IntPositiveFormat}
                                                 prefixReactNode={<InputGroup.Text className="p-1">Ширина</InputGroup.Text>}
-                                                addInputGroupInput
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">см</InputGroup.Text>
                                                 }
@@ -411,6 +433,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="diamondForm"
                                                 label="Форма кристала"
                                                 options={diamondFormDataMap}
+                                                disabled={componentMode === 'readonly'}
                                             />
                                         </Col>
                                         <Col>
@@ -418,6 +441,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="coverageArea"
                                                 label="Площадь покрытия"
                                                 options={coverageAreasDataMap}
+                                                disabled={componentMode === 'readonly'}
                                             />
                                         </Col>
                                     </Row>
@@ -430,6 +454,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                     </Accordion.Header>
                                                     <Accordion.Body className="p-1">
                                                         <PicturesDetailsTable
+                                                            componentMode={componentMode}
                                                             pictureDetails={details}
                                                             onDetailsChenge={this.onDetailsChenge}
                                                             tableOptions={detailsTableOptions}
@@ -449,7 +474,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                         Всего за материалы
                                                     </InputGroup.Text>
                                                 }
-                                                addInputGroupText
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">
                                                         <i className="bi bi-currency-euro"></i>
@@ -466,7 +492,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="pricePerHour"
                                                 as={NumericPositiveDecimal2Format}
                                                 prefixReactNode={<InputGroup.Text className="p-1">Цена за час</InputGroup.Text>}
-                                                addInputGroupInput
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">
                                                         <i className="bi bi-currency-euro"></i>
@@ -481,18 +508,21 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="hoursSpent"
                                                 as={IntPositiveFormat}
                                                 prefixReactNode={<InputGroup.Text className="p-1">Затрачено часов</InputGroup.Text>}
-                                                addInputGroupInput
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
                                                 inputPlaceholder="Введите количество затрачено часов"
                                                 postfixReactNode={
-                                                    <Button
-                                                        as="a"
-                                                        variant="outline-warning"
-                                                        size="sm"
-                                                        className="d-inline-block bi bi-calculator-fill"
-                                                        onClick={(e) => this.openPictureHoursSpentCalculatorModal(e, values.hoursSpent)}
-                                                    >
-                                                        Посчитать время
-                                                    </Button>
+                                                    componentMode === 'default' && (
+                                                        <Button
+                                                            as="a"
+                                                            variant="outline-warning"
+                                                            size="sm"
+                                                            className="d-inline-block bi bi-calculator-fill"
+                                                            onClick={(e) => this.openPictureHoursSpentCalculatorModal(e, values.hoursSpent)}
+                                                        >
+                                                            Посчитать время
+                                                        </Button>
+                                                    )
                                                 }
                                             />
                                         </Col>
@@ -525,6 +555,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                         name="comment"
                                         label="Коментарий"
                                         addInput
+                                        disabled={componentMode === 'readonly'}
                                     />
                                     <Row className="mb-4">
                                         <Col>
@@ -612,6 +643,17 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                             }
                                                             value={values.width * values.height * 0.03}
                                                         />
+                                                        {componentMode === 'default' &&
+                                                            <Button
+                                                                as="a"
+                                                                variant="outline-primary"
+                                                                size="sm"
+                                                                className="d-inline-block bi bi-eye-fill"
+                                                                onClick={(e) => this.openSimilarPicturesModal(e, values)}
+                                                            >
+                                                                Показать похожие картины
+                                                            </Button>
+                                                        }
                                                     </Accordion.Body>
                                                 </Accordion.Item>
                                             </Accordion>
@@ -626,7 +668,8 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 Продаю за
                                             </InputGroup.Text>
                                         }
-                                        addInputGroupInput
+                                        addInputGroupInput={componentMode === 'default'}
+                                        addInputGroupText={componentMode === 'readonly'}
                                         postfixReactNode={
                                             <InputGroup.Text className="p-1">
                                                 <i className="bi bi-currency-euro"></i>
@@ -636,8 +679,12 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                     />
                                 </Form>
                                 <Form.Group className="text-center pb-2">
-                                    <Button variant="primary" type="submit" className="me-3" onClick={submitForm}>Сохранить</Button >
-                                    {forAdd && <Button variant="secondary" className="me-3" onClick={handleReset}>Сброс</Button>}
+                                    {componentMode === 'default' &&
+                                        <>
+                                            <Button variant="primary" type="submit" className="me-3" onClick={submitForm}>Сохранить</Button >
+                                            {forAdd && <Button variant="secondary" className="me-3" onClick={handleReset}>Сброс</Button>}
+                                        </>
+                                    }
                                     <Button variant="secondary" className="me-3" onClick={this.props.onClose}>Закрыть</Button>
                                 </Form.Group>
                             </>
@@ -646,6 +693,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                 </Card >
 
                 <PictureHoursSpentCalculatorModal ref={this.pictureHoursSpentCalculatorModalRef} onSaved={this.onSaveHoursSpentCalculator} />
+                <SimilarPicturesModal ref={this.similarPicturesModalRef} />
             </>
         )
     }

@@ -8,6 +8,7 @@ import PicturesChannelGroup from '@ipc/pictures.channelGroup'
 import PicturesDefaultSetChannelGroup from '@ipc/picturesDefaultSet.channelGroup'
 import PicturesImagesChannelGroup from '@ipc/picturesImages.channelGroup'
 import PictureDetailChannelGroup from '@electron/ipc/pictureDetail.channelGroup'
+import SimilarPicturesChannelGroup from '@electron/ipc/similarPictures.channelGroup'
 
 
 export class Application {
@@ -36,6 +37,7 @@ export class Application {
         PicturesChannelGroup.registry()
         PictureDetailChannelGroup.registry()
         PicturesDefaultSetChannelGroup.registry()
+        SimilarPicturesChannelGroup.registry()
         PicturesImagesChannelGroup.registry(this.mainWindow)
     }
 

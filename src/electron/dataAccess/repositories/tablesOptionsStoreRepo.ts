@@ -40,5 +40,5 @@ class TablesOptionsStoreRepo extends MainConfBaseStoreRepo {
     }
 }
 
-export type TablesWithOptions = 'pictureTable' | 'pictureDetailTable' | 'pictureDefaultSetTable'
+export type TablesWithOptions = 'pictureTable' | 'pictureDetailTable' | 'pictureDefaultSetTable' | 'similarPictureTable'
 export const tablesOptionsRepo = new TablesOptionsStoreRepo()

@@ -13,7 +13,7 @@ type MainProps<OptionsTypes extends Map<string, string>> = {
 
 type FormFieldSelectProps<OptionsTypes extends Map<string, string>> = React.HTMLAttributes<HTMLSelectElement> & MainProps<OptionsTypes>
 
-export default function FormFieldSelect<OT extends Map<string, string>>({ className, name, label, options, placeholder, ...props }: FormFieldSelectProps<OT>) {
+export default function FormFieldSelect<OT extends Map<string, string>>({ className, name, label, options, placeholder, disabled, ...props }: FormFieldSelectProps<OT>) {
     const [field, meta] = useField(name)
     const isValid = meta.touched && meta.error === undefined
     const isInvalid = meta.touched && meta.error !== undefined
@@ -36,6 +36,7 @@ export default function FormFieldSelect<OT extends Map<string, string>>({ classN
                 isInvalid={isInvalid}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
+                disabled={disabled}
             >
                 {placeholder && <option>{placeholder}</option>}
                 {optionsObjs}

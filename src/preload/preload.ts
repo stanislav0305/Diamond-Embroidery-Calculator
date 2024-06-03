@@ -86,6 +86,14 @@ const API: ContextBridgeApiI = {
         removed: () => { ipcRenderer.removeAllListeners(Chanels.pictures_images_removed) }
       }
     }
+  },
+  similarPictures: {
+    tableOptions: {
+      get: () => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_get).catch(e => fCatch(e)),
+      setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
+      setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
+      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+    }
   }
 }
 

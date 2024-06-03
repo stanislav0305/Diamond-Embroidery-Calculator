@@ -8,27 +8,31 @@ import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-m
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { columns } from '@containers/picture/picture-details-table-columns'
 import { ColumnOrderState, OnChangeFn, SortingState, VisibilityState } from '@tanstack/react-table'
+import { ComponentModeType } from '@utils/types/componentModeType'
 
 
 interface PictureDetailsProps {
+    componentMode?: ComponentModeType
     tableOptions: TableOptionsI
     onColumnVisibilityChange: OnChangeFn<VisibilityState>
     onColumnOrderChange: OnChangeFn<ColumnOrderState>
-    onSortingChange:OnChangeFn<SortingState>
+    onSortingChange: OnChangeFn<SortingState>
     pictureDetails: PictureDetailI[]
     onDetailsChenge?: (details: PictureDetailI[]) => void
     onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void
     onRemovedPictureDetail?: (id: string) => void
 }
 
-const getTable = (pictureDetails: PictureDetailI[],
+const getTable = (
+    pictureDetails: PictureDetailI[],
     columns: MRT_ColumnDef<PictureDetailI>[],
     openPictureDetailEditModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void,
     openPictureDetailRemoveModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => void,
     tableOptions: TableOptionsI,
     onColumnVisibilityChange: OnChangeFn<VisibilityState>,
     onColumnOrderChange: OnChangeFn<ColumnOrderState>,
-    onSortingChange: OnChangeFn<SortingState>
+    onSortingChange: OnChangeFn<SortingState>,
+    componentMode?: ComponentModeType,
 ) => {
     return useMaterialReactTable({
         columns,
@@ -49,7 +53,7 @@ const getTable = (pictureDetails: PictureDetailI[],
         enableSorting: true,
         enablePagination: true,
         enableBottomToolbar: true,
-        enableRowActions: true,
+        enableRowActions: componentMode === 'default',
         renderRowActions: ({ row }) => (
             <>
                 <Button as="a"
@@ -72,22 +76,22 @@ const getTable = (pictureDetails: PictureDetailI[],
     })
 }
 
-export default function PicturesDetailsTable(props: PictureDetailsProps) {
+export default function PicturesDetailsTable({componentMode = 'default', ...propsOther}: PictureDetailsProps) {
 
     //------------------------------------------------------------------------------
 
     const pictureDetailEditModalRef = useRef<PicturDetailEditModal>({} as PicturDetailEditModal)
     const openPictureDetailEditModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
         e.preventDefault()
-        const pictutreDetail = id ? props.pictureDetails.find(item => item.id === id) ?? pictureDetailDefault : pictureDetailDefault
+        const pictutreDetail = id ? propsOther.pictureDetails.find(item => item.id === id) ?? pictureDetailDefault : pictureDetailDefault
         pictureDetailEditModalRef.current.onOpen(pictutreDetail)
     }
 
     const onSavedPictureDetail = (forAdd: boolean, pictureDetail: PictureDetailI) => {
         console.info('Updating the table of materials of a painting after adding or updating the material!')
 
-        const pd = forAdd ? props.pictureDetails : props.pictureDetails.filter(item => item.id !== pictureDetail.id)
-        props.onDetailsChenge && props.onDetailsChenge([...pd, pictureDetail])
+        const pd = forAdd ? propsOther.pictureDetails : propsOther.pictureDetails.filter(item => item.id !== pictureDetail.id)
+        propsOther.onDetailsChenge && propsOther.onDetailsChenge([...pd, pictureDetail])
     }
 
     //------------------------------------------------------------------------------
@@ -100,37 +104,40 @@ export default function PicturesDetailsTable(props: PictureDetailsProps) {
 
     const onRemovedPictureDetail = (id: string) => {
         console.info('Updating the table of materials of the painting, after removing the metamaterial!')
-        props.onDetailsChenge && props.onDetailsChenge(props.pictureDetails.filter(item => item.id !== id))
+        propsOther.onDetailsChenge && propsOther.onDetailsChenge(propsOther.pictureDetails.filter(item => item.id !== id))
     }
 
     //------------------------------------------------------------------------------
 
     const table = getTable(
-        props.pictureDetails,
+        propsOther.pictureDetails,
         columns,
         openPictureDetailEditModal,
         openPictureDetailRemoveModal,
-        props.tableOptions,
-        props.onColumnVisibilityChange,
-        props.onColumnOrderChange,
-        props.onSortingChange
+        propsOther.tableOptions,
+        propsOther.onColumnVisibilityChange,
+        propsOther.onColumnOrderChange,
+        propsOther.onSortingChange,
+        componentMode,
     )
 
     return (
         <>
             <div className='position-relative'>
-                <Button as="a"
-                    variant="outline-success"
-                    size="sm"
-                    className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
-                    onClick={(e) => openPictureDetailEditModal(e, '')}
-                >
-                </Button>
+                {componentMode === 'default' &&
+                    <Button as="a"
+                        variant="outline-success"
+                        size="sm"
+                        className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
+                        onClick={(e) => openPictureDetailEditModal(e, '')}
+                    >
+                    </Button>
+                }
                 <MaterialReactTable table={table} />
             </div>
 
-            <PicturDetailEditModal ref={pictureDetailEditModalRef} onSaved={props.onSavedPictureDetail ?? onSavedPictureDetail} />
-            <PicturDetailRemoveModal ref={pictureDetailRemoveModalRef} onRemoved={props.onRemovedPictureDetail ?? onRemovedPictureDetail} />
+            <PicturDetailEditModal ref={pictureDetailEditModalRef} onSaved={propsOther.onSavedPictureDetail ?? onSavedPictureDetail} />
+            <PicturDetailRemoveModal ref={pictureDetailRemoveModalRef} onRemoved={propsOther.onRemovedPictureDetail ?? onRemovedPictureDetail} />
         </>
     )
 }

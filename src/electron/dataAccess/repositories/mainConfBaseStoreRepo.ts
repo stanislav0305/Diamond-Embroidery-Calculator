@@ -40,6 +40,13 @@ export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
                                 columnVisibility: {},
                                 columnSort: [] as ColumnSortEntityI[]
                             } as TableOptionsEntityI,
+                            similarPictureTable: {
+                                columnOrder: ['mrt-row-actions', 'photo', 'id', 'created', 'updated', 'height', 'width',
+                                    'diamondForm', 'coverageArea', 'pricePerHour', 'hoursSpent', 'bayFullPrice', 'comment'
+                                ],
+                                columnVisibility: {},
+                                columnSort: [] as ColumnSortEntityI[]
+                            }
                         } as TablesOptionsEntityI
                     } as MainConfStoreShemaI)
                 },

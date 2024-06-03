@@ -6,7 +6,7 @@ import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
-import { ColumnOrderState, ColumnSort, Row, SortingState, Updater, VisibilityState } from '@tanstack/react-table'
+import { ColumnFilter, ColumnOrderState, Row, SortingState, Updater } from '@tanstack/react-table'
 import PicturEditModal from '@containers/picture/picture-edit-modal'
 import PicturRemoveModal from '@containers/picture/picture-remove-modal'
 import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
@@ -14,20 +14,38 @@ import PictureImageI from '@shared/interfaces/pictureImageI'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
+import { ComponentModeType } from '@utils/types/componentModeType'
+import SimilarPicturesFilter from '@shared/classes/similarPicturesFilter'
 
 
-export default function PicturesTable() {
+export interface PicturesTableProps {
+  componentMode?: ComponentModeType
+  filter?: SimilarPicturesFilter
+}
 
+export default function PicturesTable({ componentMode = 'default', filter }: PicturesTableProps) {
   useEffect(() => {
-    window.api.pictures.tableOptions.get()
-      .then((opts: TableOptionsI) => {
-        setColumnVisibility(opts.columnVisibility)
-        setColumnOrder(opts.columnOrder)
-        setColumnSorting(opts.columnSort)
+    const query = componentMode === 'default'
+      ? window.api.pictures.tableOptions.get()
+      : window.api.similarPictures.tableOptions.get()
 
-        window.api.pictures.getAll()
-          .then(result => setData(result))
-      })
+    query.then((opts: TableOptionsI) => {
+      setColumnVisibility(opts.columnVisibility)
+      setColumnOrder(opts.columnOrder)
+      setColumnSorting(opts.columnSort)
+
+
+      window.api.pictures.getAll()
+        .then(result => {
+
+          if (componentMode === 'readonly' && (typeof filter !== 'undefined')) {
+            //exclude current opened picture
+            result = filter.excludeId ? result.filter(i => i.id !== filter.excludeId) : result
+          }
+
+          setData(result)
+        })
+    })
   }, [])
 
 
@@ -124,7 +142,7 @@ export default function PicturesTable() {
           muiFilterSliderProps: {
             marks: true,
             max: 1000,
-            min: 1,
+            min: 0,
             step: 1,
             valueLabelFormat: (value) =>
               value.toLocaleString('ru-RU', {
@@ -142,7 +160,7 @@ export default function PicturesTable() {
           muiFilterSliderProps: {
             marks: true,
             max: 100,
-            min: 1,
+            min: 0,
           }
         },
         {
@@ -173,7 +191,11 @@ export default function PicturesTable() {
   const onColumnVisibilityChange = (updater: Updater<object>) => {
     setColumnVisibility((prev) => {
       const model = (updater instanceof Function ? updater(prev) : updater) as object
-      window.api.pictures.tableOptions.setColumnVisibility(model)
+      const query = componentMode === 'default'
+        ? window.api.pictures.tableOptions
+        : window.api.similarPictures.tableOptions
+
+      query.setColumnVisibility(model)
 
       return model
     })
@@ -187,7 +209,11 @@ export default function PicturesTable() {
       if (prev && model && prev.length > 0 && model.length > 0 &&
         model.filter((item, index) => { return prev[index] !== item }).length > 0) {
         //save only if arrays are defferent
-        window.api.pictures.tableOptions.setColumnOrder(model)
+        const query = componentMode === 'default'
+          ? window.api.pictures.tableOptions
+          : window.api.similarPictures.tableOptions
+
+        query.setColumnOrder(model)
       }
 
       return model
@@ -203,7 +229,11 @@ export default function PicturesTable() {
         && ((prev.length !== model.length)
           || (model.filter((item, index) => { return (prev[index].id !== item.id || prev[index].desc !== item.desc) }).length > 0))) {
         //save only if arrays are defferent
-        window.api.pictures.tableOptions.setColumnSort(model)
+        const query = componentMode === 'default'
+          ? window.api.pictures.tableOptions
+          : window.api.similarPictures.tableOptions
+
+        query.setColumnSort(model)
       }
 
       return model
@@ -218,12 +248,15 @@ export default function PicturesTable() {
     localization: MRT_Localization_RU,
     initialState: {
       density: 'compact',
+      showColumnFilters: componentMode === 'readonly',
+      columnFilters: componentMode === 'readonly' && (typeof filter !== 'undefined') ? filter.columnFiltersInit : [] as ColumnFilter[]
     },
     state: {
       columnVisibility,
       columnOrder,
       sorting: columnSorting
     },
+
     onColumnVisibilityChange: onColumnVisibilityChange,
     onColumnOrderChange: onColumnOrderChange,
     onSortingChange: onSortingChange,
@@ -259,21 +292,35 @@ export default function PicturesTable() {
     enableRowActions: true,
     renderRowActions: ({ row }) => (
       <>
-        <Button as="a"
-          variant="outline-primary"
-          size="sm"
-          className='bi bi-pencil-fill me-3'
-          onClick={(e) => openPictureEditModal(e, row.getValue('id') as string)}
-        >
-        </Button>
-        <Button
-          as="a"
-          variant="outline-danger"
-          size="sm"
-          className='bi bi-trash3-fill me-3'
-          onClick={(e) => openPictureRemoveModal(e, row.getValue('id') as string)}
-        >
-        </Button>
+        {componentMode === 'default' &&
+          <>
+            <Button as="a"
+              variant="outline-primary"
+              size="sm"
+              className='bi bi-pencil-fill me-3'
+              onClick={(e) => openPictureEditModal(e, row.getValue('id') as string)}
+            >
+            </Button>
+            <Button
+              as="a"
+              variant="outline-danger"
+              size="sm"
+              className='bi bi-trash3-fill me-3'
+              onClick={(e) => openPictureRemoveModal(e, row.getValue('id') as string)}
+            >
+            </Button>
+          </>
+        }
+        {componentMode === 'readonly' &&
+          <Button
+            as="a"
+            variant="outline-primary"
+            size="sm"
+            className='bi bi-eye-fill me-3'
+            onClick={(e) => openPictureEditModal(e, row.getValue('id') as string)}
+          >
+          </Button>
+        }
       </>
     ),
   })
@@ -333,26 +380,31 @@ export default function PicturesTable() {
   return (
     <>
       <h4>Картины</h4>
+
       <div className='position-relative'>
-        <Button as="a"
-          variant="outline-success"
-          size="sm"
-          className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
-          title='Добавить картинe'
-          onClick={(e) => openPictureEditModal(e, '')}
-        >
-        </Button>
-        <Button as="a"
-          variant='outline-primary'
-          size="sm"
-          className='bi bi-text-center position-absolute mt-2 ms-5 z-index-10'
-          title='Данные по умолчанию'
-          onClick={openPicturDetailsTableModal}>
-        </Button>
+        {componentMode === 'default' &&
+          <>
+            <Button as="a"
+              variant="outline-success"
+              size="sm"
+              className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
+              title='Добавить картинe'
+              onClick={(e) => openPictureEditModal(e, '')}
+            >
+            </Button>
+            <Button as="a"
+              variant='outline-primary'
+              size="sm"
+              className='bi bi-text-center position-absolute mt-2 ms-5 z-index-10'
+              title='Данные по умолчанию'
+              onClick={openPicturDetailsTableModal}>
+            </Button>
+          </>
+        }
         <MaterialReactTable table={table} />
       </div>
 
-      <PicturEditModal ref={pictureEditModalRef} onSaved={onSavedPicture} />
+      <PicturEditModal ref={pictureEditModalRef} componentMode={componentMode} onSaved={onSavedPicture} />
       <PicturRemoveModal ref={pictureRemoveModalRef} onRemoved={onRemovedPicture} />
       <PictureDefaultSetModal ref={pictureDetailsDefaultSetModalRef} />
     </>
