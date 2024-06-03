@@ -611,38 +611,6 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                             }
                                                             value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
                                                         />
-                                                        <FormField
-                                                            as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={
-                                                                <InputGroup.Text className="p-1 text-primary">
-                                                                    Цена по формуле 1
-                                                                </InputGroup.Text>
-                                                            }
-                                                            addInputGroupText
-                                                            inputGroupValueClassName="text-primary"
-                                                            postfixReactNode={
-                                                                <InputGroup.Text className="p-1">
-                                                                    <i className="bi bi-currency-euro text-primary"></i>
-                                                                </InputGroup.Text>
-                                                            }
-                                                            value={values.width * values.height * 0.014}
-                                                        />
-                                                        <FormField
-                                                            as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={
-                                                                <InputGroup.Text className="p-1 text-primary">
-                                                                    Цена по формуле 2
-                                                                </InputGroup.Text>
-                                                            }
-                                                            addInputGroupText
-                                                            inputGroupValueClassName="text-primary"
-                                                            postfixReactNode={
-                                                                <InputGroup.Text className="p-1">
-                                                                    <i className="bi bi-currency-euro text-primary"></i>
-                                                                </InputGroup.Text>
-                                                            }
-                                                            value={values.width * values.height * 0.03}
-                                                        />
                                                         {componentMode === 'default' &&
                                                             <Button
                                                                 as="a"
