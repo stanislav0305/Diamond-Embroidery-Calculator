@@ -6,9 +6,7 @@ type AppSettingsContextType = {
   appSettings: AppSettingsI
 }
 
-export const AppSettingsContext = createContext<AppSettingsContextType>({
-  appSettings: {} as AppSettingsI
-} as AppSettingsContextType)
+export const AppSettingsContext = createContext<AppSettingsContextType>({} as AppSettingsContextType)
 
 type State = {
   appSettings: AppSettingsI
@@ -28,7 +26,7 @@ export class AppSettingsProvider extends React.Component<PropsWithChildren<{}>, 
   componentDidMount = async () => {
     window.api.app.getSettings()
       .then(appSettings => {
-        console.log('getSettings result:', appSettings)
+        console.log('getSettings')
 
         this.setState(prev => {
           return {
@@ -38,7 +36,6 @@ export class AppSettingsProvider extends React.Component<PropsWithChildren<{}>, 
           }
         })
       })
-      .catch((e: Error) => console.error(e))
   }
 
   render() {

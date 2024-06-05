@@ -24,35 +24,38 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
     }
   }
 
+  componentDidMount = () => {
+    window.api.theme.getCurrent()
+      .then((theme: ThemeI) => {
+        console.log('getTheme', theme)
 
-  componentDidMount = async () => {
-    const theme = await window.api.theme.getCurrent()
-    console.log('getTheme', theme)
+        this.changeThemeModeInHtml(theme.mode)
 
-    this.setThemeMode(theme.mode)
-    
-    this.setState(prev => {
-      return {
-        ...prev,
-        theme,
-        isLoaded: true
-      }
-    })
+        this.setState(prev => {
+          return {
+            ...prev,
+            theme,
+            isLoaded: true
+          }
+        })
+      })
   }
 
-  setTheme = async (theme: ThemeI) => {
-    const savedTheme = await window.api.theme.set(theme)
-    console.log('setTheme', savedTheme)
+  setTheme = (theme: ThemeI) => {
+    window.api.theme.set(theme)
+      .then((theme: ThemeI) => {
+        console.log('setTheme', theme)
 
-    this.setThemeMode(savedTheme.mode)
+        this.changeThemeModeInHtml(theme.mode)
 
-    this.setState({
-      theme: savedTheme,
-      isLoaded: true
-    })
+        this.setState({
+          theme: theme,
+          isLoaded: true
+        })
+      })
   }
 
-  setThemeMode = (mode: ThemeModeType) => {
+  changeThemeModeInHtml = (mode: ThemeModeType) => {
     if (mode === 'auto')
       document.documentElement.removeAttribute('data-bs-theme')
     else

@@ -14,7 +14,6 @@ export default class AppChannelGroup {
     private static getSettings(): AppSettingsI {
         console.info(Chanels.app_getSettings)
         const settings = appSettingsRepo.get()
-        console.log('settings', settings)
         return settings
     }
 

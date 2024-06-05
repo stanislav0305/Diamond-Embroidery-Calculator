@@ -275,7 +275,6 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       columnOrder,
       sorting: columnSorting
     },
-
     onColumnVisibilityChange: onColumnVisibilityChange,
     onColumnOrderChange: onColumnOrderChange,
     onSortingChange: onSortingChange,
