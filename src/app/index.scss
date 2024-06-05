@@ -1,6 +1,15 @@
 //@import '~bootstrap/scss/bootstrap';
 $bg-img-logo: url('@assets/diamond.ico');
 
+.title-bar {
+    -webkit-app-region: drag;
+    border-bottom: 1px solid #c5c5c5
+}
+
+.title-bar a {
+    -webkit-app-region: no-drag;
+}
+
 .rotate-180-deg {
     transform: rotate(180deg);
 }

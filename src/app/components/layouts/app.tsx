@@ -1,5 +1,4 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
 import Footer from '@components/layouts/footer'
 import TitleBar from '@components/layouts/navigation/title-bar'
 import { ThemeContext } from '@contexts/theme-context-provider'
