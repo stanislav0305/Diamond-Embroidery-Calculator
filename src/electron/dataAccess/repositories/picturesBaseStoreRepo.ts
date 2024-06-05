@@ -22,7 +22,7 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
                         picturesDefaultSet: {
                             details: [] as PictureDetailEntityI[],
                             detailsSumTotal: 0,
-                            pricePerHour: 2.00,
+                            pricePerHour: 200.00,
                         },
                         pictures: {}
                     } as PicturesStoreShemaI)

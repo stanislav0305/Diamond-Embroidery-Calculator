@@ -26,6 +26,25 @@ const themeShema = {
     required: ['mode', 'name']
 }
 
+export type CurrencyNamesType = 'ruble' | 'euro' | 'dollar'
+
+export interface CurrencyEntityI extends BasetEntityI {
+    name: CurrencyNamesType
+}
+
+const currencyShema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            enum: ['ruble', 'euro', 'dollar'],
+            default: 'ruble'
+        }
+    } as Schema<CurrencyEntityI>,
+    default: {},
+    required: ['name']
+}
+
 export type ColumnSortEntityI = {
     id: string
     desc: boolean
@@ -88,9 +107,11 @@ const tablesOptionsShema = {
 export interface MainConfStoreShemaI {
     theme: ThemeEntityI,
     tablesOptions: TablesOptionsEntityI,
+    currency: CurrencyEntityI,
 }
 
 export const mainConfStoreShema = {
     theme: themeShema,
     tablesOptions: tablesOptionsShema,
+    currency: currencyShema,
 } as Schema<MainConfStoreShemaI>

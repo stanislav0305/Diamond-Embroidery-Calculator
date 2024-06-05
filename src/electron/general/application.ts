@@ -9,6 +9,7 @@ import PicturesDefaultSetChannelGroup from '@ipc/picturesDefaultSet.channelGroup
 import PicturesImagesChannelGroup from '@ipc/picturesImages.channelGroup'
 import PictureDetailChannelGroup from '@electron/ipc/pictureDetail.channelGroup'
 import SimilarPicturesChannelGroup from '@electron/ipc/similarPictures.channelGroup'
+import CurrencyChannelGroup from '@electron/ipc/currency.channelGroup'
 
 
 export class Application {
@@ -33,6 +34,7 @@ export class Application {
 
         AppChannelGroup.registry()
         ThemeChannelGroup.registry(this.nativeTheme)
+        CurrencyChannelGroup.registry()
         MainWindowChannelGroup.registry(this.mainWindow)
         PicturesChannelGroup.registry()
         PictureDetailChannelGroup.registry()

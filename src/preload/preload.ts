@@ -6,6 +6,7 @@ import Chanels from '@shared/interfaces/ipc/chanels'
 import ProcessingResultI from '@shared/interfaces/processingResultI'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
+import { CurrencyI } from '@shared/interfaces/currencyI'
 
 
 const fCatch = (e: Error) => {
@@ -16,7 +17,19 @@ const fCatch = (e: Error) => {
 const API: ContextBridgeApiI = {
   theme: {
     getCurrent: () => ipcRenderer.invoke(Chanels.theme_getCurrent).catch(e => fCatch(e)),
-    set: (settings: ThemeI) => ipcRenderer.invoke(Chanels.theme_set, settings).catch(e => fCatch(e)),
+    set: (model: ThemeI) => ipcRenderer.invoke(Chanels.theme_set, model).catch(e => fCatch(e)),
+  },
+  currency: {
+    getCurrent: () => ipcRenderer.invoke(Chanels.currency_getCurrent).catch(e => fCatch(e)),
+    set: (model: CurrencyI) => ipcRenderer.invoke(Chanels.currency_set, model).catch(e => fCatch(e)),
+    on: {
+      currencyChenged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void) => {
+        ipcRenderer.on(Chanels.currency_currencyChenged, listener)
+      }
+    },
+    off: {
+      currencyChenged: () => { ipcRenderer.removeAllListeners(Chanels.currency_currencyChenged) }
+    }
   },
   app: {
     getSettings: () => ipcRenderer.invoke(Chanels.app_getSettings).catch(e => fCatch(e)),
@@ -27,14 +40,12 @@ const API: ContextBridgeApiI = {
     maximize: () => ipcRenderer.invoke(Chanels.window_maximize).catch(e => fCatch(e)),
     unmaximize: () => ipcRenderer.invoke(Chanels.window_unmaximize).catch(e => fCatch(e)),
     on: {
-      unmaximized: (listener: (event: IpcRendererEvent, ...args: any[]) => void) => {
+      unmaximized: (listener: (event: IpcRendererEvent) => void) => {
         ipcRenderer.on(Chanels.unmaximized, listener)
       }
     },
     off: {
-      unmaximized: () => {
-        ipcRenderer.removeAllListeners(Chanels.unmaximized)
-      }
+      unmaximized: () => { ipcRenderer.removeAllListeners(Chanels.unmaximized) }
     }
   },
   picturesDefaultSet: {
@@ -42,7 +53,7 @@ const API: ContextBridgeApiI = {
       get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_get).catch(e => fCatch(e)),
       setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
       setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
-      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+      setColumnSort: (model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.picturesDefaultSet_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
     },
     get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
     set: (model: PicturesDefaultSetI) => ipcRenderer.invoke(Chanels.picturesDefaultSet_set, model).catch(e => fCatch(e)),
@@ -52,7 +63,7 @@ const API: ContextBridgeApiI = {
       get: () => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_get).catch(e => fCatch(e)),
       setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
       setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
-      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+      setColumnSort: (model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictureDetail_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
     }
   },
   pictures: {
@@ -60,7 +71,7 @@ const API: ContextBridgeApiI = {
       get: () => ipcRenderer.invoke(Chanels.pictures_tableOptions_get).catch(e => fCatch(e)),
       setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
       setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
-      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+      setColumnSort: (model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.pictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
     },
     getAll: () => ipcRenderer.invoke(Chanels.pictures_getAll).catch(e => fCatch(e)),
     create: (model: PictureI) => ipcRenderer.invoke(Chanels.pictures_create, model).catch(e => fCatch(e)),
@@ -92,7 +103,7 @@ const API: ContextBridgeApiI = {
       get: () => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_get).catch(e => fCatch(e)),
       setColumnVisibility: (model: object) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnVisibility, model).catch(e => fCatch(e)),
       setColumnOrder: (model: string[]) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnOrder, model).catch(e => fCatch(e)),
-      setColumnSort:(model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
+      setColumnSort: (model: ColumnSortI[]) => ipcRenderer.invoke(Chanels.similarPictures_tableOptions_setColumnSort, model).catch(e => fCatch(e)),
     }
   }
 }

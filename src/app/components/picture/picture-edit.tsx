@@ -22,6 +22,8 @@ import { ColumnSortI } from '@shared/interfaces/columnSortI'
 import SimilarPicturesModal from '@containers/picture/similar-pictures-modal'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import SimilarPicturesFilterI from '@shared/classes/similarPicturesFilter'
+import { CurrencyContext } from '@contexts/currency-context-provider'
+import { CurrencyI } from '@shared/interfaces/currencyI'
 
 
 const uid = new ShortUniqueId({ length: 10 })
@@ -89,7 +91,6 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                 })
             })
 
-
         window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
             const hasErroror = !result
             this.context.addMessage(
@@ -97,11 +98,22 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                 hasErroror
             )
         })
+
+        window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
+            //refresh details table if changed currency simbol
+            this.setState(prev => {
+                return {
+                    ...prev,
+                    details: [...prev.details]
+                }
+            })
+        })
     }
 
     componentWillUnmount() {
         this.removeAllObjectURLs()
         window.api.pictures.images.off.dowloaded()
+        window.api.currency.off.currencyChenged()
     }
 
     onDetailsChenge = (details: PictureDetailI[]) => {
@@ -315,351 +327,355 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
 
         return (
             <>
-                <Card>
-                    <Formik innerRef={this.formicRef}
-                        initialValues={initVal}
-                        validationSchema={pictureISchema}
-                        enableReinitialize={true}
-                        errors
-                        onSubmit={(values, { setSubmitting }) => {
-                            setTimeout(() => {
-                                setSubmitting(false)
+                <CurrencyContext.Consumer>
+                    {(currencyContext) => (
+                        <Card>
+                            <Formik innerRef={this.formicRef}
+                                initialValues={initVal}
+                                validationSchema={pictureISchema}
+                                enableReinitialize={true}
+                                errors
+                                onSubmit={(values, { setSubmitting }) => {
+                                    setTimeout(() => {
+                                        setSubmitting(false)
 
-                                values.details = details
-                                values.images = images
-                                this.props.onSave(values)
-                            }, 400)
-                        }}
-                    >
-                        {({ values, errors, touched, handleReset, submitForm }) => (
-                            <>
-                                <div>
-                                    {(!!Object.values(errors).length && !!Object.values(touched).length) &&
-                                        <h6 className='text-danger m-1 fw-bold'>Исправьте ошибки</h6>
-                                    }
-                                    {!!Object.values(errors).length &&
-                                        Object.entries(errors)
-                                            /* First, we exclude fields for which it is unnecessary to display errors at the top 
-                                            (they are already displayed near the input fields) */
-                                            .filter(([key,]) => !['height', 'width', 'diamondForm', 'coverageArea',
-                                                'detailsSumTotal', 'pricePerHour', 'hoursSpent', 'forHoursSpentTotal',
-                                                'bayFullPrice', 'comment']
-                                                .includes(key))
-                                            .map(([, error]) => (
-                                                <span className='text-danger d-inline-block'>{JSON.stringify(error)}</span>
-                                            ))}
-                                </div>
-                                <Form className="p-1">
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <Image
-                                                className="bg-secondary"
-                                                thumbnail
-                                                width="150px"
-                                                height="150px"
-                                                src={mainImageSrc}
-                                            />
-                                        </Col>
-                                        <Col sm="7">
-                                            <FormField
-                                                name="id"
-                                                prefixReactNode={<InputGroup.Text className="p-1">#</InputGroup.Text>}
-                                                addInputGroupText
-                                                addHiddenInput
-                                            />
-                                            <FormField
-                                                name="created"
-                                                prefixReactNode={<InputGroup.Text className="p-1">Создана</InputGroup.Text>}
-                                                addInputGroupText
-                                                addHiddenInput
-                                            />
-                                            <FormField
-                                                name="updated"
-                                                prefixReactNode={<InputGroup.Text className="p-1">Обновлена</InputGroup.Text>}
-                                                addInputGroupText
-                                                addHiddenInput
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-4">
-                                        <Col>
-                                            {componentMode === 'default' &&
-                                                <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
+                                        values.details = details
+                                        values.images = images
+                                        this.props.onSave(values)
+                                    }, 400)
+                                }}
+                            >
+                                {({ values, errors, touched, handleReset, submitForm }) => (
+                                    <>
+                                        <div>
+                                            {(!!Object.values(errors).length && !!Object.values(touched).length) &&
+                                                <h6 className='text-danger m-1 fw-bold'>Исправьте ошибки</h6>
                                             }
-                                            <ListGroup as="ul">
-                                                {images.length > 0 && images.map(img => (
-                                                    <PictureImageItem
-                                                        componentMode={componentMode}
-                                                        key={img.id}
-                                                        img={img}
-                                                        createSrc={this.createSrc}
-                                                        downloadImage={this.downloadImage}
-                                                        setMainImage={this.setMainImage}
-                                                        removeImage={this.removeImage}
+                                            {!!Object.values(errors).length &&
+                                                Object.entries(errors)
+                                                    /* First, we exclude fields for which it is unnecessary to display errors at the top 
+                                                    (they are already displayed near the input fields) */
+                                                    .filter(([key,]) => !['height', 'width', 'diamondForm', 'coverageArea',
+                                                        'detailsSumTotal', 'pricePerHour', 'hoursSpent', 'forHoursSpentTotal',
+                                                        'bayFullPrice', 'comment']
+                                                        .includes(key))
+                                                    .map(([, error]) => (
+                                                        <span className='text-danger d-inline-block'>{JSON.stringify(error)}</span>
+                                                    ))}
+                                        </div>
+                                        <Form className="p-1">
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <Image
+                                                        className="bg-secondary"
+                                                        thumbnail
+                                                        width="150px"
+                                                        height="150px"
+                                                        src={mainImageSrc}
                                                     />
-                                                ))}
-                                            </ListGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <FormField
-                                                name="height"
-                                                as={IntPositiveFormat}
-                                                prefixReactNode={<InputGroup.Text className="p-1">Высота</InputGroup.Text>}
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">см</InputGroup.Text>
-                                                }
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <FormField
-                                                name="width"
-                                                as={IntPositiveFormat}
-                                                prefixReactNode={<InputGroup.Text className="p-1">Ширина</InputGroup.Text>}
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">см</InputGroup.Text>
-                                                }
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <FormFieldSelect
-                                                name="diamondForm"
-                                                label="Форма кристала"
-                                                options={diamondFormDataMap}
-                                                disabled={componentMode === 'readonly'}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <FormFieldSelect
-                                                name="coverageArea"
-                                                label="Площадь покрытия"
-                                                options={coverageAreasDataMap}
-                                                disabled={componentMode === 'readonly'}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <Accordion>
-                                                <Accordion.Item eventKey="0">
-                                                    <Accordion.Header className="fw-bold">
-                                                        Материалы картины
-                                                    </Accordion.Header>
-                                                    <Accordion.Body className="p-1">
-                                                        <PicturesDetailsTable
-                                                            componentMode={componentMode}
-                                                            pictureDetails={details}
-                                                            onDetailsChenge={this.onDetailsChenge}
-                                                            tableOptions={detailsTableOptions}
-                                                            onColumnVisibilityChange={this.onColumnVisibilityChange}
-                                                            onColumnOrderChange={this.onColumnOrderChange}
-                                                            onSortingChange={this.onSortingChange}
-                                                        />
-                                                    </Accordion.Body>
-                                                </Accordion.Item>
-                                            </Accordion>
-                                            <FormField
-                                                className="mt-1 fw-bold input-group-bg-primary"
-                                                name="detailsSumTotal"
-                                                as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={
-                                                    <InputGroup.Text className="p-1 fw-bold">
-                                                        Всего за материалы
-                                                    </InputGroup.Text>
-                                                }
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">
-                                                        <i className="bi bi-currency-euro"></i>
-                                                    </InputGroup.Text>
-                                                }
-                                                addHiddenInput
-                                                value={detailsSumTotal}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <FormField
-                                                name="pricePerHour"
-                                                as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={<InputGroup.Text className="p-1">Цена за час</InputGroup.Text>}
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">
-                                                        <i className="bi bi-currency-euro"></i>
-                                                    </InputGroup.Text>
-                                                }
-                                                inputPlaceholder="Введите цену за час"
-                                            />
-                                        </Col>
-                                        <Col className="text-end">
-                                            <FormField
-                                                className="d-inline-block"
-                                                name="hoursSpent"
-                                                as={IntPositiveFormat}
-                                                prefixReactNode={<InputGroup.Text className="p-1">Затрачено часов</InputGroup.Text>}
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                inputPlaceholder="Введите количество затрачено часов"
-                                                postfixReactNode={
-                                                    componentMode === 'default' && (
-                                                        <Button
-                                                            as="a"
-                                                            variant="outline-warning"
-                                                            size="sm"
-                                                            className="d-inline-block bi bi-calculator-fill"
-                                                            onClick={(e) => this.openPictureHoursSpentCalculatorModal(e, values.hoursSpent)}
-                                                        >
-                                                            Посчитать время
-                                                        </Button>
-                                                    )
-                                                }
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <FormField
-                                                className="fw-bold"
-                                                name="forHoursSpentTotal"
-                                                as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={
-                                                    <InputGroup.Text className="p-1 fw-bold">
-                                                        Всего за потраченные часы
-                                                    </InputGroup.Text>
-                                                }
-                                                addInputGroupText
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">
-                                                        <i className="bi bi-currency-euro"></i>
-                                                    </InputGroup.Text>
-                                                }
-                                                addHiddenInput
-                                                value={values.pricePerHour * values.hoursSpent}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <FormField
-                                        className="mb-4"
-                                        as="textarea"
-                                        name="comment"
-                                        label="Коментарий"
-                                        addInput
-                                        disabled={componentMode === 'readonly'}
-                                    />
-                                    <Row className="mb-4">
-                                        <Col>
-                                            <Accordion>
-                                                <Accordion.Item eventKey="0">
-                                                    <Accordion.Header className="fw-bold">Рекомендуемая цена</Accordion.Header>
-                                                    <Accordion.Body className="p-1">
-                                                        <FormField
-                                                            as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={
-                                                                <InputGroup.Text className="p-1 text-danger">
-                                                                    Минимальная цена (за материалы)
-                                                                </InputGroup.Text>
-                                                            }
-                                                            addInputGroupText
-                                                            inputGroupValueClassName="text-danger"
-                                                            postfixReactNode={
-                                                                <InputGroup.Text className="p-1">
-                                                                    <i className="bi bi-currency-euro text-danger"></i>
-                                                                </InputGroup.Text>
-                                                            }
-                                                            value={detailsSumTotal}
-                                                        />
-                                                        <FormField
-                                                            as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={
-                                                                <InputGroup.Text className="p-1 text-danger">
-                                                                    Минимальная цена (за работу)
-                                                                </InputGroup.Text>
-                                                            }
-                                                            addInputGroupText
-                                                            inputGroupValueClassName="text-danger"
-                                                            postfixReactNode={
-                                                                <InputGroup.Text className="p-1">
-                                                                    <i className="bi bi-currency-euro text-danger"></i>
-                                                                </InputGroup.Text>
-                                                            }
-                                                            value={values.pricePerHour * values.hoursSpent}
-                                                        />
-                                                        <FormField
-                                                            as={NumericPositiveDecimal2Format}
-                                                            prefixReactNode={
-                                                                <InputGroup.Text className="p-1 text-success">
-                                                                    Цена (материалы + работа)
-                                                                </InputGroup.Text>
-                                                            }
-                                                            addInputGroupText
-                                                            inputGroupValueClassName="text-success"
-                                                            postfixReactNode={
-                                                                <InputGroup.Text className="p-1">
-                                                                    <i className="bi bi-currency-euro text-success"></i>
-                                                                </InputGroup.Text>
-                                                            }
-                                                            value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
-                                                        />
-                                                        {componentMode === 'default' &&
-                                                            <Button
-                                                                as="a"
-                                                                variant="outline-primary"
-                                                                size="sm"
-                                                                className="d-inline-block bi bi-eye-fill"
-                                                                onClick={(e) => this.openSimilarPicturesModal(e, values)}
-                                                            >
-                                                                Показать похожие картины
-                                                            </Button>
+                                                </Col>
+                                                <Col sm="7">
+                                                    <FormField
+                                                        name="id"
+                                                        prefixReactNode={<InputGroup.Text className="p-1">#</InputGroup.Text>}
+                                                        addInputGroupText
+                                                        addHiddenInput
+                                                    />
+                                                    <FormField
+                                                        name="created"
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Создана</InputGroup.Text>}
+                                                        addInputGroupText
+                                                        addHiddenInput
+                                                    />
+                                                    <FormField
+                                                        name="updated"
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Обновлена</InputGroup.Text>}
+                                                        addInputGroupText
+                                                        addHiddenInput
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    {componentMode === 'default' &&
+                                                        <ImageDropzone className="my-1" onAddImage={this.onAddImage} />
+                                                    }
+                                                    <ListGroup as="ul">
+                                                        {images.length > 0 && images.map(img => (
+                                                            <PictureImageItem
+                                                                componentMode={componentMode}
+                                                                key={img.id}
+                                                                img={img}
+                                                                createSrc={this.createSrc}
+                                                                downloadImage={this.downloadImage}
+                                                                setMainImage={this.setMainImage}
+                                                                removeImage={this.removeImage}
+                                                            />
+                                                        ))}
+                                                    </ListGroup>
+                                                </Col>
+                                            </Row>
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <FormField
+                                                        name="height"
+                                                        as={IntPositiveFormat}
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Высота</InputGroup.Text>}
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">см</InputGroup.Text>
                                                         }
-                                                    </Accordion.Body>
-                                                </Accordion.Item>
-                                            </Accordion>
-                                        </Col>
-                                    </Row>
-                                    <FormField
-                                        name="bayFullPrice"
-                                        inputClassName="fw-bold"
-                                        as={NumericPositiveDecimal2Format}
-                                        prefixReactNode={
-                                            <InputGroup.Text className="p-1 fw-bold">
-                                                Продаю за
-                                            </InputGroup.Text>
-                                        }
-                                        addInputGroupInput={componentMode === 'default'}
-                                        addInputGroupText={componentMode === 'readonly'}
-                                        postfixReactNode={
-                                            <InputGroup.Text className="p-1">
-                                                <i className="bi bi-currency-euro"></i>
-                                            </InputGroup.Text>
-                                        }
-                                        inputPlaceholder="Введите цену продажи"
-                                    />
-                                </Form>
-                                <Form.Group className="text-center pb-2">
-                                    {componentMode === 'default' &&
-                                        <>
-                                            <Button variant="primary" type="submit" className="me-3" onClick={submitForm}>Сохранить</Button >
-                                            {forAdd && <Button variant="secondary" className="me-3" onClick={handleReset}>Сброс</Button>}
-                                        </>
-                                    }
-                                    <Button variant="secondary" className="me-3" onClick={this.props.onClose}>Закрыть</Button>
-                                </Form.Group>
-                            </>
-                        )}
-                    </Formik>
-                </Card >
-
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <FormField
+                                                        name="width"
+                                                        as={IntPositiveFormat}
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Ширина</InputGroup.Text>}
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">см</InputGroup.Text>
+                                                        }
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <FormFieldSelect
+                                                        name="diamondForm"
+                                                        label="Форма кристала"
+                                                        options={diamondFormDataMap}
+                                                        disabled={componentMode === 'readonly'}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <FormFieldSelect
+                                                        name="coverageArea"
+                                                        label="Площадь покрытия"
+                                                        options={coverageAreasDataMap}
+                                                        disabled={componentMode === 'readonly'}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <Accordion>
+                                                        <Accordion.Item eventKey="0">
+                                                            <Accordion.Header className="fw-bold">
+                                                                Материалы картины
+                                                            </Accordion.Header>
+                                                            <Accordion.Body className="p-1">
+                                                                <PicturesDetailsTable
+                                                                    componentMode={componentMode}
+                                                                    pictureDetails={details}
+                                                                    currencyHtmlCode={currencyContext.currencyHtmlCode}
+                                                                    onDetailsChenge={this.onDetailsChenge}
+                                                                    tableOptions={detailsTableOptions}
+                                                                    onColumnVisibilityChange={this.onColumnVisibilityChange}
+                                                                    onColumnOrderChange={this.onColumnOrderChange}
+                                                                    onSortingChange={this.onSortingChange}
+                                                                />
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+                                                    </Accordion>
+                                                    <FormField
+                                                        className="mt-1 fw-bold input-group-bg-primary"
+                                                        name="detailsSumTotal"
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={
+                                                            <InputGroup.Text className="p-1 fw-bold">
+                                                                Всего за материалы
+                                                            </InputGroup.Text>
+                                                        }
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">
+                                                                {currencyContext.currencyHtmlCode}
+                                                            </InputGroup.Text>
+                                                        }
+                                                        addHiddenInput
+                                                        value={detailsSumTotal}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <FormField
+                                                        name="pricePerHour"
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Цена за час</InputGroup.Text>}
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">
+                                                                {currencyContext.currencyHtmlCode}
+                                                            </InputGroup.Text>
+                                                        }
+                                                        inputPlaceholder="Введите цену за час"
+                                                    />
+                                                </Col>
+                                                <Col className="text-end">
+                                                    <FormField
+                                                        className="d-inline-block"
+                                                        name="hoursSpent"
+                                                        as={IntPositiveFormat}
+                                                        prefixReactNode={<InputGroup.Text className="p-1">Затрачено часов</InputGroup.Text>}
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        inputPlaceholder="Введите количество затрачено часов"
+                                                        postfixReactNode={
+                                                            componentMode === 'default' && (
+                                                                <Button
+                                                                    as="a"
+                                                                    variant="outline-warning"
+                                                                    size="sm"
+                                                                    className="d-inline-block bi bi-calculator-fill"
+                                                                    onClick={(e) => this.openPictureHoursSpentCalculatorModal(e, values.hoursSpent)}
+                                                                >
+                                                                    Посчитать время
+                                                                </Button>
+                                                            )
+                                                        }
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <FormField
+                                                        className="fw-bold"
+                                                        name="forHoursSpentTotal"
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={
+                                                            <InputGroup.Text className="p-1 fw-bold">
+                                                                Всего за потраченные часы
+                                                            </InputGroup.Text>
+                                                        }
+                                                        addInputGroupText
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">
+                                                                {currencyContext.currencyHtmlCode}
+                                                            </InputGroup.Text>
+                                                        }
+                                                        addHiddenInput
+                                                        value={values.pricePerHour * values.hoursSpent}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <FormField
+                                                className="mb-4"
+                                                as="textarea"
+                                                name="comment"
+                                                label="Коментарий"
+                                                addInput
+                                                disabled={componentMode === 'readonly'}
+                                            />
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <Accordion>
+                                                        <Accordion.Item eventKey="0">
+                                                            <Accordion.Header className="fw-bold">Рекомендуемая цена</Accordion.Header>
+                                                            <Accordion.Body className="p-1">
+                                                                <FormField
+                                                                    as={NumericPositiveDecimal2Format}
+                                                                    prefixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-danger">
+                                                                            Минимальная цена (за материалы)
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    addInputGroupText
+                                                                    inputGroupValueClassName="text-danger"
+                                                                    postfixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-danger">
+                                                                            {currencyContext.currencyHtmlCode}
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    value={detailsSumTotal}
+                                                                />
+                                                                <FormField
+                                                                    as={NumericPositiveDecimal2Format}
+                                                                    prefixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-danger">
+                                                                            Минимальная цена (за работу)
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    addInputGroupText
+                                                                    inputGroupValueClassName="text-danger"
+                                                                    postfixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-danger">
+                                                                            {currencyContext.currencyHtmlCode}
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    value={values.pricePerHour * values.hoursSpent}
+                                                                />
+                                                                <FormField
+                                                                    as={NumericPositiveDecimal2Format}
+                                                                    prefixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-success">
+                                                                            Цена (материалы + работа)
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    addInputGroupText
+                                                                    inputGroupValueClassName="text-success"
+                                                                    postfixReactNode={
+                                                                        <InputGroup.Text className="p-1 text-success">
+                                                                            {currencyContext.currencyHtmlCode}
+                                                                        </InputGroup.Text>
+                                                                    }
+                                                                    value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
+                                                                />
+                                                                {componentMode === 'default' &&
+                                                                    <Button
+                                                                        as="a"
+                                                                        variant="outline-primary"
+                                                                        size="sm"
+                                                                        className="d-inline-block bi bi-eye-fill"
+                                                                        onClick={(e) => this.openSimilarPicturesModal(e, values)}
+                                                                    >
+                                                                        Показать похожие картины
+                                                                    </Button>
+                                                                }
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+                                                    </Accordion>
+                                                </Col>
+                                            </Row>
+                                            <FormField
+                                                name="bayFullPrice"
+                                                inputClassName="fw-bold"
+                                                as={NumericPositiveDecimal2Format}
+                                                prefixReactNode={
+                                                    <InputGroup.Text className="p-1 fw-bold">
+                                                        Продаю за
+                                                    </InputGroup.Text>
+                                                }
+                                                addInputGroupInput={componentMode === 'default'}
+                                                addInputGroupText={componentMode === 'readonly'}
+                                                postfixReactNode={
+                                                    <InputGroup.Text className="p-1">
+                                                        {currencyContext.currencyHtmlCode}
+                                                    </InputGroup.Text>
+                                                }
+                                                inputPlaceholder="Введите цену продажи"
+                                            />
+                                        </Form>
+                                        <Form.Group className="text-center pb-2">
+                                            {componentMode === 'default' &&
+                                                <>
+                                                    <Button variant="primary" type="submit" className="me-3" onClick={submitForm}>Сохранить</Button >
+                                                    {forAdd && <Button variant="secondary" className="me-3" onClick={handleReset}>Сброс</Button>}
+                                                </>
+                                            }
+                                            <Button variant="secondary" className="me-3" onClick={this.props.onClose}>Закрыть</Button>
+                                        </Form.Group>
+                                    </>
+                                )}
+                            </Formik>
+                        </Card >
+                    )}
+                </CurrencyContext.Consumer>
                 <PictureHoursSpentCalculatorModal ref={this.pictureHoursSpentCalculatorModalRef} onSaved={this.onSaveHoursSpentCalculator} />
                 <SimilarPicturesModal ref={this.similarPicturesModalRef} />
             </>

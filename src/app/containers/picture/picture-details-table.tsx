@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import { MRT_Localization_RU } from 'material-react-table/locales/ru'
@@ -6,7 +6,6 @@ import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/picture
 import PicturDetailEditModal from '@containers/picture/picture-detail-edit-modal'
 import PicturDetailRemoveModal from '@containers/picture/picture-detail-remove-modal'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
-import { columns } from '@containers/picture/picture-details-table-columns'
 import { ColumnOrderState, OnChangeFn, SortingState, VisibilityState } from '@tanstack/react-table'
 import { ComponentModeType } from '@utils/types/componentModeType'
 
@@ -18,6 +17,7 @@ interface PictureDetailsProps {
     onColumnOrderChange: OnChangeFn<ColumnOrderState>
     onSortingChange: OnChangeFn<SortingState>
     pictureDetails: PictureDetailI[]
+    currencyHtmlCode: string
     onDetailsChenge?: (details: PictureDetailI[]) => void
     onSavedPictureDetail?: (forAdd: boolean, pictureDetail: PictureDetailI) => void
     onRemovedPictureDetail?: (id: string) => void
@@ -76,7 +76,7 @@ const getTable = (
     })
 }
 
-export default function PicturesDetailsTable({componentMode = 'default', ...propsOther}: PictureDetailsProps) {
+export default function PicturesDetailsTable({ componentMode = 'default', ...propsOther }: PictureDetailsProps) {
 
     //------------------------------------------------------------------------------
 
@@ -108,6 +108,31 @@ export default function PicturesDetailsTable({componentMode = 'default', ...prop
     }
 
     //------------------------------------------------------------------------------
+
+    const columns = useMemo<MRT_ColumnDef<PictureDetailI>[]>(
+        () =>
+            [
+                {
+                    header: '#',
+                    accessorKey: 'id',
+                    sortDescFirst: false,
+                },
+                {
+                    header: 'Название',
+                    accessorKey: 'name',
+                    sortUndefined: 'last',
+                    sortDescFirst: false,
+                },
+                {
+                    header: 'Цена',
+                    accessorKey: 'price',
+                    accessorFn: row => `${row.price.toFixed(2)} ${propsOther.currencyHtmlCode}`,
+                    filterVariant: 'range',
+                    sortUndefined: 'last',
+                    sortDescFirst: false,
+                }
+            ],
+        [propsOther.currencyHtmlCode])
 
     const table = getTable(
         propsOther.pictureDetails,

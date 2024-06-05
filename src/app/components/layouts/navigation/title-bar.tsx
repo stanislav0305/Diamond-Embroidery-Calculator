@@ -5,6 +5,7 @@ import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import AppSettings from '@components/app-settings'
 import ThemeSwitch from '@containers/theme-switch'
 import { AppSettingsContext } from '@contexts/app-settings-context-provider'
+import CurrencySwitch from '@containers/currency-switch'
 
 interface PropsI {
     themeName: string
@@ -139,7 +140,8 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
                     mode={mode}
                     onClose={this.appSettingsModal.onClose}
                     onHide={this.appSettingsModal.toogle}>
-                    <ThemeSwitch></ThemeSwitch>
+                    <ThemeSwitch />
+                    <CurrencySwitch />
                     <AppSettingsContext.Consumer>
                         {(appSettingsContext) => (
                             <AppSettings appSettings={appSettingsContext.appSettings} />

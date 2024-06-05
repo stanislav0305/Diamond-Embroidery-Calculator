@@ -2,6 +2,10 @@ export default class Chanels {
     static theme_getCurrent = 'theme:getCurrent'
     static theme_set = 'theme:set'
 
+    static currency_getCurrent = 'currency:getCurrent'
+    static currency_set = 'currency:set'
+    static currency_currencyChenged = 'currency:currencyChenged'
+
     static app_getSettings = 'app:getSettings'
     static app_close = 'app:close'
 

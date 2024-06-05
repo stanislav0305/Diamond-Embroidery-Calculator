@@ -7,6 +7,7 @@ import { EventMessagesProvider } from '@contexts/event-messages-provider'
 import App from '@components/layouts/app'
 import LogRendererHelper from '@utils/helpers/logRendererHelper'
 import './index.scss'
+import { CurrencyProvider } from '@contexts/currency-context-provider'
 
 
 LogRendererHelper.init()
@@ -18,9 +19,11 @@ root.render(
     <React.StrictMode>
         <AppSettingsProvider>
             <ThemeProvider>
-                <EventMessagesProvider>
-                    <App />
-                </EventMessagesProvider>
+                <CurrencyProvider>
+                    <EventMessagesProvider>
+                        <App />
+                    </EventMessagesProvider>
+                </CurrencyProvider>
             </ThemeProvider>
         </AppSettingsProvider>
     </React.StrictMode>

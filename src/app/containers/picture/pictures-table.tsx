@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Image } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { MRT_Localization_RU } from 'material-react-table/locales/ru'
@@ -16,6 +16,9 @@ import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import SimilarPicturesFilter from '@shared/classes/similarPicturesFilter'
+import { CurrencyContext } from '@contexts/currency-context-provider'
+import { CurrencyI } from '@shared/interfaces/currencyI'
+import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
 
 
 export interface PicturesTableProps {
@@ -24,6 +27,18 @@ export interface PicturesTableProps {
 }
 
 export default function PicturesTable({ componentMode = 'default', filter }: PicturesTableProps) {
+  const currencyContext = useContext(CurrencyContext)
+  const [currencyHtmlCode, setCurrencyHtmlCode] = useState<string>(currencyContext.currencyHtmlCode)
+  const [data, setData] = useState<PictureI[]>([])
+
+  const refresPicturesTable = useCallback((currency: CurrencyI) => {
+    setCurrencyHtmlCode(CurrencyNameHtmlCodesMap.get(currency.name)!)
+    setData(prevData => {
+      return [...prevData]
+    })
+  },
+    [setCurrencyHtmlCode, setData])
+
   useEffect(() => {
     const query = componentMode === 'default'
       ? window.api.pictures.tableOptions.get()
@@ -33,7 +48,6 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       setColumnVisibility(opts.columnVisibility)
       setColumnOrder(opts.columnOrder)
       setColumnSorting(opts.columnSort)
-
 
       window.api.pictures.getAll()
         .then(result => {
@@ -46,11 +60,21 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
           setData(result)
         })
     })
-  }, [])
+
+    window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
+      refresPicturesTable(currency)
+    })
+
+    return () => {
+      //Will be run function when the component unmounts
+      window.api.currency.off.currencyChenged()
+    }
+  },
+    [refresPicturesTable]
+  )
 
 
-  const [data, setData] = useState<PictureI[]>([])
-
+  //------------------------------------------------------------------------------
 
   const appSettingsContext = useContext(AppSettingsContext)
   const pictureImagesPath = appSettingsContext.appSettings.paths.pictureImagesPath
@@ -132,10 +156,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
         {
           header: 'Цена за час',
           accessorKey: 'pricePerHour',
-          accessorFn: row => row.pricePerHour.toLocaleString('ru-RU', {
-            style: 'currency',
-            currency: 'EUR'
-          }),
+          accessorFn: row => `${row.pricePerHour.toFixed(2)} ${currencyHtmlCode}`,
           sortUndefined: 'last',
           sortDescFirst: false,
           filterVariant: 'range-slider',
@@ -144,11 +165,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
             max: 1000,
             min: 0,
             step: 1,
-            valueLabelFormat: (value) =>
-              value.toLocaleString('ru-RU', {
-                style: 'currency',
-                currency: 'EUR'
-              }),
+            valueLabelFormat: (value) => `${value.toFixed(2)} ${currencyHtmlCode}`,
           }
         },
         {
@@ -166,10 +183,12 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
         {
           header: 'Продано за',
           accessorKey: 'bayFullPrice',
-          accessorFn: row => row.bayFullPrice.toLocaleString('ru-RU', {
-            style: 'currency',
-            currency: 'EUR'
-          }),
+          accessorFn: row => (
+            <>
+              {row.bayFullPrice.toFixed(2)}
+              <span className='ms-1 row-currency'>{currencyHtmlCode}</span>
+            </>
+          ),
           sortUndefined: 'last',
           sortDescFirst: false,
           filterVariant: 'range',
@@ -181,12 +200,12 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
           sortDescFirst: false,
         },
       ],
-    []
+    [currencyHtmlCode]
   )
 
   //--------------------------------------------------------
 
-
+  console.log('currencyHtmlCode:', currencyHtmlCode)
   const [columnVisibility, setColumnVisibility] = useState({})
   const onColumnVisibilityChange = (updater: Updater<object>) => {
     setColumnVisibility((prev) => {
@@ -374,8 +393,6 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
     e.preventDefault()
     pictureDetailsDefaultSetModalRef.current.onOpen()
   }
-
-  //------------------------------------------------------------------------------
 
   return (
     <>

@@ -6,12 +6,23 @@ import ProcessingResultI from '@shared/interfaces/processingResultI'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
+import { CurrencyI } from '@shared/interfaces/currencyI'
 
 
 export default interface ContextBridgeApiI {
   theme: {
     getCurrent: () => Promise<ThemeI>
-    set: (settings: ThemeI) => Promise<ThemeI>
+    set: (model: ThemeI) => Promise<ThemeI>
+  }
+  currency: {
+    getCurrent: () => Promise<CurrencyI>
+    set: (model: CurrencyI) => Promise<CurrencyI>
+    on: {
+      currencyChenged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void)  => void
+    }
+    off: {
+      currencyChenged: () => void
+    }
   }
   app: {
     getSettings: () => Promise<AppSettingsI>
@@ -22,7 +33,7 @@ export default interface ContextBridgeApiI {
     maximize: () => Promise<void>
     unmaximize: () => Promise<void>
     on: {
-      unmaximized: (listener: (event: IpcRendererEvent, ...args: any[]) => void) => void
+      unmaximized: (listener: (event: IpcRendererEvent) => void) => void
     }
     off: {
       unmaximized: () => void
