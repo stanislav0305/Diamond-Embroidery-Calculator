@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "electron": "^27.0.4",
+    "electron": "^30.0.9",
     "electron-builder": "^24.6.4",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
