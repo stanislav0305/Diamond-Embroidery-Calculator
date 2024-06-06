@@ -345,7 +345,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                     }, 400)
                                 }}
                             >
-                                {({ values, errors, touched, handleReset, submitForm }) => (
+                                {({ values, errors, touched, handleReset, submitForm, setFieldValue }) => (
                                     <>
                                         <div>
                                             {(!!Object.values(errors).length && !!Object.values(touched).length) &&
@@ -642,24 +642,38 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                     </Accordion>
                                                 </Col>
                                             </Row>
-                                            <FormField
-                                                name="bayFullPrice"
-                                                inputClassName="fw-bold"
-                                                as={NumericPositiveDecimal2Format}
-                                                prefixReactNode={
-                                                    <InputGroup.Text className="p-1 fw-bold">
-                                                        Продаю за
-                                                    </InputGroup.Text>
-                                                }
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
-                                                postfixReactNode={
-                                                    <InputGroup.Text className="p-1">
-                                                        {currencyContext.currencyHtmlCode}
-                                                    </InputGroup.Text>
-                                                }
-                                                inputPlaceholder="Введите цену продажи"
-                                            />
+                                            <Row className="mb-4">
+                                                <Col>
+                                                    <FormField
+                                                        name="bayFullPrice"
+                                                        inputClassName="fw-bold"
+                                                        as={NumericPositiveDecimal2Format}
+                                                        prefixReactNode={
+                                                            <InputGroup.Text className="p-1 fw-bold">
+                                                                Цена
+                                                            </InputGroup.Text>
+                                                        }
+                                                        addInputGroupInput={componentMode === 'default'}
+                                                        addInputGroupText={componentMode === 'readonly'}
+                                                        postfixReactNode={
+                                                            <InputGroup.Text className="p-1">
+                                                                {currencyContext.currencyHtmlCode}
+                                                            </InputGroup.Text>
+                                                        }
+                                                        inputPlaceholder="Введите цену продажи"
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Check
+                                                        name="isSold"
+                                                        type="switch"
+                                                        label="Продана"
+                                                        checked={values.isSold}
+                                                        onChange={(e) => setFieldValue('isSold', e.target.checked)}
+                                                        disabled={componentMode === 'readonly'}
+                                                    />
+                                                </Col>
+                                            </Row>
                                         </Form>
                                         <Form.Group className="text-center pb-2">
                                             {componentMode === 'default' &&

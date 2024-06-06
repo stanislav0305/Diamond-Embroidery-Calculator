@@ -26,7 +26,7 @@ export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
                             tablesOptions: {
                                 pictureTable: {
                                     columnOrder: ['mrt-row-actions', 'photo', 'id', 'created', 'updated', 'height', 'width',
-                                        'diamondForm', 'coverageArea', 'pricePerHour', 'hoursSpent', 'bayFullPrice', 'comment'
+                                        'diamondForm', 'coverageArea', 'pricePerHour', 'hoursSpent', 'bayFullPrice', 'isSold', 'comment'
                                     ],
                                     columnVisibility: {},
                                     columnSort: [] as ColumnSortEntityI[]
@@ -43,7 +43,7 @@ export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
                                 } as TableOptionsEntityI,
                                 similarPictureTable: {
                                     columnOrder: ['mrt-row-actions', 'photo', 'id', 'created', 'updated', 'height', 'width',
-                                        'diamondForm', 'coverageArea', 'pricePerHour', 'hoursSpent', 'bayFullPrice', 'comment'
+                                        'diamondForm', 'coverageArea', 'pricePerHour', 'hoursSpent', 'bayFullPrice', 'isSold', 'comment'
                                     ],
                                     columnVisibility: {},
                                     columnSort: [] as ColumnSortEntityI[]

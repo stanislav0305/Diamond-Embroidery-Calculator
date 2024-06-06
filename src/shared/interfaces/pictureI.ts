@@ -4,6 +4,7 @@ import DiamondFormType, { diamondFormDefault, diamondForms } from '@shared/types
 import CoverageAreaType, { coverageAreaDefault, coverageAreas } from '@shared/types/coverageAreaType'
 import PictureDetailI, { pictureDetailISchema } from '@shared/interfaces/pictureDetailI'
 import PictureImageI, { pictureImageISchema } from '@shared/interfaces/pictureImageI'
+import IsSoldType, { isSoldDefault } from '@shared/types/isSoldType'
 
 
 export default interface PictureI extends HistoryI {
@@ -22,6 +23,7 @@ export default interface PictureI extends HistoryI {
     forHoursSpentTotal: number
 
     bayFullPrice: number
+    isSold: IsSoldType
 
     comment: string
 }
@@ -39,6 +41,7 @@ export const pictureDefault: PictureI = {
     hoursSpent: 0,
     forHoursSpentTotal: 0,
     bayFullPrice: 0,
+    isSold: false,
     comment: '',
     created: new Date().toLocaleString(),
     updated: undefined
@@ -76,6 +79,8 @@ export const pictureISchema = Yup.object().shape({
         .required('Обязательное поле'),
     bayFullPrice: Yup.number()
         .min(0, 'Значение должно быть больше или равно 0')
+        .required('Обязательное поле'),
+    isSold: Yup.boolean()
         .required('Обязательное поле'),
     comment: Yup.string()
 })

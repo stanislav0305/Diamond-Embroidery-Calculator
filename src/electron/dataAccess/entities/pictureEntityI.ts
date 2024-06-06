@@ -7,11 +7,15 @@ import PicturesDefaultSetEntityI, { picturesDefaultSetShema } from '@dataAccess/
 
 const diamondFormDefault = 'circle'
 const diamondForms = ['circle', 'square']
-export type DiamondFormType = typeof diamondForms[number]
+type DiamondFormType = typeof diamondForms[number]
 
 const coverageAreaDefault = 'total'
 const coverageAreas = ['total', 'partial']
-export type CoverageAreaType = typeof coverageAreas[number]
+type CoverageAreaType = typeof coverageAreas[number]
+
+const isSoldDefault = false
+const isSoldValues = [true, false] as const
+type IsSoldType = typeof isSoldValues[number]
 
 export interface PictureEntityI extends HistoryEntityI {
     height: number
@@ -29,6 +33,7 @@ export interface PictureEntityI extends HistoryEntityI {
     forHoursSpentTotal: number
 
     bayFullPrice: number
+    isSold: IsSoldType
 
     comment: string
 }
@@ -41,7 +46,7 @@ export const picturesShema = {
     },
     additionalProperties: {
         type: 'object',
-        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'forHoursSpentTotal', 'bayFullPrice', 'created'],
+        required: ['id', 'height', 'width', 'diamondForm', 'coverageArea', 'detailsSumTotal', 'forHoursSpentTotal', 'bayFullPrice', 'isSold', 'created'],
         properties: {
             id: {
                 type: 'string'
@@ -86,6 +91,10 @@ export const picturesShema = {
             },
             comment: {
                 type: 'string'
+            },
+            isSold:{
+                type: 'boolean',
+                default: isSoldDefault
             },
             created: {
                 type: 'string'

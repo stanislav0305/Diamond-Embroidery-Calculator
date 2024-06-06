@@ -19,6 +19,7 @@ import SimilarPicturesFilter from '@shared/classes/similarPicturesFilter'
 import { CurrencyContext } from '@contexts/currency-context-provider'
 import { CurrencyI } from '@shared/interfaces/currencyI'
 import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
+import { isSoldMap } from '@shared/types/isSoldType'
 
 
 export interface PicturesTableProps {
@@ -181,17 +182,29 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
           }
         },
         {
-          header: 'Продано за',
+          header: 'Цена',
           accessorKey: 'bayFullPrice',
           accessorFn: row => (
             <>
               {row.bayFullPrice.toFixed(2)}
-              <span className='ms-1 row-currency'>{currencyHtmlCode}</span>
+              <span className='ms-1'>{currencyHtmlCode}</span>
             </>
           ),
           sortUndefined: 'last',
           sortDescFirst: false,
-          filterVariant: 'range',
+          filterVariant: 'range'
+        },
+        {
+          header: 'Продана',
+          accessorKey: 'isSold',
+          accessorFn: row => isSoldMap.get(row.isSold),
+          Cell: ({ row }) => (
+            <span className={`ms-1 ${row.original.isSold ? 'text-success' : 'text-danger'}`}>{isSoldMap.get(row.original.isSold)}</span>
+          ),
+          filterSelectOptions: MapToArrayConverter.toDropdownOptionsValues(isSoldMap),
+          filterVariant: 'select',
+          sortUndefined: 'last',
+          sortDescFirst: false,
         },
         {
           header: 'Коментарий',
