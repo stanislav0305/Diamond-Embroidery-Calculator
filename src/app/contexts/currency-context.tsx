@@ -28,7 +28,7 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
     }
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     window.api.currency.getCurrent()
       .then(currency => {
         console.log('getCurrency', currency)

@@ -25,7 +25,7 @@ export class AppSettingsProvider extends React.Component<PropsWithChildren<{}>, 
     }
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     window.api.app.getSettings()
       .then(appSettings => {
         console.log('getSettings')
