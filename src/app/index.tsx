@@ -1,13 +1,13 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import 'bootstrap-icons/font/bootstrap-icons'
-import { AppSettingsProvider } from '@contexts/app-settings-context-provider'
-import { ThemeProvider } from '@contexts/theme-context-provider'
-import { EventMessagesProvider } from '@contexts/event-messages-provider'
+import { AppSettingsProvider } from '@contexts/app-settings-context'
+import { ThemeProvider } from '@contexts/theme-context'
+import { EventMessagesProvider } from '@contexts/event-messages-context'
 import App from '@components/layouts/app'
 import LogRendererHelper from '@utils/helpers/logRendererHelper'
 import './index.scss'
-import { CurrencyProvider } from '@contexts/currency-context-provider'
+import { CurrencyProvider } from '@contexts/currency-context'
 
 
 LogRendererHelper.init()

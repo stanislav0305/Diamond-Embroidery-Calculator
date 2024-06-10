@@ -8,18 +8,19 @@ import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
 import { ColumnFilter, ColumnOrderState, Row, SortingState, Updater } from '@tanstack/react-table'
 import PicturEditModal from '@containers/picture/picture-edit-modal'
-import PicturRemoveModal from '@containers/picture/picture-remove-modal'
+import { PicturRemoveModal } from '@containers/picture/picture-remove-modal'
 import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
 import PictureImageI from '@shared/interfaces/pictureImageI'
-import { AppSettingsContext } from '@contexts/app-settings-context-provider'
+import { AppSettingsContext } from '@contexts/app-settings-context'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import SimilarPicturesFilter from '@shared/classes/similarPicturesFilter'
-import { CurrencyContext } from '@contexts/currency-context-provider'
+import { CurrencyContext } from '@contexts/currency-context'
 import { CurrencyI } from '@shared/interfaces/currencyI'
 import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
 import { isSoldMap } from '@shared/types/isSoldType'
+import { EventMessageConsumer } from '@contexts/event-messages-context'
 
 
 export interface PicturesTableProps {
@@ -433,9 +434,29 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
         <MaterialReactTable table={table} />
       </div>
 
-      <PicturEditModal ref={pictureEditModalRef} componentMode={componentMode} onSaved={onSavedPicture} />
-      <PicturRemoveModal ref={pictureRemoveModalRef} onRemoved={onRemovedPicture} />
-      <PictureDefaultSetModal ref={pictureDetailsDefaultSetModalRef} />
+      <EventMessageConsumer>
+        {context => (
+          <>
+            <PicturRemoveModal
+              ref={pictureRemoveModalRef}
+              eventMessagesContext={context}
+              onRemoved={onRemovedPicture}
+            />
+            <PicturEditModal
+              ref={pictureEditModalRef}
+              eventMessagesContext={context}
+              componentMode={componentMode}
+              onSaved={onSavedPicture}
+            />
+            <PictureDefaultSetModal
+              ref={pictureDetailsDefaultSetModalRef}
+              eventMessagesContext={context}
+            />
+          </>
+        )}
+      </EventMessageConsumer>
+
+
     </>
   )
 }

@@ -2,11 +2,13 @@ import React, { createContext, PropsWithChildren } from 'react'
 import AppSettingsI from '@shared/interfaces/appSettingsI'
 
 
-type AppSettingsContextType = {
+export type AppSettingsContextType = {
   appSettings: AppSettingsI
 }
 
 export const AppSettingsContext = createContext<AppSettingsContextType>({} as AppSettingsContextType)
+
+//------------------------------------------------------------------------------
 
 type State = {
   appSettings: AppSettingsI
@@ -60,3 +62,7 @@ export class AppSettingsProvider extends React.Component<PropsWithChildren<{}>, 
     )
   }
 }
+
+//------------------------------------------------------------------------------
+
+export const AppSettingsConsumer = AppSettingsContext.Consumer

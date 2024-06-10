@@ -3,6 +3,7 @@ import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import PictureDetailI, { pictureDetailDefault } from '@shared/interfaces/pictureDetailI'
 import PictureDetailEdit from '@components/picture/picture-detail-edit'
 import IdHelper from '@shared/helpers/idHelper'
+import { CurrencyConsumer } from '@contexts/currency-context'
 
 
 interface PicturDetailEditModalProps {
@@ -65,10 +66,16 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
       <CustomModal header={forAdd ? 'Добавление материала картины' : 'Редактирование материала картины'}
         mode={mode}
         onHide={this.toogle}>
-        <PictureDetailEdit data={pictureDetail}
-          onSave={this.onSave}
-          onClose={this.onClose}
-        />
+        <CurrencyConsumer>
+          {context =>
+            <PictureDetailEdit
+              currencyContext={context}
+              data={pictureDetail}
+              onSave={this.onSave}
+              onClose={this.onClose}
+            />
+          }
+        </CurrencyConsumer>
       </CustomModal >
     )
   }

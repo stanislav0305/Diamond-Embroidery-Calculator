@@ -1,9 +1,10 @@
 import React from 'react'
-import { EventMessagesContext } from '@contexts/event-messages-provider'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
+import { EventMessagesContextType } from '@contexts/event-messages-context'
 
 
 interface PicturRemoveModalProps {
+    eventMessagesContext: EventMessagesContextType
     onRemoved: (id: string) => void
 }
 
@@ -12,10 +13,7 @@ interface PicturRemoveModalState {
     id: string
 }
 
-export default class PicturRemoveModal extends React.Component<PicturRemoveModalProps, PicturRemoveModalState> {
-    static contextType = EventMessagesContext
-    context!: React.ContextType<typeof EventMessagesContext>
-
+export class PicturRemoveModal extends React.Component<PicturRemoveModalProps, PicturRemoveModalState> {
     constructor(props: PicturRemoveModalProps) {
         super(props)
 
@@ -43,14 +41,14 @@ export default class PicturRemoveModal extends React.Component<PicturRemoveModal
         await window.api.pictures.delete(id)
             .then(removed => {
                 const hasError = !removed
-                this.context.addMessage('PictureRemoved', hasError)
+                this.props.eventMessagesContext.addMessage('PictureRemoved', hasError)
                 this.toogle('closed')
 
                 //update the table
                 removed && this.props.onRemoved(id)
             })
             .catch(e => {
-                this.context.addMessage('PictureRemoved', true)
+                this.props.eventMessagesContext.addMessage('PictureRemoved', true)
                 this.toogle('error')
             })
     }

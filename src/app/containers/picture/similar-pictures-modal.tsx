@@ -1,7 +1,6 @@
 import React from 'react'
-import { EventMessagesContext } from '@contexts/event-messages-provider'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
-import PicturesTable from './pictures-table'
+import PicturesTable from '@containers/picture/pictures-table'
 import SimilarPicturesFilterI from '@shared/classes/similarPicturesFilter'
 
 
@@ -11,9 +10,6 @@ interface StateI {
 }
 
 export default class SimilarPicturesModal extends React.Component<{}, StateI> {
-    static contextType = EventMessagesContext
-    context!: React.ContextType<typeof EventMessagesContext>
-
     constructor(props: {}) {
         super(props)
 

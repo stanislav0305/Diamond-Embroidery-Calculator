@@ -5,11 +5,13 @@ import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/even
 import { EVENT_MESSAGES } from '@shared/consts'
 
 
-type EventMessagesContextType = {
+export type EventMessagesContextType = {
     addMessage: (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => void,
 }
 
-export const EventMessagesContext = createContext<EventMessagesContextType>({} as EventMessagesContextType)
+const EventMessagesContext = createContext<EventMessagesContextType>({} as EventMessagesContextType)
+
+//-----------------------------------------------------------------------
 
 type EventMessagesProviderState = {
     eventMessagesProps: EventMessagePropsI[]
@@ -124,3 +126,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
         )
     }
 }
+
+//-----------------------------------------------------------------------
+
+export const EventMessageConsumer = EventMessagesContext.Consumer

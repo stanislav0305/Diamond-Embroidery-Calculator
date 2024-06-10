@@ -3,13 +3,15 @@ import { CurrencyI } from '@shared/interfaces/currencyI'
 import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
 
 
-type CurrencyContextType = {
+export type CurrencyContextType = {
   currency: CurrencyI
   currencyHtmlCode: string
   setCurrency: (currency: CurrencyI) => void
 }
 
 export const CurrencyContext = createContext<CurrencyContextType>({} as CurrencyContextType)
+
+//-------------------------------------------------------------------------
 
 type CurrencyProviderState = {
   currency: CurrencyI
@@ -77,3 +79,7 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
     )
   }
 }
+
+//------------------------------------------------------------------------
+
+export const CurrencyConsumer = CurrencyContext.Consumer

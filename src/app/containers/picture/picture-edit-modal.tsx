@@ -1,15 +1,17 @@
 import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
-import { EventMessagesContext } from '@contexts/event-messages-provider'
+import { EventMessagesContextType } from '@contexts/event-messages-context'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
-import { AppSettingsContext } from '@contexts/app-settings-context-provider'
 import ProcessingResultI from '@shared/interfaces/processingResultI'
 import { ComponentModeType } from '@utils/types/componentModeType'
+import { AppSettingsConsumer } from '@contexts/app-settings-context'
+import { CurrencyConsumer } from '@contexts/currency-context'
 
 
 interface PicturEditModalProps {
+  eventMessagesContext: EventMessagesContextType
   componentMode?: ComponentModeType
   onSaved: (forAdd: boolean, picture: PictureI) => void
 }
@@ -22,11 +24,9 @@ interface PicturEditModalState {
 }
 
 export default class PicturEditModal extends React.Component<PicturEditModalProps, PicturEditModalState> {
-  static contextType = EventMessagesContext
   static defaultProps = {
     componentMode: 'default',
   }
-  context!: React.ContextType<typeof EventMessagesContext>
 
   constructor(props: PicturEditModalProps) {
     super(props)
@@ -47,7 +47,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       }
 
       const description = `Изображений: отправлено: ${info.sended}, не сохранено: ${info.notProcessed}, сохранено: ${info.done}`
-      this.context.addMessage(
+      this.props.eventMessagesContext.addMessage(
         'PictureFilesLoaded',
         hasError,
         description,
@@ -62,7 +62,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       }
 
       const description = `Изображений: отправлено: ${info.sended}, не удалено: ${info.notProcessed}, удалено: ${info.done}`
-      this.context.addMessage(
+      this.props.eventMessagesContext.addMessage(
         'PictureFilesRemoved',
         hasError,
         description,
@@ -100,14 +100,14 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       await window.api.pictures.create(p)
         .then(pp => {
           const hasError = !pp
-          this.context.addMessage('PictureCreated', hasError)
+          this.props.eventMessagesContext.addMessage('PictureCreated', hasError)
           this.toogle('closed')
 
           //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {
-          this.context.addMessage('PictureCreated', true)
+          this.props.eventMessagesContext.addMessage('PictureCreated', true)
           this.toogle('error', forAdd, picture)
         })
 
@@ -115,14 +115,14 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       await window.api.pictures.update(p)
         .then(pp => {
           const hasError = !pp
-          this.context.addMessage('PictureUpdated', hasError)
+          this.props.eventMessagesContext.addMessage('PictureUpdated', hasError)
           this.toogle('closed')
 
           //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {
-          this.context.addMessage('PictureUpdated', true)
+          this.props.eventMessagesContext.addMessage('PictureUpdated', true)
           this.toogle('error', forAdd, picture)
         })
     }
@@ -140,24 +140,31 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
   }
 
   render() {
-    const { componentMode } = this.props
+    const { componentMode, eventMessagesContext } = this.props
     const { mode, forAdd, picture } = this.state
 
     return (
       <CustomModal header={componentMode === 'default' ? (forAdd ? 'Добавление картины' : 'Редактирование картины') : 'Данные картины'}
         mode={mode}
-        onHide={this.toogle}>
-        <AppSettingsContext.Consumer>
-          {(appSettingsContext) => (
-            <PictureEdit
-              componentMode={componentMode}
-              data={picture}
-              pictureImagesPath={appSettingsContext.appSettings.paths.pictureImagesPath}
-              onSave={this.onSave}
-              onClose={this.onClose}
-            />
-          )}
-        </AppSettingsContext.Consumer>
+        onHide={this.toogle}
+      >
+        <CurrencyConsumer>
+          {currencyContext =>
+            <AppSettingsConsumer>
+              {appSettingsContext =>
+                <PictureEdit
+                  currencyContext={currencyContext}
+                  appSettingsContext={appSettingsContext}
+                  eventMessagesContext={eventMessagesContext}
+                  componentMode={componentMode}
+                  data={picture}
+                  onSave={this.onSave}
+                  onClose={this.onClose}
+                />
+              }
+            </AppSettingsConsumer>
+          }
+        </CurrencyConsumer>
       </CustomModal >
     )
   }

@@ -1,8 +1,8 @@
 import React from 'react'
 import Footer from '@components/layouts/footer'
 import TitleBar from '@components/layouts/navigation/title-bar'
-import { ThemeContext } from '@contexts/theme-context-provider'
 import MainPage from '@components/pages/main-page'
+import { ThemeConsumer } from '@contexts/theme-context'
 
 
 export default function App() {
@@ -10,11 +10,9 @@ export default function App() {
         <div className="d-flex flex-column min-vh-100">
             <div className="overflow-auto">
                 <header>
-                    <ThemeContext.Consumer>
-                        {(themeContext) => (
-                            <TitleBar themeName={themeContext.theme.name}></TitleBar>
-                        )}
-                    </ThemeContext.Consumer>
+                    <ThemeConsumer>
+                        {context => <TitleBar themeContext={context} />}
+                    </ThemeConsumer>
                 </header>
                 <main>
                     <MainPage />

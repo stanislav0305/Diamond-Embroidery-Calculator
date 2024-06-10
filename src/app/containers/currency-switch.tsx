@@ -1,25 +1,28 @@
 import React from 'react'
 import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap'
-import { CurrencyContext } from '@contexts/currency-context-provider'
+import { CurrencyContextType } from '@contexts/currency-context'
 import { CurrencyNameHtmlCodesMap, CurrencyNameType, currencyNames } from '@shared/types/currencyNameType'
 
 
-export default class CurrencySwitch extends React.Component {
-    static contextType = CurrencyContext
-    context!: React.ContextType<typeof CurrencyContext>
+interface PropsI {
+    currencyContext: CurrencyContextType
+}
 
+export default class CurrencySwitch extends React.Component<PropsI, {}> {
     onSelectCurrencyName = async (value: string | null, event: React.SyntheticEvent<unknown>) => {
         event.preventDefault()
         console.log('onSelectCurrencyName...')
 
-        const newCurrency = this.context.currency
+        const {currency, setCurrency} = this.props.currencyContext
+
+        const newCurrency = currency
         newCurrency.name = value as CurrencyNameType
 
-        this.context.setCurrency(newCurrency)
+        setCurrency(newCurrency)
     }
 
     render() {
-        const { name } = this.context.currency
+        const { name } = this.props.currencyContext.currency
 
         return (
             <Container fluid>

@@ -2,19 +2,21 @@ import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import PicturesDefaultSetI, { picturesDefaultSetDefault } from '@shared/interfaces/picturesDefaultSetI'
 import PictureDefaultSetEdit from '@components/picture/picture-default-set-edit'
-import { EventMessagesContext } from '@contexts/event-messages-provider'
+import { EventMessagesContextType } from '@contexts/event-messages-context'
+import { CurrencyConsumer } from '@contexts/currency-context'
 
 
-interface State {
+interface PropsI {
+    eventMessagesContext: EventMessagesContextType
+}
+
+interface StateI {
     mode: ModalMode
     model: PicturesDefaultSetI
 }
 
-export default class PictureDefaultSetModal extends React.Component<{}, State> {
-    static contextType = EventMessagesContext
-    context!: React.ContextType<typeof EventMessagesContext>
-
-    constructor(props: {}) {
+export default class PictureDefaultSetModal extends React.Component<PropsI, StateI> {
+    constructor(props: PropsI) {
         super(props)
 
         this.state = {
@@ -49,11 +51,11 @@ export default class PictureDefaultSetModal extends React.Component<{}, State> {
         await window.api.picturesDefaultSet.set(model)
             .then(newModel => {
                 const hasError = !newModel
-                this.context.addMessage('PicturesDefaultSetSaved', hasError)
+                this.props.eventMessagesContext.addMessage('PicturesDefaultSetSaved', hasError)
                 this.toogle('closed')
             })
             .catch(e => {
-                this.context.addMessage('PicturesDefaultSetSaved', true)
+                this.props.eventMessagesContext.addMessage('PicturesDefaultSetSaved', true)
                 this.toogle('error', model)
             })
     }
@@ -74,10 +76,16 @@ export default class PictureDefaultSetModal extends React.Component<{}, State> {
             <CustomModal header="Данные по умолчанию"
                 mode={mode}
                 onHide={this.toogle}>
-                <PictureDefaultSetEdit data={model}
-                    onSave={this.onSave}
-                    onClose={this.onClose}
-                />
+                <CurrencyConsumer>
+                    {context =>
+                        <PictureDefaultSetEdit
+                            currencyContext={context}
+                            data={model}
+                            onSave={this.onSave}
+                            onClose={this.onClose}
+                        />
+                    }
+                </CurrencyConsumer>
             </CustomModal >
         )
     }

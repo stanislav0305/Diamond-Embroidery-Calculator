@@ -1,36 +1,31 @@
 import React from 'react'
 import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap'
-import { ThemeContext } from '@contexts/theme-context-provider'
 import ThemeNameType, { themeNames } from '@shared/types/themeNameType'
 import ThemeModeType, { themeModesDataMap } from '@shared/types/themeModeType'
+import { ThemeContextType } from '@contexts/theme-context'
 
 
-export default class ThemeSwitch extends React.Component {
-    static contextType = ThemeContext
-    context!: React.ContextType<typeof ThemeContext>
+interface PropsI {
+    themeContext: ThemeContextType
+}
+
+export default class ThemeSwitch extends React.Component<PropsI, {}> {
+    onSelectThemeName = async (value: string | null, event: React.SyntheticEvent<unknown>) => {
+        event.preventDefault()
+        console.log('onSelectThemeName...')
+
+        this.props.themeContext!.setThemeName(value as ThemeNameType)
+    }
 
     onSelectThemeMode = async (value: string | null, event: React.SyntheticEvent<unknown>) => {
         event.preventDefault()
         console.log('onSelectThemeMode...')
 
-        const newTheme = this.context.theme
-        newTheme.mode = value as ThemeModeType
-
-        this.context.setTheme(newTheme)
-    }
-
-    onSelectThemeName = async (value: string | null, event: React.SyntheticEvent<unknown>) => {
-        event.preventDefault()
-        console.log('onSelectThemeName...')
-
-        const newTheme = this.context.theme
-        newTheme.name = value as ThemeNameType
-
-        this.context.setTheme(newTheme)
+        this.props.themeContext.setThemeMode(value as ThemeModeType)
     }
 
     render() {
-        const { mode, name } = this.context.theme
+        const { name, mode } = this.props.themeContext.theme
 
         return (
             <Container fluid>
@@ -46,7 +41,7 @@ export default class ThemeSwitch extends React.Component {
                                 className={themeModesDataMap.get(mode)!.css}
                             >
                                 {themeModesDataMap.get(mode)!.ruName}
-                             </Dropdown.Toggle>
+                            </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item
                                     key='light'

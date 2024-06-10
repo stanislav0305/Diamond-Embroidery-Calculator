@@ -11,7 +11,7 @@ interface PicturDetailRemoveModalState {
     id: string
 }
 
-export default class PicturRemoveModal extends React.Component<PicturDetailRemoveModalProps, PicturDetailRemoveModalState> {
+export default class PicturDetailRemoveModal extends React.Component<PicturDetailRemoveModalProps, PicturDetailRemoveModalState> {
     constructor(props: PicturDetailRemoveModalProps) {
         super(props)
 

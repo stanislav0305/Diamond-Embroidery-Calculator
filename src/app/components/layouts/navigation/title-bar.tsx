@@ -4,11 +4,14 @@ import './title-bar'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import AppSettings from '@components/app-settings'
 import ThemeSwitch from '@containers/theme-switch'
-import { AppSettingsContext } from '@contexts/app-settings-context-provider'
 import CurrencySwitch from '@containers/currency-switch'
+import { ThemeContextType } from '@contexts/theme-context'
+import { AppSettingsConsumer } from '@contexts/app-settings-context'
+import { CurrencyConsumer } from '@contexts/currency-context'
+
 
 interface PropsI {
-    themeName: string
+    themeContext: ThemeContextType
 }
 
 interface StateI {
@@ -91,14 +94,15 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
     }
 
     render() {
+        const { themeContext } = this.props
+        const { theme } = themeContext!
         const { isMaximized, appSettingsModal } = this.state
         const { mode } = appSettingsModal
-        const { themeName } = this.props
 
         return (
             <>
-                <Navbar bg={themeName}
-                    data-bs-theme={themeName}
+                <Navbar bg={theme.name}
+                    data-bs-theme={theme.name}
                     className='title-bar p-0'
                 >
                     <Navbar.Brand>
@@ -140,14 +144,14 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
                     mode={mode}
                     onClose={this.appSettingsModal.onClose}
                     onHide={this.appSettingsModal.toogle}>
-                    <ThemeSwitch />
-                    <CurrencySwitch />
-                    <AppSettingsContext.Consumer>
-                        {(appSettingsContext) => (
-                            <AppSettings appSettings={appSettingsContext.appSettings} />
-                        )}
-                    </AppSettingsContext.Consumer>
-                </CustomModal >
+                    <ThemeSwitch themeContext={themeContext} />
+                    <CurrencyConsumer>
+                        {context => <CurrencySwitch currencyContext={context} />}
+                    </CurrencyConsumer>
+                    <AppSettingsConsumer>
+                        {context => <AppSettings appSettingsContext={context} />}
+                    </AppSettingsConsumer>
+                </CustomModal>
             </>
         )
     }

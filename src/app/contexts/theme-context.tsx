@@ -1,13 +1,18 @@
-import React, { createContext, PropsWithChildren } from 'react'
+import React, { PropsWithChildren, createContext } from 'react'
 import ThemeI from '@shared/interfaces/themeI'
 import ThemeModeType from '@shared/types/themeModeType'
+import ThemeNameType from '@shared/types/themeNameType'
 
-type ThemeContextType = {
+
+export type ThemeContextType = {
   theme: ThemeI
-  setTheme: (theme: ThemeI) => void
+  setThemeMode: (themeMode: ThemeModeType) => void
+  setThemeName: (themeName: ThemeNameType) => void
 }
 
-export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
+const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType)
+
+//------------------------------------------------------------------------
 
 type ThemeProviderState = {
   theme: ThemeI
@@ -55,6 +60,24 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
       })
   }
 
+  setThemeName = (themeName: ThemeNameType) => {
+    const newTheme = {
+      ...this.state.theme,
+      name: themeName
+    }
+
+    this.setTheme(newTheme)
+  }
+
+  setThemeMode = (themeMode: ThemeModeType) => {
+    const newTheme = {
+      ...this.state.theme,
+      mode: themeMode
+    }
+
+    this.setTheme(newTheme)
+  }
+
   changeThemeModeInHtml = (mode: ThemeModeType) => {
     if (mode === 'auto')
       document.documentElement.removeAttribute('data-bs-theme')
@@ -76,7 +99,8 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
           <ThemeContext.Provider
             value={{
               theme,
-              setTheme: this.setTheme
+              setThemeName: this.setThemeName,
+              setThemeMode: this.setThemeMode
             }}
           >
             {children}
@@ -87,3 +111,7 @@ export class ThemeProvider extends React.Component<PropsWithChildren<{}>, ThemeP
     )
   }
 }
+
+//------------------------------------------------------------------------
+
+export const ThemeConsumer = ThemeContext.Consumer 
