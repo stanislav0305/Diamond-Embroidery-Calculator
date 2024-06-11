@@ -3,6 +3,8 @@ import { interval, map, mergeMap, Subject, tap, takeWhile, switchMap } from 'rxj
 import EventMessage, { EventMessagePropsI } from '@components/event-message'
 import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/eventMessagePropsFactory'
 import { EVENT_MESSAGES } from '@shared/consts'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
+import { ToastContainer } from 'react-bootstrap'
 
 
 export type EventMessagesContextType = {
@@ -82,9 +84,51 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
             )
             .subscribe()
 
+
+        window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
+            const hasErroror = !result
+            this.addMessage(
+                'PictureFilesDonwnloaded',
+                hasErroror
+            )
+        })
+
+        window.api.pictures.images.on.loaded((_event, info: ProcessingResultI) => {
+            const hasError = info.notProcessed > 0
+            if (hasError) {
+                console.error(`pictureFilesLoaded: Not all images loaded! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
+            }
+
+            const description = `Изображений: отправлено: ${info.sended}, не сохранено: ${info.notProcessed}, сохранено: ${info.done}`
+            this.addMessage(
+                'PictureFilesLoaded',
+                hasError,
+                description,
+                description
+            )
+        })
+
+        window.api.pictures.images.on.removed((_event, info: ProcessingResultI) => {
+            const hasError = info.notProcessed > 0
+            if (hasError) {
+                console.error(`pictureFilesRemoved: Not all images removed! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
+            }
+
+            const description = `Изображений: отправлено: ${info.sended}, не удалено: ${info.notProcessed}, удалено: ${info.done}`
+            this.addMessage(
+                'PictureFilesRemoved',
+                hasError,
+                description,
+                description
+            )
+        })
     }
 
     componentWillUnmount(): void {
+        window.api.pictures.images.off.loaded()
+        window.api.pictures.images.off.dowloaded()
+        window.api.pictures.images.off.removed()
+
         this.addMessageSubject.unsubscribe()
         this.renderTimerSubject.unsubscribe()
     }
@@ -112,9 +156,12 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
 
         return (
             <>
-                <div className='position-absolute mt-2 mx-2 z-index-20'>
+                <ToastContainer
+                    position="bottom-end"
+                    className='mb-5 mx-2 z-index-20'
+                >
                     {items}
-                </div>
+                </ToastContainer>
                 <EventMessagesContext.Provider
                     value={{
                         addMessage: this.addMessage

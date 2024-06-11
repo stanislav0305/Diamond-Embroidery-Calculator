@@ -11,6 +11,7 @@ import { ColumnOrderState, SortingState, Updater, VisibilityState } from '@tanst
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
 import { CurrencyContextType } from '@contexts/currency-context'
 import { CurrencyI } from '@shared/interfaces/currencyI'
+import { Subscription } from 'rxjs'
 
 
 interface PropsI {
@@ -27,6 +28,7 @@ interface State {
 }
 
 export default class PictureDefaultSetEdit extends React.Component<PropsI, State> {
+    currencyChangeSubscription?: Subscription = undefined
 
     constructor(props: PropsI) {
         super(props)
@@ -58,20 +60,30 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                 })
             })
 
-        window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
-            //refresh details table if changed currency simbol
-            this.setState(prev => {
-                return {
-                    ...prev,
-                    details: [...prev.details]
-                }
+            this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
+                this.currencyChenged(currency)
             })
-        })
     }
 
     componentWillUnmount(): void {
-        window.api.currency.off.currencyChenged()
+        this.currencyChangeSubscription?.unsubscribe()
     }
+
+    //---------------------------------------------------------------
+
+    currencyChenged(currency: CurrencyI) {
+        //refresh details table if changed currency simbol
+        console.log('currencyChenged in PictureDefaultSetEdit...')
+
+        this.setState(prev => {
+            return {
+                ...prev,
+                details: [...prev.details]
+            }
+        })
+    }
+
+    //---------------------------------------------------------------
 
     onDetailsChenge = (details: PictureDetailI[]) => {
         this.setState(prev => {

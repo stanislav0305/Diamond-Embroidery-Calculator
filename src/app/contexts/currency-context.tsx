@@ -1,4 +1,5 @@
 import React, { createContext, PropsWithChildren } from 'react'
+import { Subject, Subscription } from 'rxjs'
 import { CurrencyI } from '@shared/interfaces/currencyI'
 import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
 
@@ -7,6 +8,7 @@ export type CurrencyContextType = {
   currency: CurrencyI
   currencyHtmlCode: string
   setCurrency: (currency: CurrencyI) => void
+  subscribeCurrencyChange: (callBack: (currency: CurrencyI) => void) => Subscription
 }
 
 export const CurrencyContext = createContext<CurrencyContextType>({} as CurrencyContextType)
@@ -19,6 +21,8 @@ type CurrencyProviderState = {
 }
 
 export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, CurrencyProviderState> {
+  currencyChangeSubject = new Subject<CurrencyI>()
+
   constructor(props: PropsWithChildren) {
     super(props)
 
@@ -41,6 +45,16 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
           }
         })
       })
+
+    window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
+      console.log('currencyChenged in PicturesTable...')
+
+      this.currencyChangeSubject.next(currency)
+    })
+  }
+
+  componentWillUnmount(): void {
+    window.api.currency.off.currencyChenged()
   }
 
   setCurrency = (currency: CurrencyI) => {
@@ -54,6 +68,13 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
         })
       })
   }
+  //---------------------------------------------
+
+  subscribeCurrencyChange = (callBack: (currency: CurrencyI) => void): Subscription => {
+    return this.currencyChangeSubject.subscribe(callBack)
+  }
+
+  //---------------------------------------------
 
   render() {
     const { children } = this.props
@@ -69,7 +90,8 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
             value={{
               currency,
               currencyHtmlCode: CurrencyNameHtmlCodesMap.get(currency.name)!,
-              setCurrency: this.setCurrency
+              setCurrency: this.setCurrency,
+              subscribeCurrencyChange: this.subscribeCurrencyChange
             }}
           >
             {children}

@@ -4,7 +4,6 @@ import { EventMessagesContextType } from '@contexts/event-messages-context'
 import PictureI, { pictureDefault } from '@shared/interfaces/pictureI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PictureEdit from '@components/picture/picture-edit'
-import ProcessingResultI from '@shared/interfaces/processingResultI'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import { AppSettingsConsumer } from '@contexts/app-settings-context'
 import { CurrencyConsumer } from '@contexts/currency-context'
@@ -37,43 +36,6 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       picture: pictureDefault,
       details: []
     }
-  }
-
-  componentDidMount() {
-    window.api.pictures.images.on.loaded((_event, info: ProcessingResultI) => {
-      const hasError = info.notProcessed > 0
-      if (hasError) {
-        console.error(`pictureFilesLoaded: Not all images loaded! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
-      }
-
-      const description = `Изображений: отправлено: ${info.sended}, не сохранено: ${info.notProcessed}, сохранено: ${info.done}`
-      this.props.eventMessagesContext.addMessage(
-        'PictureFilesLoaded',
-        hasError,
-        description,
-        description
-      )
-    })
-
-    window.api.pictures.images.on.removed((_event, info: ProcessingResultI) => {
-      const hasError = info.notProcessed > 0
-      if (hasError) {
-        console.error(`pictureFilesRemoved: Not all images removed! Sended file count:${info.sended}, not loaded count ${info.notProcessed}`)
-      }
-
-      const description = `Изображений: отправлено: ${info.sended}, не удалено: ${info.notProcessed}, удалено: ${info.done}`
-      this.props.eventMessagesContext.addMessage(
-        'PictureFilesRemoved',
-        hasError,
-        description,
-        description
-      )
-    })
-  }
-
-  componentWillUnmount = () => {
-    window.api.pictures.images.off.loaded()
-    window.api.pictures.images.off.removed()
   }
 
   onOpen = (picture: PictureI) => {

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Image } from 'react-bootstrap'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { MRT_Localization_RU } from 'material-react-table/locales/ru'
@@ -33,13 +33,12 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
   const [currencyHtmlCode, setCurrencyHtmlCode] = useState<string>(currencyContext.currencyHtmlCode)
   const [data, setData] = useState<PictureI[]>([])
 
-  const refresPicturesTable = useCallback((currency: CurrencyI) => {
+  const refresPicturesTable = (currency: CurrencyI) => {
     setCurrencyHtmlCode(CurrencyNameHtmlCodesMap.get(currency.name)!)
     setData(prevData => {
       return [...prevData]
     })
-  },
-    [setCurrencyHtmlCode, setData])
+  }
 
   useEffect(() => {
     const query = componentMode === 'default'
@@ -63,18 +62,17 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
         })
     })
 
-    window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
+    const currencyChangeSubscription = currencyContext.subscribeCurrencyChange(currency => {
       refresPicturesTable(currency)
     })
 
     return () => {
       //Will be run function when the component unmounts
-      window.api.currency.off.currencyChenged()
+      currencyChangeSubscription.unsubscribe()
     }
   },
-    [refresPicturesTable]
+    []
   )
-
 
   //------------------------------------------------------------------------------
 

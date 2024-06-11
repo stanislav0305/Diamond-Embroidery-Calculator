@@ -1,4 +1,5 @@
 import React from 'react'
+import { Subscription } from 'rxjs'
 import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup, InputGroup } from 'react-bootstrap'
 import { Formik, FormikProps } from 'formik'
 import ShortUniqueId from 'short-unique-id'
@@ -52,6 +53,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
     static defaultProps = {
         componentMode: 'default',
     }
+    currencyChangeSubscription?: Subscription = undefined
     pictureHoursSpentCalculatorModalRef = React.createRef<PictureHoursSpentCalculatorModal>()
     similarPicturesModalRef = React.createRef<SimilarPicturesModal>()
     formicRef = React.createRef<FormikProps<PictureI>>()
@@ -92,30 +94,31 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                 })
             })
 
-        window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
-            const hasErroror = !result
-            this.props.eventMessagesContext.addMessage(
-                'PictureFilesDonwnloaded',
-                hasErroror
-            )
-        })
-
-        window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
-            //refresh details table if changed currency simbol
-            this.setState(prev => {
-                return {
-                    ...prev,
-                    details: [...prev.details]
-                }
-            })
+        this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
+            this.currencyChenged(currency)
         })
     }
 
     componentWillUnmount() {
         this.removeAllObjectURLs()
-        window.api.pictures.images.off.dowloaded()
-        window.api.currency.off.currencyChenged()
+        this.currencyChangeSubscription?.unsubscribe()
     }
+
+    //---------------------------------------------------------------
+
+    currencyChenged(currency: CurrencyI) {
+        //refresh details table if changed currency simbol
+        console.log('currencyChenged in PictureEdit...')
+
+        this.setState(prev => {
+            return {
+                ...prev,
+                details: [...prev.details]
+            }
+        })
+    }
+
+    //---------------------------------------------------------------
 
     onDetailsChenge = (details: PictureDetailI[]) => {
         this.setState(prev => {

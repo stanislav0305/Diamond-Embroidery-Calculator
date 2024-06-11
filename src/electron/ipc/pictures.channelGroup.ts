@@ -7,6 +7,8 @@ import IdHelper from '@shared/helpers/idHelper'
 import { tablesOptionsRepo } from '@electron/dataAccess/repositories/tablesOptionsStoreRepo'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
+import PictureImageI from '@shared/interfaces/pictureImageI'
+import ProcessingResultI from '@shared/interfaces/processingResultI'
 
 
 export default class PicturesChannelGroup {
@@ -53,9 +55,9 @@ export default class PicturesChannelGroup {
         const result = tablesOptionsRepo.getColumnSort('pictureTable')
         return result
     }
-    
+
     //-----------------------------------------------------------------------------------------------------------------------
-    
+
     private static getAll(): PictureI[] {
         console.info(Chanels.pictures_getAll)
         const arr = picturesRepo.getAll()
@@ -68,7 +70,7 @@ export default class PicturesChannelGroup {
 
         const forCreate = !model.id
         const now = new Date().toLocaleString()
-        const [images, result] = PictureImageFilesHelper.save(model.images)
+        const [images, result] = PicturesChannelGroup.saveImages(event, model.images)
 
         model = {
             ...model,
@@ -78,9 +80,10 @@ export default class PicturesChannelGroup {
             images: images
         }
 
-        //send to render
-        if (result.sended > 0) {
-            event.sender.send(Chanels.pictures_images_loaded, result)
+        if (!forCreate) {
+            const oldModel = picturesRepo.getOne(model.id)
+            const removedImgs = oldModel.images.filter(oldImg => model.images.findIndex(img => img.id === oldImg.id) < 0)
+            PicturesChannelGroup.removeImages(event, removedImgs)
         }
 
         picturesRepo.createOrUpdate(model)
@@ -93,14 +96,33 @@ export default class PicturesChannelGroup {
         console.info(Chanels.pictures_delete)
 
         const model = picturesRepo.getOne(id)
-        const result = PictureImageFilesHelper.remove(model.images)
+        PicturesChannelGroup.removeImages(event, model.images)
+
+        picturesRepo.delete(id)
+        return !picturesRepo.has(id)
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------
+    
+    private static saveImages(event: IpcMainInvokeEvent, images: PictureImageI[]): [images: PictureImageI[], result: ProcessingResultI] {
+        const [imagesSaved, result] = PictureImageFilesHelper.save(images)
+
+        //send to render
+        if (result.sended > 0) {
+            event.sender.send(Chanels.pictures_images_loaded, result)
+        }
+
+        return [imagesSaved, result]
+    }
+
+    private static removeImages(event: IpcMainInvokeEvent, images: PictureImageI[]): ProcessingResultI {
+        const result = PictureImageFilesHelper.remove(images)
 
         //send to render
         if (result.sended > 0) {
             event.sender.send(Chanels.pictures_images_removed, result)
         }
 
-        picturesRepo.delete(id)
-        return !picturesRepo.has(id)
+        return result
     }
 }
