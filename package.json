@@ -23,6 +23,7 @@
   },
   "build": {
     "appId": "Diamond embroidery calculator",
+    "productName": "Diamond embroidery calculator",
     "win": {
       "target": [
         "nsis"
@@ -37,6 +38,9 @@
       "uninstallDisplayName": "Diamond embroidery calculator",
       "license": "prod/assets/license.md",
       "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "output": "dist"
     }
   },
   "devDependencies": {
@@ -69,6 +73,7 @@
     "bootswatch": "^5.3.3",
     "electron-log": "^5.1.2",
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.2.1",
     "formik": "^2.4.6",
     "material-react-table": "^2.13.0",
     "react": "^18.2.0",
