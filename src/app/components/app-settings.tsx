@@ -37,6 +37,14 @@ export default class AppSettings extends React.Component<PropsI, {}> {
                 <Card className='mt-1'>
                     <ListGroup className='list-group-flush'>
                         <ListGroup.Item>
+                            <strong>{appSettings.appName} v</strong>
+                            {appSettings.versions.app}
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Card>
+                <Card className='mt-1'>
+                    <ListGroup className='list-group-flush'>
+                        <ListGroup.Item>
                             <strong>Node v</strong>
                             {appSettings.versions.node}
                         </ListGroup.Item>

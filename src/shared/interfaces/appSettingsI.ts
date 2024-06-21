@@ -1,5 +1,7 @@
 export default interface AppSettingsI {
+    appName: string,
     versions: {
+        app: string
         node: string
         chrome: string
         electron: string

@@ -6,12 +6,13 @@ import AppSettings from '@components/app-settings'
 import ThemeSwitch from '@containers/theme-switch'
 import CurrencySwitch from '@containers/currency-switch'
 import { ThemeContextType } from '@contexts/theme-context'
-import { AppSettingsConsumer } from '@contexts/app-settings-context'
+import { AppSettingsContextType } from '@contexts/app-settings-context'
 import { CurrencyConsumer } from '@contexts/currency-context'
 
 
 interface PropsI {
     themeContext: ThemeContextType
+    appSettingsContext: AppSettingsContextType
 }
 
 interface StateI {
@@ -94,7 +95,8 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
     }
 
     render() {
-        const { themeContext } = this.props
+        const { themeContext, appSettingsContext } = this.props
+        const { appSettings } = appSettingsContext!
         const { theme } = themeContext!
         const { isMaximized, appSettingsModal } = this.state
         const { mode } = appSettingsModal
@@ -108,7 +110,7 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
                     <Navbar.Brand>
                         <div className="d-inline-block align-top logo-img-30x30 mx-1" />
                     </Navbar.Brand>
-                    <h6 className="mt-2">Калькулятор алмазной вышевки</h6>
+                    <h6 className="mt-2">Калькулятор алмазной вышевки v{appSettings.versions.app}</h6>
                     <Nav className="ms-auto">
                         <Button as="a"
                             variant="outline-secondary"
@@ -148,9 +150,7 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
                     <CurrencyConsumer>
                         {context => <CurrencySwitch currencyContext={context} />}
                     </CurrencyConsumer>
-                    <AppSettingsConsumer>
-                        {context => <AppSettings appSettingsContext={context} />}
-                    </AppSettingsConsumer>
+                    <AppSettings appSettingsContext={appSettingsContext} />
                 </CustomModal>
             </>
         )
