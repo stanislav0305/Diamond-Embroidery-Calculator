@@ -3,7 +3,6 @@ import Footer from '@components/layouts/footer'
 import TitleBar from '@components/layouts/navigation/title-bar'
 import MainPage from '@components/pages/main-page'
 import { ThemeConsumer } from '@contexts/theme-context'
-import AppSettings from '@components/app-settings'
 import { AppSettingsConsumer } from '@contexts/app-settings-context'
 
 
