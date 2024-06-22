@@ -19,18 +19,6 @@ export class DialogHelper {
         return dialog.showMessageBox(mainWindow.getBrowserWindow(), options)
     }
 
-    static applicationUpdatedMessage(): Promise<Electron.MessageBoxReturnValue> {
-        const options: Electron.MessageBoxOptions = {
-            type: 'info',
-            buttons: ['Ок'],
-            defaultId: 1,
-            title: 'Обновление приложения',
-            message: 'Обновление успешно загружено, приложение будет закрыто и обновлено. Запустите приложение снова.',
-        }
-
-        return dialog.showMessageBox(options)
-    }
-
     static applicationUpdateErrorMessage(error: string): Promise<Electron.MessageBoxReturnValue> {
         const options: Electron.MessageBoxOptions = {
             type: 'error',

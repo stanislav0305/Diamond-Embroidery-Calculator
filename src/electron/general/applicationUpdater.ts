@@ -7,7 +7,7 @@ import { ONE_MB_IN_BYTES } from '@shared/consts'
 
 
 autoUpdater.autoDownload = false
-autoUpdater.autoInstallOnAppQuit = true
+autoUpdater.autoInstallOnAppQuit = false
 
 export default class ApplicationUpdater {
     private constructor() { }
@@ -57,10 +57,8 @@ export default class ApplicationUpdater {
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
                 pBar.isCompleted()
 
-                DialogHelper.applicationUpdatedMessage()
-                    .then(() => {
-                        application.exit()
-                    })
+                console.log(`ApplicationUpdater: quitAndInstall...`)
+                autoUpdater.quitAndInstall(false, true)
             })
             .on('update-cancelled', (info) => {
                 console.log(`ApplicationUpdater: update-cancelled, ${JSON.stringify(info)}`)
