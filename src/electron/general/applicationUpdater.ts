@@ -69,5 +69,11 @@ export default class ApplicationUpdater {
 
 
         autoUpdater.checkForUpdates()
+            .then(() => {
+                console.log(`ApplicationUpdater: checkForUpdates ended`)
+            })
+            .catch((error: Error) => {
+                console.error(`ApplicationUpdater: checkForUpdates error, Error:${JSON.stringify(error)}`)
+            })
     }
 }
