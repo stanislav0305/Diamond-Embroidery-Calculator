@@ -14,13 +14,15 @@ import CurrencyChannelGroup from '@electron/ipc/currency.channelGroup'
 
 
 export class Application {
+    static self: Application
     private nativeTheme: NativeTheme | null = null
     private mainWindow: MainWindow | null = null
     private isProduction: boolean = false
 
     constructor(isProduction: boolean) {
         this.isProduction = isProduction
-
+        Application.self  = this
+        
         app.on('ready', this.onReady)
         app.on('window-all-closed', this.onWindowAllClosed)
         app.on('activate', this.onActivate)
@@ -33,21 +35,25 @@ export class Application {
 
     private onReady() {
         console.log('onReady...')
-        this.nativeTheme = new NativeTheme()
-        this.mainWindow = new MainWindow()
+
+        //this here is app and not Application instance, becouse used self.
+        const self = Application.self
+
+        self.nativeTheme = new NativeTheme()
+        self.mainWindow = new MainWindow()
 
         AppChannelGroup.registry()
-        ThemeChannelGroup.registry(this.nativeTheme)
+        ThemeChannelGroup.registry(self.nativeTheme)
         CurrencyChannelGroup.registry()
-        MainWindowChannelGroup.registry(this.mainWindow)
+        MainWindowChannelGroup.registry(self.mainWindow)
         PicturesChannelGroup.registry()
         PictureDetailChannelGroup.registry()
         PicturesDefaultSetChannelGroup.registry()
         SimilarPicturesChannelGroup.registry()
-        PicturesImagesChannelGroup.registry(this.mainWindow)
+        PicturesImagesChannelGroup.registry(self.mainWindow)
 
-        if (this.isProduction) {
-            ApplicationUpdater.checkForUpdates(this, this.mainWindow)
+        if (self.isProduction) {
+            ApplicationUpdater.checkForUpdates(self, self.mainWindow)
         }
     }
 
@@ -58,7 +64,8 @@ export class Application {
     */
     private onActivate() {
         console.log('onActivate...')
-        !this.mainWindow && this.onReady()
+        const self = Application.self
+        !self.mainWindow && this.onReady()
     }
 
 
