@@ -1,9 +1,7 @@
 import { autoUpdater } from 'electron-updater'
 import MainWindow from '@general/window'
-import { Application } from '@general/application'
 import { DialogHelper } from '@mainUtils/helpers/dialogHelper'
 import { ProgressBarHelper } from '@mainUtils/helpers/progressBarHelper'
-import { ONE_MB_IN_BYTES, ONE_MB_IN_KB } from '@shared/consts'
 
 
 autoUpdater.autoDownload = false
@@ -12,7 +10,7 @@ autoUpdater.autoInstallOnAppQuit = false
 export default class ApplicationUpdater {
     private constructor() { }
 
-    static checkForUpdates(application: Application, mainWindow: MainWindow) {
+    static checkForUpdates(mainWindow: MainWindow) {
         autoUpdater
             .on('checking-for-update', () => {
                 console.log(`ApplicationUpdater: checking-for-update.`)
@@ -42,15 +40,9 @@ export default class ApplicationUpdater {
                 const procent = progressObj.percent.toFixed(1)
                 console.log(`ApplicationUpdater: download-progress, downloaded: ${procent}%`)
 
-                progressObj.transferred
-
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
-                const perSecondInMb = (progressObj.bytesPerSecond / ONE_MB_IN_BYTES).toFixed(2)
-                const transferredInMb = (progressObj.transferred/ ONE_MB_IN_KB).toFixed(2)
-                const totalInMb = (progressObj.total/ ONE_MB_IN_KB).toFixed(2)
-
-                pBar.detail = `Скорость загрузки: ${perSecondInMb} Mb/сек. 
-                - Загружено ${procent}% (${transferredInMb} Mb / ${totalInMb} Mb)`
+                pBar.detail = `Скорость загрузки: ${progressObj.bytesPerSecond} byte/сек. 
+                - Загружено ${procent}% (${progressObj.transferred} / ${progressObj.total})`
 
                 pBar.value = progressObj.percent
             })

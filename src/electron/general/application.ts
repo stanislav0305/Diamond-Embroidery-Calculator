@@ -53,7 +53,7 @@ export class Application {
         PicturesImagesChannelGroup.registry(self.mainWindow)
 
         if (self.isProduction) {
-            ApplicationUpdater.checkForUpdates(self, self.mainWindow)
+            ApplicationUpdater.checkForUpdates(self.mainWindow)
         }
     }
 
