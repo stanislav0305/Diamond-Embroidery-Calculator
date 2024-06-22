@@ -39,7 +39,7 @@ export default class ApplicationUpdater {
                     })
             })
             .on('download-progress', (progressObj) => {
-                console.log(`ApplicationUpdater: download-progress, downloaded: ${progressObj.percent}%`)
+                console.log(`ApplicationUpdater: download-progress, downloaded: ${progressObj.percent.toFixed(0)}%`)
 
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
                 const perSecondInMb = (progressObj.bytesPerSecond / ONE_MB_IN_BYTES).toFixed(2)
