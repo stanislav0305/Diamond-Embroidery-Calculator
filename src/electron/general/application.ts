@@ -1,6 +1,7 @@
 import { app } from 'electron'
 import MainWindow from '@general/window'
 import NativeTheme from '@general/nativeTheme'
+import ApplicationUpdater from '@general/applicationUpdater'
 import ThemeChannelGroup from '@ipc/theme.channelGroup'
 import AppChannelGroup from '@ipc/app.channelGroup'
 import MainWindowChannelGroup from '@ipc/mainWindow.channelGroup'
@@ -15,8 +16,11 @@ import CurrencyChannelGroup from '@electron/ipc/currency.channelGroup'
 export class Application {
     private nativeTheme: NativeTheme | null = null
     private mainWindow: MainWindow | null = null
+    private isProduction: boolean = false
 
-    constructor() {
+    constructor(isProduction: boolean) {
+        this.isProduction = isProduction
+
         app.on('ready', this.onReady)
         app.on('window-all-closed', this.onWindowAllClosed)
         app.on('activate', this.onActivate)
@@ -41,6 +45,10 @@ export class Application {
         PicturesDefaultSetChannelGroup.registry()
         SimilarPicturesChannelGroup.registry()
         PicturesImagesChannelGroup.registry(this.mainWindow)
+
+        if (this.isProduction) {
+            ApplicationUpdater.checkForUpdates(this, this.mainWindow)
+        }
     }
 
     /*

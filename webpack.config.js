@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
   console.log('env.development', env.development);
   console.log('env.build_themes', env.build_themes);
 
-  const mode = env.development === true ? 'development' : env.production === true ? 'production' : ''; //process.env.NODE_ENV || 'development';
+  const mode = env.development === true ? 'development' : env.production === true ? 'production' : '';
   const devMode = env.development === true;
   const buildThemes = env.build_themes;
 

@@ -7,4 +7,6 @@ console.info('-------------------------------------------------------')
 console.info('Log from the main process')
 console.info(`process.env.NODE_ENV = '${process.env.NODE_ENV}'`)
 
-export const app = new Application()
+const isProduction = process.env.NODE_ENV === 'production'
+
+export const app = new Application(isProduction)

@@ -1,5 +1,6 @@
 import { BrowserWindow, dialog } from 'electron'
 import { ICON_PATH, PRELOAD_JS_PATH, INDEX_HTML_PATH, IS_DEV } from '@general/consts'
+import { DialogHelper, ShowOpenDialogPropertiesType } from '@mainUtils/helpers/dialogHelper'
 
 
 const defaultProps: Electron.BrowserWindowConstructorOptions = {
@@ -34,13 +35,10 @@ abstract class BaseWindow {
         return this._window
     }
 
-    public showOpenDialog(
-        properties?: ('openFile' | 'openDirectory' | 'multiSelections' | 'showHiddenFiles' | 'createDirectory' 
-        | 'promptToCreate' | 'noResolveAliases' | 'treatPackageAsDirectory' | 'dontAddToRecent')[]
-    ): Promise<Electron.OpenDialogReturnValue> {
-        return dialog.showOpenDialog(this._window, {
-            properties: properties
-        })
+    public showOpenDialog(properties?: ShowOpenDialogPropertiesType)
+        : Promise<Electron.OpenDialogReturnValue> {
+
+        return DialogHelper.showOpenDialog(this._window, properties)
     }
 
     public maximize() {
