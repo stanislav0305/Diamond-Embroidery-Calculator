@@ -1,6 +1,6 @@
 {
   "name": "diamond-embroidery-calculator",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Diamond embroidery calculator",
   "keywords": [],
   "author": "Stanislav Torman",
@@ -28,7 +28,8 @@
   },
   "build": {
     "appId": "Diamond embroidery calculator",
-    "productName": "Diamond embroidery calculator",
+    "productName": "Diamond-embroidery-calculator",
+    "artifactName": "${productName}-Setup-${version}.${ext}",
     "win": {
       "target": [
         "nsis"

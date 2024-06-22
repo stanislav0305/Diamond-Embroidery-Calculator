@@ -32,6 +32,8 @@ export default class ApplicationUpdater {
                         if (resp.response === 0) {
                             autoUpdater.downloadUpdate()
                             ProgressBarHelper.createAppUpdateDownloadProgressBar()
+                        } else {
+                            mainWindow.getBrowserWindow().show()
                         }
                     })
             })
@@ -39,8 +41,8 @@ export default class ApplicationUpdater {
                 console.log(`ApplicationUpdater: download-progress, downloaded: ${progressObj.percent}%`)
 
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
-                pBar.detail = `Скорость скачивания: ${progressObj.bytesPerSecond} 
-                - Скачено ${progressObj.percent}% (${progressObj.transferred} / ${progressObj.total})`
+                pBar.detail = `Скорость загрузки: ${progressObj.bytesPerSecond} байт/сек. 
+                - Загружено ${progressObj.percent.toFixed(0)}% (${progressObj.transferred} байт / ${progressObj.total} байт)`
 
                 pBar.value = progressObj.percent
             })

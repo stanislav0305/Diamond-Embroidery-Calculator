@@ -25,7 +25,7 @@ export class DialogHelper {
             buttons: ['Ок'],
             defaultId: 1,
             title: 'Обновление приложения',
-            message: 'Приложение обновлено успешно и будет закрыто. Запустите приложение снова.',
+            message: 'Обновление успешно загружено, приложение будет закрыто и обновлено. Запустите приложение снова.',
         }
 
         return dialog.showMessageBox(options)
@@ -37,7 +37,7 @@ export class DialogHelper {
             buttons: ['Ок'],
             defaultId: 1,
             title: 'Обновление приложения',
-            message: `Произошла ошибка при обновлении приложения. Ошибка: ${error}`,
+            message: `Произошла ошибка при загрузке обновления. Ошибка: ${error}`,
         }
 
         return dialog.showMessageBox(options)
