@@ -3,7 +3,7 @@ import MainWindow from '@general/window'
 import { Application } from '@general/application'
 import { DialogHelper } from '@mainUtils/helpers/dialogHelper'
 import { ProgressBarHelper } from '@mainUtils/helpers/progressBarHelper'
-import { ONE_MB_IN_BYTES } from '@shared/consts'
+import { ONE_MB_IN_BYTES, ONE_MB_IN_KB } from '@shared/consts'
 
 
 autoUpdater.autoDownload = false
@@ -39,15 +39,18 @@ export default class ApplicationUpdater {
                     })
             })
             .on('download-progress', (progressObj) => {
-                console.log(`ApplicationUpdater: download-progress, downloaded: ${progressObj.percent.toFixed(0)}%`)
+                const procent = progressObj.percent.toFixed(1)
+                console.log(`ApplicationUpdater: download-progress, downloaded: ${procent}%`)
+
+                progressObj.transferred
 
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
                 const perSecondInMb = (progressObj.bytesPerSecond / ONE_MB_IN_BYTES).toFixed(2)
-                const transferredInMb = (progressObj.transferred/ ONE_MB_IN_BYTES).toFixed(2)
-                const totalInMb = (progressObj.total/ ONE_MB_IN_BYTES).toFixed(2)
+                const transferredInMb = (progressObj.transferred/ ONE_MB_IN_KB).toFixed(2)
+                const totalInMb = (progressObj.total/ ONE_MB_IN_KB).toFixed(2)
 
                 pBar.detail = `Скорость загрузки: ${perSecondInMb} Mb/сек. 
-                - Загружено ${progressObj.percent.toFixed(0)}% (${transferredInMb} Mb / ${totalInMb} Mb)`
+                - Загружено ${procent}% (${transferredInMb} Mb / ${totalInMb} Mb)`
 
                 pBar.value = progressObj.percent
             })
