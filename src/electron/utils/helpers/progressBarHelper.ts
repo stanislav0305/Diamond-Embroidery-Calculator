@@ -12,18 +12,18 @@ export class ProgressBarHelper {
             closeOnComplete: true,
             abortOnError: true,
             title: 'Обновление приложения',
-            text: 'Скачиваем обновление...',
+            text: 'Загрузка обновления...',
             detail: 'Ждите...',
             initialValue: 0,
             maxValue: 100
         })
             .on('completed', () => {
                 console.info('application update downloaded...');
-                ProgressBarHelper.appUpdateDownloadProgressBar.detail = 'Скачивание обновления завершено. Выход...'
+                ProgressBarHelper.appUpdateDownloadProgressBar.detail = 'Загрузка обновления завершено. Выход...'
             })
             .on('aborted', () => {
                 console.info('application update downloaded aborted...')
-                ProgressBarHelper.appUpdateDownloadProgressBar.detail = 'Скачивание обновления прервано. Выход...'
+                ProgressBarHelper.appUpdateDownloadProgressBar.detail = 'Загрузка обновления прервано. Выход...'
             })
 
         return ProgressBarHelper.appUpdateDownloadProgressBar

@@ -110,7 +110,7 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
                     <Navbar.Brand>
                         <div className="d-inline-block align-top logo-img-30x30 mx-1" />
                     </Navbar.Brand>
-                    <h6 className="mt-2">Калькулятор алмазной вышевки v{appSettings.versions.app}</h6>
+                    <h6 className="mt-2">Калькулятор алмазной вышивки v{appSettings.versions.app}</h6>
                     <Nav className="ms-auto">
                         <Button as="a"
                             variant="outline-secondary"

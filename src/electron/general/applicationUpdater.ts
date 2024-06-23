@@ -1,17 +1,16 @@
 import { autoUpdater } from 'electron-updater'
 import MainWindow from '@general/window'
-import { Application } from '@general/application'
 import { DialogHelper } from '@mainUtils/helpers/dialogHelper'
 import { ProgressBarHelper } from '@mainUtils/helpers/progressBarHelper'
 
 
 autoUpdater.autoDownload = false
-autoUpdater.autoInstallOnAppQuit = true
+autoUpdater.autoInstallOnAppQuit = false
 
 export default class ApplicationUpdater {
     private constructor() { }
 
-    static checkForUpdates(application: Application, mainWindow: MainWindow) {
+    static checkForUpdates(mainWindow: MainWindow) {
         autoUpdater
             .on('checking-for-update', () => {
                 console.log(`ApplicationUpdater: checking-for-update.`)
@@ -32,15 +31,18 @@ export default class ApplicationUpdater {
                         if (resp.response === 0) {
                             autoUpdater.downloadUpdate()
                             ProgressBarHelper.createAppUpdateDownloadProgressBar()
+                        } else {
+                            mainWindow.getBrowserWindow().show()
                         }
                     })
             })
             .on('download-progress', (progressObj) => {
-                console.log(`ApplicationUpdater: download-progress, downloaded: ${progressObj.percent}%`)
+                const procent = progressObj.percent.toFixed(1)
+                console.log(`ApplicationUpdater: download-progress, downloaded: ${procent}%`)
 
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
-                pBar.detail = `Скорость скачивания: ${progressObj.bytesPerSecond} 
-                - Скачено ${progressObj.percent}% (${progressObj.transferred} / ${progressObj.total})`
+                pBar.detail = `Скорость загрузки: ${progressObj.bytesPerSecond} byte/сек. 
+                - Загружено ${procent}% (${progressObj.transferred} / ${progressObj.total})`
 
                 pBar.value = progressObj.percent
             })
@@ -50,10 +52,8 @@ export default class ApplicationUpdater {
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
                 pBar.isCompleted()
 
-                DialogHelper.applicationUpdatedMessage()
-                    .then(() => {
-                        application.exit()
-                    })
+                console.log(`ApplicationUpdater: quitAndInstall...`)
+                autoUpdater.quitAndInstall(false, true)
             })
             .on('update-cancelled', (info) => {
                 console.log(`ApplicationUpdater: update-cancelled, ${JSON.stringify(info)}`)
@@ -69,5 +69,11 @@ export default class ApplicationUpdater {
 
 
         autoUpdater.checkForUpdates()
+            .then(() => {
+                console.log(`ApplicationUpdater: checkForUpdates ended`)
+            })
+            .catch((error: Error) => {
+                console.error(`ApplicationUpdater: checkForUpdates error, Error:${JSON.stringify(error)}`)
+            })
     }
 }
