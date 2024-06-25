@@ -492,8 +492,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                         Всего за материалы
                                                     </InputGroup.Text>
                                                 }
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
+                                                addInputGroupText
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">
                                                         {currencyHtmlCode}
