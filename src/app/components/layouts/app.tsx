@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from '@components/layouts/footer'
 import TitleBar from '@components/layouts/navigation/title-bar'
-import MainPage from '@components/pages/main-page'
+import Router from '@components/router'
 import { ThemeConsumer } from '@contexts/theme-context'
 import { AppSettingsConsumer } from '@contexts/app-settings-context'
 
@@ -20,7 +20,7 @@ export default function App() {
                     </AppSettingsConsumer>
                 </header>
                 <main>
-                    <MainPage />
+                    <Router />
                 </main>
             </div>
             <Footer />
