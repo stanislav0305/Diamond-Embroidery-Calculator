@@ -10,6 +10,7 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
     }
 
     protected override getStoreOptions(): Store.Options<PicturesStoreShemaI> {
+        console.log('PicturesBaseStoreRepo.getStoreOptions...')
         return {
             schema: this.getSchema(),
             name: this.storeName,

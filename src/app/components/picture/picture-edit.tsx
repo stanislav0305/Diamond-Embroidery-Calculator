@@ -16,6 +16,7 @@ import ImageDropzone from '@components/image-dropzone'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import PictureImageItem from '@components/picture/picture-image-item'
 import PricePerHourAutoCorrectAlert from '@components/picture/price-per-hour-auto-correct-alert'
+import PictureProfit from '@components/picture/picture-profit'
 import { EventMessagesContextType } from '@contexts/event-messages-context'
 import PictureHoursSpentCalculatorModal from '@containers/picture/picture-hours-spent-calculator-modal'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
@@ -27,6 +28,7 @@ import SimilarPicturesFilterI from '@shared/classes/similarPicturesFilter'
 import { CurrencyContextType } from '@contexts/currency-context'
 import { AppSettingsContextType } from '@contexts/app-settings-context'
 import { PicturesDefaultSetContextType } from '@contexts/pictures-default-set-context'
+
 
 
 
@@ -354,6 +356,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                 setSubmitting(false)
 
                                 values.details = details
+                                values.detailsSumTotal = detailsSumTotal
                                 values.images = images
                                 this.props.onSave(values)
                             }, 400)
@@ -689,7 +692,12 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                         </Col>
                                     </Row>
                                     <Row className="mb-4">
-                                        <Col className='text-center'>
+                                        <Col>
+                                            <PictureProfit
+                                                bayFullPrice={values.bayFullPrice}
+                                                detailsSumTotal={detailsSumTotal}
+                                                withLabel={true}
+                                            />
                                             {pricePerHourAutoCorrect &&
                                                 <PricePerHourAutoCorrectAlert
                                                     pricePerHour={values.pricePerHour}

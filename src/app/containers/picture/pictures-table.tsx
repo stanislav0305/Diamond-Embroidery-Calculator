@@ -23,6 +23,7 @@ import { isSoldMap } from '@shared/types/isSoldType'
 import { EventMessageConsumer } from '@contexts/event-messages-context'
 import { PicturesDefaultSetConsumer } from '@contexts/pictures-default-set-context'
 import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
+import PictureProfit from '@components/picture/picture-profit'
 
 
 export interface PicturesTableProps {
@@ -188,6 +189,23 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
             max: 100,
             min: 0,
           }
+        },
+        {
+          header: 'Прибыль',
+          accessorKey: 'profit',
+          accessorFn: row => (row.bayFullPrice - row.detailsSumTotal),
+          Cell: ({ row }) => (
+            <>
+              <PictureProfit
+                bayFullPrice={row.original.bayFullPrice}
+                detailsSumTotal={row.original.detailsSumTotal}
+                withLabel={false}
+              />
+            </>
+          ),
+          filterVariant: 'range',
+          sortUndefined: 'last',
+          sortDescFirst: false
         },
         {
           header: 'Цена',
@@ -457,14 +475,12 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
                   eventMessagesContext={context}
                   picturesDefaultSetContext={PicturesDefaultSetContext}
                 />
-                
+
               }
             </PicturesDefaultSetConsumer>
           </>
         )}
       </EventMessageConsumer>
-
-
     </>
   )
 }

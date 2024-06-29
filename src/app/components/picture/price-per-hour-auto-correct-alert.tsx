@@ -13,7 +13,7 @@ export default function PricePerHourAutoCorrectAlert(props: PropsI) {
     return (
         <>
             {(pricePerHour >= pricePerHourDefault) &&
-                <Alert variant="success" className="p-1">
+                <Alert variant="success" className="p-1 text-center">
                     <small className="text-muted small">
                         <i className="bi me-1 bi-info-circle"></i>
                         Цена за час (за работу) была перерасчитана (Цена за час = {pricePerHour.toFixed(2)}).&nbsp;
