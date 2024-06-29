@@ -1,36 +1,27 @@
 import React from 'react'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import './title-bar'
-import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
-import AppSettings from '@components/app-settings'
-import ThemeSwitch from '@containers/theme-switch'
-import CurrencySwitch from '@containers/currency-switch'
-import { ThemeContextType } from '@contexts/theme-context'
-import { AppSettingsContextType } from '@contexts/app-settings-context'
+import AppSettingsModal from '@containers/app-settings-modal'
 import { CurrencyConsumer } from '@contexts/currency-context'
+import { ThemeConsumer } from '@contexts/theme-context'
+import { AppSettingsConsumer } from '@contexts/app-settings-context'
 
 
 interface PropsI {
-    themeContext: ThemeContextType
-    appSettingsContext: AppSettingsContextType
 }
 
 interface StateI {
     isMaximized: boolean
-    appSettingsModal: {
-        mode: ModalMode
-    }
 }
 
 export default class TitleBar extends React.Component<PropsI, StateI> {
+    private appSettingsModalRef: React.RefObject<AppSettingsModal> = React.createRef<AppSettingsModal>()
+
     constructor(props: PropsI) {
         super(props)
 
         this.state = {
-            isMaximized: false,
-            appSettingsModal: {
-                mode: 'closed'
-            }
+            isMaximized: false
         }
     }
 
@@ -73,86 +64,80 @@ export default class TitleBar extends React.Component<PropsI, StateI> {
         await window.api.app.close()
     }
 
-    //--------------------------
+    //----------------------------------------------------
 
-    appSettingsModal = {
-        onOpen: (event: React.MouseEvent<HTMLButtonElement>) => {
-            event.preventDefault()
-            this.appSettingsModal.toogle('loaded')
-        },
-        onClose: (event: React.MouseEvent<HTMLButtonElement>) => {
-            event.preventDefault()
-            this.appSettingsModal.toogle('closed')
-        },
-        toogle: (mode: ModalMode = 'closed') => {
-            this.setState({
-                ...this.state,
-                appSettingsModal: {
-                    mode
-                }
-            })
-        }
+    openAppSettingsModal(event: React.MouseEvent<HTMLButtonElement>) {
+        event.preventDefault()
+        this.appSettingsModalRef.current!.onOpen()
     }
 
     render() {
-        const { themeContext, appSettingsContext } = this.props
-        const { appSettings } = appSettingsContext!
-        const { theme } = themeContext!
-        const { isMaximized, appSettingsModal } = this.state
-        const { mode } = appSettingsModal
+        const { isMaximized } = this.state
 
         return (
-            <>
-                <Navbar bg={theme.name}
-                    data-bs-theme={theme.name}
-                    className='title-bar p-0'
-                >
-                    <Navbar.Brand>
-                        <div className="d-inline-block align-top logo-img-30x30 mx-1" />
-                    </Navbar.Brand>
-                    <h6 className="mt-2">Калькулятор алмазной вышивки v{appSettings.versions.app}</h6>
-                    <Nav className="ms-auto">
-                        <Button as="a"
-                            variant="outline-secondary"
-                            size="sm"
-                            className='bi bi-gear me-3'
-                            onClick={this.appSettingsModal.onOpen}
-                        >
-                        </Button>
-                        <Button as="a"
-                            variant="outline-secondary"
-                            size="sm"
-                            className='bi bi-dash-lg me-1'
-                            onClick={this.onClickMinimize}
-                        >
-                        </Button>
-                        <Button as="a"
-                            variant="outline-secondary"
-                            size="sm"
-                            className={`bi ${isMaximized ? 'bi-copy rotate-180-deg' : 'bi-square'} me-1`}
-                            onClick={this.onClickMaximize}
-                        >
-                        </Button>
-                        <Button as="a"
-                            variant="outline-danger"
-                            size="sm"
-                            className='bi bi-x-lg me-1'
-                            onClick={this.onClickAppClose}
-                        >
-                        </Button>
-                    </Nav>
-                </Navbar>
-                <CustomModal header='Настройки'
-                    mode={mode}
-                    onClose={this.appSettingsModal.onClose}
-                    onHide={this.appSettingsModal.toogle}>
-                    <ThemeSwitch themeContext={themeContext} />
-                    <CurrencyConsumer>
-                        {context => <CurrencySwitch currencyContext={context} />}
-                    </CurrencyConsumer>
-                    <AppSettings appSettingsContext={appSettingsContext} />
-                </CustomModal>
-            </>
+            <AppSettingsConsumer>
+                {appSettingsContext =>
+                    <ThemeConsumer>
+                        {themeContext =>
+                            <>
+                                <Navbar bg={themeContext.theme.name}
+                                    data-bs-theme={themeContext.theme.name}
+                                    className='title-bar p-0'
+                                >
+                                    <Navbar.Brand>
+                                        <div className="d-inline-block align-top logo-img-30x30 mx-1" />
+                                    </Navbar.Brand>
+                                    <h6 className="mt-2">Калькулятор алмазной вышивки v{appSettingsContext.appSettings.versions.app}</h6>
+                                    <Nav className="ms-auto">
+                                        <Button as="a"
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            className='bi bi-gear me-3'
+                                            onClick={(e) => this.openAppSettingsModal(e)}
+                                        >
+                                        </Button>
+                                        <Button as="a"
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            className='bi bi-dash-lg me-1'
+                                            onClick={this.onClickMinimize}
+                                        >
+                                        </Button>
+                                        <Button as="a"
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            className={`bi ${isMaximized ? 'bi-copy rotate-180-deg' : 'bi-square'} me-1`}
+                                            onClick={this.onClickMaximize}
+                                        >
+                                        </Button>
+                                        <Button as="a"
+                                            variant="outline-danger"
+                                            size="sm"
+                                            className='bi bi-x-lg me-1'
+                                            onClick={this.onClickAppClose}
+                                        >
+                                        </Button>
+                                    </Nav>
+                                </Navbar>
+
+                                <CurrencyConsumer>
+                                    {currencyContext =>
+
+                                        <AppSettingsModal
+                                            ref={this.appSettingsModalRef}
+                                            appSettingsContext={appSettingsContext}
+                                            themeContext={themeContext}
+                                            currencyContext={currencyContext}
+                                        />
+
+                                    }
+                                </CurrencyConsumer>
+
+                            </>
+                        }
+                    </ThemeConsumer>
+                }
+            </AppSettingsConsumer>
         )
     }
 }

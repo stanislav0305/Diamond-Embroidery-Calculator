@@ -7,6 +7,7 @@ import PictureEdit from '@components/picture/picture-edit'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import { AppSettingsConsumer } from '@contexts/app-settings-context'
 import { CurrencyConsumer } from '@contexts/currency-context'
+import { PicturesDefaultSetConsumer } from '@contexts/pictures-default-set-context'
 
 
 interface PicturEditModalProps {
@@ -19,6 +20,7 @@ interface PicturEditModalState {
   mode: ModalMode
   forAdd: boolean
   picture: PictureI
+  pricePerHourAutoCorrect: boolean
   details: PictureDetailI[]
 }
 
@@ -34,13 +36,14 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
       mode: 'closed',
       forAdd: false,
       picture: pictureDefault,
+      pricePerHourAutoCorrect: false,
       details: []
     }
   }
 
-  onOpen = (picture: PictureI) => {
+  onOpen = (picture: PictureI, pricePerHourAutoCorrect: boolean) => {
     const forAdd = !picture.id
-    this.toogle('loaded', forAdd, picture)
+    this.toogle('loaded', forAdd, picture, pricePerHourAutoCorrect)
   }
 
   onClose = () => {
@@ -90,13 +93,15 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     }
   }
 
-  toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null) => {
+  toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null,
+    pricePerHourAutoCorrect: boolean | null = null) => {
     this.setState(prev => {
       return {
         ...prev,
         mode,
         forAdd,
-        picture: picture ?? prev.picture
+        picture: picture ?? prev.picture,
+        pricePerHourAutoCorrect: pricePerHourAutoCorrect ?? prev.pricePerHourAutoCorrect,
       }
     })
   }
@@ -114,15 +119,22 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
           {currencyContext =>
             <AppSettingsConsumer>
               {appSettingsContext =>
-                <PictureEdit
-                  currencyContext={currencyContext}
-                  appSettingsContext={appSettingsContext}
-                  eventMessagesContext={eventMessagesContext}
-                  componentMode={componentMode}
-                  data={picture}
-                  onSave={this.onSave}
-                  onClose={this.onClose}
-                />
+                <PicturesDefaultSetConsumer>
+                  {picturesDefaultSetContext =>
+
+                    <PictureEdit
+                      currencyContext={currencyContext}
+                      appSettingsContext={appSettingsContext}
+                      picturesDefaultSetContext={picturesDefaultSetContext}
+                      eventMessagesContext={eventMessagesContext}
+                      componentMode={componentMode}
+                      data={picture}
+                      onSave={this.onSave}
+                      onClose={this.onClose}
+                    />
+
+                  }
+                </PicturesDefaultSetConsumer>
               }
             </AppSettingsConsumer>
           }

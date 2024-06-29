@@ -21,6 +21,8 @@ import { CurrencyI } from '@shared/interfaces/currencyI'
 import { CurrencyNameHtmlCodesMap } from '@shared/types/currencyNameType'
 import { isSoldMap } from '@shared/types/isSoldType'
 import { EventMessageConsumer } from '@contexts/event-messages-context'
+import { PicturesDefaultSetConsumer } from '@contexts/pictures-default-set-context'
+import PicturesDefaultSetI from '@shared/interfaces/picturesDefaultSetI'
 
 
 export interface PicturesTableProps {
@@ -40,6 +42,8 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
     })
   }
 
+  const [picturesDefaultSet, setPicturesDefaultSet] = useState<PicturesDefaultSetI>({} as PicturesDefaultSetI)
+
   useEffect(() => {
     const query = componentMode === 'default'
       ? window.api.pictures.tableOptions.get()
@@ -49,6 +53,11 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       setColumnVisibility(opts.columnVisibility)
       setColumnOrder(opts.columnOrder)
       setColumnSorting(opts.columnSort)
+
+      window.api.picturesDefaultSet.get()
+        .then(defaultSet => {
+          setPicturesDefaultSet(defaultSet)
+        })
 
       window.api.pictures.getAll()
         .then(result => {
@@ -217,7 +226,6 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
 
   //--------------------------------------------------------
 
-  console.log('currencyHtmlCode:', currencyHtmlCode)
   const [columnVisibility, setColumnVisibility] = useState({})
   const onColumnVisibilityChange = (updater: Updater<object>) => {
     setColumnVisibility((prev) => {
@@ -361,20 +369,15 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
   const openPictureEditModal = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
     const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
+    const pricePerHourAutoCorrect = picturesDefaultSet.pricePerHourAutoCorrect
 
-    if (id) {
-      picture.details = picture.details
-    }
-    else if (!id || !picture) {
-      await window.api.picturesDefaultSet.get()
-        .then(defaultSet => {
-          picture.details = defaultSet.details
-          picture.detailsSumTotal = defaultSet.detailsSumTotal
-          picture.pricePerHour = defaultSet.pricePerHour
-        })
+    if (!id || !picture) {
+      picture.details = picturesDefaultSet.details
+      picture.detailsSumTotal = picturesDefaultSet.detailsSumTotal
+      picture.pricePerHour = picturesDefaultSet.pricePerHour
     }
 
-    pictureEditModalRef.current.onOpen(picture)
+    pictureEditModalRef.current.onOpen(picture, pricePerHourAutoCorrect)
   }
 
   const onSavedPicture = (forAdd: boolean, picture: PictureI) => {
@@ -446,10 +449,17 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
               componentMode={componentMode}
               onSaved={onSavedPicture}
             />
-            <PictureDefaultSetModal
-              ref={pictureDetailsDefaultSetModalRef}
-              eventMessagesContext={context}
-            />
+            <PicturesDefaultSetConsumer>
+              {PicturesDefaultSetContext =>
+
+                <PictureDefaultSetModal
+                  ref={pictureDetailsDefaultSetModalRef}
+                  eventMessagesContext={context}
+                  picturesDefaultSetContext={PicturesDefaultSetContext}
+                />
+                
+              }
+            </PicturesDefaultSetConsumer>
           </>
         )}
       </EventMessageConsumer>

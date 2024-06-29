@@ -1,6 +1,6 @@
 import React from 'react'
 import { Subscription } from 'rxjs'
-import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup, InputGroup } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row, Accordion, Image, ListGroup, InputGroup, Alert } from 'react-bootstrap'
 import { Formik, FormikProps } from 'formik'
 import ShortUniqueId from 'short-unique-id'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
@@ -15,6 +15,7 @@ import IntPositiveFormat from '@components/inputs/int-positive-format'
 import ImageDropzone from '@components/image-dropzone'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import PictureImageItem from '@components/picture/picture-image-item'
+import PricePerHourAutoCorrectAlert from '@components/picture/price-per-hour-auto-correct-alert'
 import { EventMessagesContextType } from '@contexts/event-messages-context'
 import PictureHoursSpentCalculatorModal from '@containers/picture/picture-hours-spent-calculator-modal'
 import TableOptionsI from '@shared/interfaces/tableOptionsI'
@@ -24,8 +25,9 @@ import SimilarPicturesModal from '@containers/picture/similar-pictures-modal'
 import { ComponentModeType } from '@utils/types/componentModeType'
 import SimilarPicturesFilterI from '@shared/classes/similarPicturesFilter'
 import { CurrencyContextType } from '@contexts/currency-context'
-import { CurrencyI } from '@shared/interfaces/currencyI'
 import { AppSettingsContextType } from '@contexts/app-settings-context'
+import { PicturesDefaultSetContextType } from '@contexts/pictures-default-set-context'
+
 
 
 const uid = new ShortUniqueId({ length: 10 })
@@ -33,6 +35,7 @@ const uid = new ShortUniqueId({ length: 10 })
 interface PropsI {
     currencyContext: CurrencyContextType
     appSettingsContext: AppSettingsContextType
+    picturesDefaultSetContext: PicturesDefaultSetContextType,
     eventMessagesContext: EventMessagesContextType
     componentMode?: ComponentModeType
     data: PictureI
@@ -54,6 +57,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
         componentMode: 'default',
     }
     currencyChangeSubscription?: Subscription = undefined
+    subscribePicturesDefaultSetChange?: Subscription = undefined
     pictureHoursSpentCalculatorModalRef = React.createRef<PictureHoursSpentCalculatorModal>()
     similarPicturesModalRef = React.createRef<SimilarPicturesModal>()
     formicRef = React.createRef<FormikProps<PictureI>>()
@@ -95,27 +99,21 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
             })
 
         this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
-            this.currencyChenged(currency)
+            console.log('PictureEdit forceUpdate...')
+            this.forceUpdate()
         })
+
+        this.subscribePicturesDefaultSetChange = this.props.picturesDefaultSetContext
+            .subscribePicturesDefaultSetChange(picturesDefaultSet => {
+                console.log('PictureEdit forceUpdate...')
+                this.forceUpdate()
+            })
     }
 
     componentWillUnmount() {
         this.removeAllObjectURLs()
         this.currencyChangeSubscription?.unsubscribe()
-    }
-
-    //---------------------------------------------------------------
-
-    currencyChenged(currency: CurrencyI) {
-        //refresh details table if changed currency simbol
-        console.log('currencyChenged in PictureEdit...')
-
-        this.setState(prev => {
-            return {
-                ...prev,
-                details: [...prev.details]
-            }
-        })
+        this.subscribePicturesDefaultSetChange?.unsubscribe()
     }
 
     //---------------------------------------------------------------
@@ -324,12 +322,25 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
 
     //---------------------------------------------------------------
 
+    calcPricePerHour = (pricePerHourAutoCorrect: boolean, values: PictureI, detailsSumTotal: number) => {
+        let result = values.pricePerHour
+        if (pricePerHourAutoCorrect) {
+            const hoursSpent = values.hoursSpent <= 0 ? 1 : values.hoursSpent
+            result = (values.bayFullPrice - detailsSumTotal) / hoursSpent
+            result = result <= 0 ? 0 : result
+        }
+
+        values.pricePerHour = result
+        return result
+    }
+
     render() {
-        const { currencyContext, componentMode } = this.props
+        const { currencyContext, picturesDefaultSetContext, componentMode } = this.props
         const { currencyHtmlCode } = currencyContext
+        const { pricePerHourAutoCorrect, pricePerHour } = picturesDefaultSetContext.defaultSet
         const { forAdd, initVal, details, detailsTableOptions, images, mainImageSrc } = this.state
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
-
+        initVal.hoursSpent
         return (
             <>
                 <Card>
@@ -509,14 +520,15 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 name="pricePerHour"
                                                 as={NumericPositiveDecimal2Format}
                                                 prefixReactNode={<InputGroup.Text className="p-1">Цена за час</InputGroup.Text>}
-                                                addInputGroupInput={componentMode === 'default'}
-                                                addInputGroupText={componentMode === 'readonly'}
+                                                addInputGroupInput={componentMode === 'default' && !pricePerHourAutoCorrect}
+                                                addInputGroupText={componentMode === 'readonly' || pricePerHourAutoCorrect}
                                                 postfixReactNode={
                                                     <InputGroup.Text className="p-1">
                                                         {currencyHtmlCode}
                                                     </InputGroup.Text>
                                                 }
                                                 inputPlaceholder="Введите цену за час"
+                                                value={this.calcPricePerHour(pricePerHourAutoCorrect, values, detailsSumTotal)}
                                             />
                                         </Col>
                                         <Col className="text-end">
@@ -610,7 +622,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                                     {currencyHtmlCode}
                                                                 </InputGroup.Text>
                                                             }
-                                                            value={values.pricePerHour * values.hoursSpent}
+                                                            value={(pricePerHourAutoCorrect ? pricePerHour : values.pricePerHour) * values.hoursSpent}
                                                         />
                                                         <FormField
                                                             as={NumericPositiveDecimal2Format}
@@ -626,7 +638,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                                     {currencyHtmlCode}
                                                                 </InputGroup.Text>
                                                             }
-                                                            value={detailsSumTotal + values.pricePerHour * values.hoursSpent}
+                                                            value={detailsSumTotal + (pricePerHourAutoCorrect ? pricePerHour : values.pricePerHour) * values.hoursSpent}
                                                         />
                                                         {componentMode === 'default' &&
                                                             <Button
@@ -644,7 +656,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                             </Accordion>
                                         </Col>
                                     </Row>
-                                    <Row className="mb-4">
+                                    <Row>
                                         <Col>
                                             <FormField
                                                 name="bayFullPrice"
@@ -674,6 +686,16 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                 onChange={(e) => setFieldValue('isSold', e.target.checked)}
                                                 disabled={componentMode === 'readonly'}
                                             />
+                                        </Col>
+                                    </Row>
+                                    <Row className="mb-4">
+                                        <Col className='text-center'>
+                                            {pricePerHourAutoCorrect &&
+                                                <PricePerHourAutoCorrectAlert
+                                                    pricePerHour={values.pricePerHour}
+                                                    pricePerHourDefault={pricePerHour}
+                                                />
+                                            }
                                         </Col>
                                     </Row>
                                 </Form>

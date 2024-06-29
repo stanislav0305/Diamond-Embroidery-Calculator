@@ -18,7 +18,7 @@ export default interface ContextBridgeApiI {
     getCurrent: () => Promise<CurrencyI>
     set: (model: CurrencyI) => Promise<CurrencyI>
     on: {
-      currencyChenged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void)  => void
+      currencyChenged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void) => void
     }
     off: {
       currencyChenged: () => void
@@ -48,6 +48,12 @@ export default interface ContextBridgeApiI {
     }
     get: () => Promise<PicturesDefaultSetI>
     set: (model: PicturesDefaultSetI) => Promise<PicturesDefaultSetI>
+    on: {
+      defaultSetChenged: (listener: (_event: IpcRendererEvent, defaultSet: PicturesDefaultSetI) => void) => void
+    }
+    off: {
+      defaultSetChenged: () => void
+    }
   }
   pictureDetail: {
     tableOptions: {

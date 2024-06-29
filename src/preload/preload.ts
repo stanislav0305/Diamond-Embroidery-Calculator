@@ -57,6 +57,14 @@ const API: ContextBridgeApiI = {
     },
     get: () => ipcRenderer.invoke(Chanels.picturesDefaultSet_get).catch(e => fCatch(e)),
     set: (model: PicturesDefaultSetI) => ipcRenderer.invoke(Chanels.picturesDefaultSet_set, model).catch(e => fCatch(e)),
+    on: {
+      defaultSetChenged: (listener: (_event: IpcRendererEvent, defaultSet: PicturesDefaultSetI) => void) => {
+        ipcRenderer.on(Chanels.picturesDefaultSet_defaultSetChenged, listener)
+      }
+    },
+    off: {
+      defaultSetChenged: () => { ipcRenderer.removeAllListeners(Chanels.picturesDefaultSet_defaultSetChenged) }
+    },
   },
   pictureDetail: {
     tableOptions: {

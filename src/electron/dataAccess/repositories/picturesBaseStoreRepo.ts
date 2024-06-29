@@ -17,8 +17,8 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
                 console.log(`[${this.storeName}] migrate from ${context.fromVersion} → ${context.toVersion}`)
             },
             migrations: {
-                '0.0.1': store => {
-                    store.set({
+                '0.0.1': conf => {
+                    conf.set({
                         picturesDefaultSet: {
                             details: [] as PictureDetailEntityI[],
                             detailsSumTotal: 0,
@@ -27,6 +27,18 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
                         pictures: {}
                     } as PicturesStoreShemaI)
                 },
+                '1.2.8': conf => {
+                    const store = conf.store
+                    conf.set(
+                        {
+                            ...store,
+                            picturesDefaultSet: {
+                                ...store.picturesDefaultSet,
+                                pricePerHourAutoCorrect: true
+                            }
+                        } as PicturesStoreShemaI
+                    )
+                }
             },
         }
     }

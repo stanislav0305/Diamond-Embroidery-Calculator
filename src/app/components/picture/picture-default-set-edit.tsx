@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Card, Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Formik } from 'formik'
+import { Subscription } from 'rxjs'
 import PicturesDefaultSetI, { picturesDefaultSetDefaultISchema } from '@shared/interfaces/picturesDefaultSetI'
 import PictureDetailI from '@shared/interfaces/pictureDetailI'
 import PicturesDetailsTable from '@containers/picture/picture-details-table'
@@ -11,7 +12,6 @@ import { ColumnOrderState, SortingState, Updater, VisibilityState } from '@tanst
 import { ColumnSortI } from '@shared/interfaces/columnSortI'
 import { CurrencyContextType } from '@contexts/currency-context'
 import { CurrencyI } from '@shared/interfaces/currencyI'
-import { Subscription } from 'rxjs'
 
 
 interface PropsI {
@@ -23,6 +23,7 @@ interface PropsI {
 
 interface State {
     initVal: PicturesDefaultSetI
+    pricePerHourAutoCorrect: boolean
     details: PictureDetailI[]
     tableOptions: TableOptionsI
 }
@@ -32,12 +33,13 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
 
     constructor(props: PropsI) {
         super(props)
-
+        
         let { data } = this.props
         data = JSON.parse(JSON.stringify(data)) as PicturesDefaultSetI
 
         this.state = {
             initVal: data,
+            pricePerHourAutoCorrect: data.pricePerHourAutoCorrect,
             details: data.details,
             tableOptions: {
                 columnOrder: [],
@@ -60,9 +62,9 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                 })
             })
 
-            this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
-                this.currencyChenged(currency)
-            })
+        this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
+            this.currencyChenged(currency)
+        })
     }
 
     componentWillUnmount(): void {
@@ -158,8 +160,21 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
     }
     //---------------------------------------------------------------
 
+    changePricePerHourAutoCorrect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked
+
+        this.setState(prev => {
+            return {
+                ...prev,
+                pricePerHourAutoCorrect: checked
+            }
+        })
+    }
+
+    //---------------------------------------------------------------
+
     render() {
-        const { initVal, details, tableOptions } = this.state
+        const { initVal, pricePerHourAutoCorrect, details, tableOptions } = this.state
         const { currencyContext } = this.props
         const detailsSumTotal = details.reduce((sum, pd) => sum + pd.price, 0)
 
@@ -173,6 +188,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                         setTimeout(() => {
                             setSubmitting(false)
 
+                            values.pricePerHourAutoCorrect = pricePerHourAutoCorrect
                             values.details = details
                             this.props.onSave(values)
                         }, 400)
@@ -242,6 +258,18 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                                                 </InputGroup.Text>
                                             }
                                             inputPlaceholder="Введите цену за час"
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Check
+                                            name="pricePerHour"
+                                            type="switch"
+                                            label="Автоматически коректировать цену за час при сохранении - всегда вычислять: 
+                    Цену за час = (Цена картины - Всего за материалы) / Затрачено часов"
+                                            checked={pricePerHourAutoCorrect}
+                                            onChange={this.changePricePerHourAutoCorrect}
                                         />
                                     </Col>
                                 </Row>

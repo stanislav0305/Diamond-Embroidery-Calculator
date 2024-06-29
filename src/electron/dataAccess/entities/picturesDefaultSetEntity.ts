@@ -7,6 +7,7 @@ export default interface PicturesDefaultSetEntityI extends BasetEntityI{
     details: PictureDetailEntityI[]
     detailsSumTotal: number
     pricePerHour: number
+    pricePerHourAutoCorrect: boolean
 }
 
 export const picturesDefaultSetShema = {
@@ -21,5 +22,9 @@ export const picturesDefaultSetShema = {
             type: 'number',
             default: 0
         },
+        pricePerHourAutoCorrect: {
+            type: 'boolean',
+            default: true
+        }
     } as Schema<PicturesDefaultSetEntityI>
 }

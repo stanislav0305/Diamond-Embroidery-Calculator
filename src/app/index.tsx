@@ -1,13 +1,14 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import 'bootstrap-icons/font/bootstrap-icons'
-import { AppSettingsProvider } from '@contexts/app-settings-context'
-import { ThemeProvider } from '@contexts/theme-context'
-import { EventMessagesProvider } from '@contexts/event-messages-context'
 import App from '@components/layouts/app'
 import LogRendererHelper from '@utils/helpers/logRendererHelper'
 import './index.scss'
+import { AppSettingsProvider } from '@contexts/app-settings-context'
+import { ThemeProvider } from '@contexts/theme-context'
 import { CurrencyProvider } from '@contexts/currency-context'
+import { EventMessageConsumer, EventMessagesProvider } from '@contexts/event-messages-context'
+import { PicturesDefaultSetProvider } from '@contexts/pictures-default-set-context'
 
 
 LogRendererHelper.init()
@@ -21,7 +22,13 @@ root.render(
             <ThemeProvider>
                 <CurrencyProvider>
                     <EventMessagesProvider>
-                        <App />
+                        <EventMessageConsumer>
+                            {eventMessagesContext =>
+                                <PicturesDefaultSetProvider eventMessagesContext={eventMessagesContext}>
+                                    <App />
+                                </PicturesDefaultSetProvider>
+                            }
+                        </EventMessageConsumer>
                     </EventMessagesProvider>
                 </CurrencyProvider>
             </ThemeProvider>

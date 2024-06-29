@@ -4,10 +4,12 @@ import PicturesDefaultSetI, { picturesDefaultSetDefault } from '@shared/interfac
 import PictureDefaultSetEdit from '@components/picture/picture-default-set-edit'
 import { EventMessagesContextType } from '@contexts/event-messages-context'
 import { CurrencyConsumer } from '@contexts/currency-context'
+import { PicturesDefaultSetContextType } from '@contexts/pictures-default-set-context'
 
 
 interface PropsI {
     eventMessagesContext: EventMessagesContextType
+    picturesDefaultSetContext: PicturesDefaultSetContextType
 }
 
 interface StateI {
@@ -26,15 +28,7 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
     }
 
     onOpen = () => {
-        this.toogle('loading')
-        window.api.picturesDefaultSet.get()
-            .then((data: PicturesDefaultSetI) => {
-                !data ? this.toogle('error') : this.toogle('loaded', data)
-            })
-            .catch(e => {
-                console.error(e)
-                this.toogle('error')
-            })
+        this.toogle('loaded', this.props.picturesDefaultSetContext.defaultSet)
     }
 
     onClose = () => {
@@ -48,14 +42,11 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
         console.log('sended to save:', JSON.stringify(model, null, 2))
         this.toogle('loading', model)
 
-        await window.api.picturesDefaultSet.set(model)
-            .then(newModel => {
-                const hasError = !newModel
-                this.props.eventMessagesContext.addMessage('PicturesDefaultSetSaved', hasError)
+        await this.props.picturesDefaultSetContext.setPicturesDefaultSet(model)
+            .then(defaultSet => {
                 this.toogle('closed')
             })
             .catch(e => {
-                this.props.eventMessagesContext.addMessage('PicturesDefaultSetSaved', true)
                 this.toogle('error', model)
             })
     }
@@ -77,9 +68,9 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
                 mode={mode}
                 onHide={this.toogle}>
                 <CurrencyConsumer>
-                    {context =>
+                    {currencyContext =>
                         <PictureDefaultSetEdit
-                            currencyContext={context}
+                            currencyContext={currencyContext}
                             data={model}
                             onSave={this.onSave}
                             onClose={this.onClose}

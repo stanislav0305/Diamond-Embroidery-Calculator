@@ -23,7 +23,7 @@ export default class IntPositiveFormat extends BaseFormat {
         valueIsNumericString={true}
         onValueChange={(values) => {
           const { floatValue } = values
-          console.log(`onValueChange: ${floatValue ?? 0}`)
+          //console.log(`onValueChange: ${floatValue ?? 0}`)
           helpers?.setValue(floatValue ?? 0)
         }}
       />

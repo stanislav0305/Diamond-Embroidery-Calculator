@@ -40,9 +40,9 @@ export default class Chanels {
     static picturesDefaultSet_tableOptions_setColumnVisibility = 'picturesDefaultSet:tableOptions:setColumnVisibility'
     static picturesDefaultSet_tableOptions_setColumnOrder = 'picturesDefaultSet:tableOptions:setColumnOrder'
     static picturesDefaultSet_tableOptions_setColumnSort = 'picturesDefaultSet:tableOptions:setColumnSort'
-
     static picturesDefaultSet_get = 'picturesDefaultSet:get'
     static picturesDefaultSet_set = 'picturesDefaultSet:set'
+    static picturesDefaultSet_defaultSetChenged = 'picturesDefaultSet:defaultSetChenged'
 
     static similarPictures_tableOptions_get = 'similarPictures:tableOptions:get'
     static similarPictures_tableOptions_setColumnVisibility = 'similarPictures:tableOptions:setColumnVisibility'

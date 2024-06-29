@@ -25,7 +25,7 @@ export default class NumericPositiveDecimal2Format extends BaseFormat {
         valueIsNumericString={true}
         onValueChange={(values) => {
           const { floatValue } = values
-          console.log(`onValueChange: ${floatValue ?? 0.00}`)
+          //console.log(`onValueChange: ${floatValue ?? 0.00}`)
           helpers?.setValue(floatValue ?? 0.00)
         }}
       />

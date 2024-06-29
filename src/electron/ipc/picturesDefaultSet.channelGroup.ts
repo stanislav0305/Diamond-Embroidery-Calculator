@@ -15,7 +15,7 @@ export default class PicturesDefaultSetChannelGroup {
         ipcMain.handle(Chanels.picturesDefaultSet_tableOptions_setColumnOrder, (event: IpcMainInvokeEvent, model: string[]) => PicturesDefaultSetChannelGroup.setColumnOrder(event, model))
         ipcMain.handle(Chanels.picturesDefaultSet_tableOptions_setColumnSort, (event: IpcMainInvokeEvent, model: ColumnSortI[]) => PicturesDefaultSetChannelGroup.setColumnSort(event, model))
         ipcMain.handle(Chanels.picturesDefaultSet_get, () => PicturesDefaultSetChannelGroup.get())
-        ipcMain.handle(Chanels.picturesDefaultSet_set, (event: IpcMainInvokeEvent, model: PictureI) => PicturesDefaultSetChannelGroup.set(event, model))
+        ipcMain.handle(Chanels.picturesDefaultSet_set, (event: IpcMainInvokeEvent, model: PicturesDefaultSetI) => PicturesDefaultSetChannelGroup.set(event, model))
     }
 
     //-----------------------------------------------------------------------------------------------------------------------
@@ -65,6 +65,8 @@ export default class PicturesDefaultSetChannelGroup {
         picturesDefaultSetStoreRepo.set(model)
 
         const newModel = picturesDefaultSetStoreRepo.get()
+        event.sender.send(Chanels.picturesDefaultSet_defaultSetChenged, newModel)
+
         return newModel
     }
 }
