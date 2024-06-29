@@ -1,0 +1,99 @@
+{
+	"theme": {
+		"mode": "auto",
+		"name": "cerulean"
+	},
+	"currency": {
+		"name": "euro"
+	},
+	"tablesOptions": {
+		"pictureTable": {
+			"columnOrder": [
+				"mrt-row-actions",
+				"photo",
+				"id",
+				"created",
+				"updated",
+				"height",
+				"width",
+				"diamondForm",
+				"coverageArea",
+				"pricePerHour",
+				"hoursSpent",
+				"profit",
+				"bayFullPrice",
+				"isSold",
+				"comment"
+			],
+			"columnVisibility": {
+				"id": false
+			},
+			"columnSort": []
+		},
+		"pictureDetailTable": {
+			"columnOrder": [
+				"mrt-row-actions",
+				"id",
+				"name",
+				"price"
+			],
+			"columnVisibility": {
+				"id": false
+			},
+			"columnSort": [
+				{
+					"id": "name",
+					"desc": false
+				}
+			]
+		},
+		"pictureDefaultSetTable": {
+			"columnOrder": [
+				"mrt-row-actions",
+				"id",
+				"name",
+				"price"
+			],
+			"columnVisibility": {
+				"id": false
+			},
+			"columnSort": [
+				{
+					"id": "name",
+					"desc": false
+				}
+			]
+		},
+		"similarPictureTable": {
+			"columnOrder": [
+				"mrt-row-actions",
+				"photo",
+				"id",
+				"created",
+				"updated",
+				"height",
+				"width",
+				"diamondForm",
+				"coverageArea",
+				"hoursSpent",
+				"pricePerHour",
+				"profit",
+				"bayFullPrice",
+				"isSold",
+				"comment"
+			],
+			"columnVisibility": {
+				"id": false,
+				"pricePerHour": true,
+				"created": false,
+				"updated": false
+			},
+			"columnSort": []
+		}
+	},
+	"__internal__": {
+		"migrations": {
+			"version": "2.0.0"
+		}
+	}
+}

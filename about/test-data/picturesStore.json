@@ -1,0 +1,1459 @@
+{
+	"pictures": {
+		"ybHsv0U3Fq": {
+			"id": "ybHsv0U3Fq",
+			"height": 50,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11.91
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 15.82
+				}
+			],
+			"detailsSumTotal": 28.33,
+			"images": [],
+			"pricePerHour": 51.67,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 80,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:21:08",
+			"updated": "29.06.2024, 19:19:47"
+		},
+		"BzGt9mqWMW": {
+			"id": "BzGt9mqWMW",
+			"height": 20,
+			"width": 14,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 2.73
+				}
+			],
+			"detailsSumTotal": 8.33,
+			"images": [],
+			"pricePerHour": 3.67,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 12,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:26:20",
+			"updated": "29.06.2024, 19:19:52"
+		},
+		"0mgweoVtyq": {
+			"id": "0mgweoVtyq",
+			"height": 30,
+			"width": 20,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 6.15
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.39
+				}
+			],
+			"detailsSumTotal": 11.14,
+			"images": [],
+			"pricePerHour": 0.48999999999999994,
+			"hoursSpent": 14,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 18,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:28:18",
+			"updated": "29.06.2024, 19:20:14"
+		},
+		"B73zOmD2rw": {
+			"id": "B73zOmD2rw",
+			"height": 35,
+			"width": 25,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 3.26
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 7
+				}
+			],
+			"detailsSumTotal": 11.46,
+			"images": [],
+			"pricePerHour": 0.29499999999999993,
+			"hoursSpent": 12,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 15,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:29:53",
+			"updated": "29.06.2024, 19:20:28"
+		},
+		"9s8er4iDZI": {
+			"id": "9s8er4iDZI",
+			"height": 30,
+			"width": 20,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 3.68
+				}
+			],
+			"detailsSumTotal": 9.28,
+			"images": [],
+			"pricePerHour": 0.35733333333333334,
+			"hoursSpent": 30,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 20,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:32:18",
+			"updated": "29.06.2024, 19:20:39"
+		},
+		"J9nbls582s": {
+			"id": "J9nbls582s",
+			"height": 35,
+			"width": 25,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 10
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 5
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				}
+			],
+			"detailsSumTotal": 15.6,
+			"images": [],
+			"pricePerHour": 0.9,
+			"hoursSpent": 16,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 30,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:33:55",
+			"updated": "29.06.2024, 19:20:34"
+		},
+		"jKQH5uccr6": {
+			"id": "jKQH5uccr6",
+			"height": 25,
+			"width": 25,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5.5
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 0.6
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 2.76
+				}
+			],
+			"detailsSumTotal": 8.86,
+			"images": [],
+			"pricePerHour": 0.14250000000000007,
+			"hoursSpent": 8,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 10,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:35:42",
+			"updated": "29.06.2024, 19:20:43"
+		},
+		"O2fzXeNKYH": {
+			"id": "O2fzXeNKYH",
+			"height": 50,
+			"width": 64,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 25.05
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 21.16
+				}
+			],
+			"detailsSumTotal": 47.41,
+			"images": [],
+			"pricePerHour": 0.5779120879120879,
+			"hoursSpent": 91,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 100,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:47:08",
+			"updated": "29.06.2024, 19:20:22"
+		},
+		"Tma87xPJu9": {
+			"id": "Tma87xPJu9",
+			"height": 29,
+			"width": 19,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5.81
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 8.78
+				}
+			],
+			"detailsSumTotal": 15.79,
+			"images": [],
+			"pricePerHour": 1.2100000000000009,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 17,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:50:19",
+			"updated": "29.06.2024, 19:19:24"
+		},
+		"5jmnVgxBDT": {
+			"id": "5jmnVgxBDT",
+			"height": 29,
+			"width": 19,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5.81
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 8.78
+				}
+			],
+			"detailsSumTotal": 15.79,
+			"images": [],
+			"pricePerHour": 1.2100000000000009,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 17,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:51:47",
+			"updated": "29.06.2024, 19:20:01"
+		},
+		"UBltGpgLIG": {
+			"id": "UBltGpgLIG",
+			"height": 30,
+			"width": 40,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11.29
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 7.84
+				}
+			],
+			"detailsSumTotal": 20.33,
+			"images": [],
+			"pricePerHour": 0.2622666666666667,
+			"hoursSpent": 75,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 40,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:54:00",
+			"updated": "29.06.2024, 19:18:45"
+		},
+		"ehZW7Nrpn7": {
+			"id": "ehZW7Nrpn7",
+			"height": 20,
+			"width": 30,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 6.1
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.48
+				}
+			],
+			"detailsSumTotal": 11.780000000000001,
+			"images": [],
+			"pricePerHour": 6.219999999999999,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 18,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:55:37",
+			"updated": "29.06.2024, 19:19:29"
+		},
+		"VjRP09FnCG": {
+			"id": "VjRP09FnCG",
+			"height": 40,
+			"width": 50,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 12
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 8
+				}
+			],
+			"detailsSumTotal": 21.2,
+			"images": [],
+			"pricePerHour": 0.49113924050632907,
+			"hoursSpent": 79,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 60,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:57:31",
+			"updated": "29.06.2024, 19:18:41"
+		},
+		"qXhEhwPfgE": {
+			"id": "qXhEhwPfgE",
+			"height": 25,
+			"width": 36,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 15.78
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 6
+				}
+			],
+			"detailsSumTotal": 22.98,
+			"images": [],
+			"pricePerHour": 1.17,
+			"hoursSpent": 6,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 30,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 17:59:18",
+			"updated": "29.06.2024, 19:15:31"
+		},
+		"S2eL1fdQ9q": {
+			"id": "S2eL1fdQ9q",
+			"height": 20,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5.99
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 3.44
+				}
+			],
+			"detailsSumTotal": 10.63,
+			"images": [],
+			"pricePerHour": 1.019473684210526,
+			"hoursSpent": 19,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 30,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 18:00:58",
+			"updated": "29.06.2024, 19:18:24"
+		},
+		"tQX4LwfBmW": {
+			"id": "tQX4LwfBmW",
+			"height": 29,
+			"width": 39,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 8
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 5
+				}
+			],
+			"detailsSumTotal": 14.2,
+			"images": [],
+			"pricePerHour": 1.645,
+			"hoursSpent": 40,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 80,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 18:02:20",
+			"updated": "29.06.2024, 19:18:37"
+		},
+		"LoAJsN0snh": {
+			"id": "LoAJsN0snh",
+			"height": 104,
+			"width": 50,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 28.13
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 10.81
+				}
+			],
+			"detailsSumTotal": 40.14,
+			"images": [],
+			"pricePerHour": 2.092258064516129,
+			"hoursSpent": 31,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 105,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 18:03:47",
+			"updated": "29.06.2024, 19:15:41"
+		},
+		"18Pvfbgbhc": {
+			"id": "18Pvfbgbhc",
+			"height": 20,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 19
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.38
+				}
+			],
+			"detailsSumTotal": 24.58,
+			"images": [],
+			"pricePerHour": 0.5541176470588236,
+			"hoursSpent": 17,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 34,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 18:20:28",
+			"updated": "29.06.2024, 19:17:44"
+		},
+		"QNhk9UPrCR": {
+			"id": "QNhk9UPrCR",
+			"height": 24,
+			"width": 34,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 18
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 5.2
+				}
+			],
+			"detailsSumTotal": 24.4,
+			"images": [],
+			"pricePerHour": 1.211764705882353,
+			"hoursSpent": 17,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 45,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:04:25",
+			"updated": "29.06.2024, 19:18:10"
+		},
+		"teoT3WyDxq": {
+			"id": "teoT3WyDxq",
+			"height": 30,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.07
+				}
+			],
+			"detailsSumTotal": 16.27,
+			"images": [],
+			"pricePerHour": 1.073,
+			"hoursSpent": 10,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 27,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:05:32",
+			"updated": "29.06.2024, 19:15:51"
+		},
+		"Qh7WK23ueH": {
+			"id": "Qh7WK23ueH",
+			"height": 30,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 18.05
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 5.52
+				}
+			],
+			"detailsSumTotal": 24.77,
+			"images": [],
+			"pricePerHour": 1.4614285714285715,
+			"hoursSpent": 7,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 35,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:06:45",
+			"updated": "29.06.2024, 19:15:54"
+		},
+		"4f9WXTkH4H": {
+			"id": "4f9WXTkH4H",
+			"height": 30,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 10.3
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 3.37
+				}
+			],
+			"detailsSumTotal": 14.870000000000001,
+			"images": [],
+			"pricePerHour": 2.5324999999999998,
+			"hoursSpent": 4,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 25,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:07:49",
+			"updated": "29.06.2024, 19:15:57"
+		},
+		"sGvfsfzf67": {
+			"id": "sGvfsfzf67",
+			"height": 30,
+			"width": 20,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 5.99
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 3.63
+				}
+			],
+			"detailsSumTotal": 10.82,
+			"images": [],
+			"pricePerHour": 7.18,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 18,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:09:00",
+			"updated": "29.06.2024, 19:19:39"
+		},
+		"QlnzFwTPft": {
+			"id": "QlnzFwTPft",
+			"height": 40,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 3.3
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 7.02
+				}
+			],
+			"detailsSumTotal": 11.52,
+			"images": [],
+			"pricePerHour": 1.2114285714285715,
+			"hoursSpent": 7,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 20,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:09:58",
+			"updated": "29.06.2024, 19:16:02"
+		},
+		"BrzZaP2tds": {
+			"id": "BrzZaP2tds",
+			"height": 20,
+			"width": 27,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 12.26
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 8.48
+				}
+			],
+			"detailsSumTotal": 21.939999999999998,
+			"images": [],
+			"pricePerHour": 5.060000000000002,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 27,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:11:51",
+			"updated": "29.06.2024, 19:19:56"
+		},
+		"qMDhcvSMTc": {
+			"id": "qMDhcvSMTc",
+			"height": 40,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 7.77
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 6.64
+				}
+			],
+			"detailsSumTotal": 15.61,
+			"images": [],
+			"pricePerHour": 14.39,
+			"hoursSpent": 0,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 30,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:13:16",
+			"updated": "29.06.2024, 19:19:44"
+		},
+		"gJUW239rDH": {
+			"id": "gJUW239rDH",
+			"height": 40,
+			"width": 20,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 8.65
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 7.23
+				}
+			],
+			"detailsSumTotal": 17.08,
+			"images": [],
+			"pricePerHour": 1.3784615384615386,
+			"hoursSpent": 13,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 35,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:14:57",
+			"updated": "29.06.2024, 19:18:00"
+		},
+		"SQA3zz684x": {
+			"id": "SQA3zz684x",
+			"height": 25,
+			"width": 10,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.55
+				}
+			],
+			"detailsSumTotal": 16.75,
+			"images": [],
+			"pricePerHour": 1.3125,
+			"hoursSpent": 4,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 22,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:15:49",
+			"updated": "29.06.2024, 19:16:14"
+		},
+		"tDw9paihRl": {
+			"id": "tDw9paihRl",
+			"height": 22,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 10
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 16.75
+				}
+			],
+			"detailsSumTotal": 27.95,
+			"images": [],
+			"pricePerHour": 0,
+			"hoursSpent": 4,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 24,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:16:55",
+			"updated": "29.06.2024, 19:16:21"
+		},
+		"A4qkybjnnT": {
+			"id": "A4qkybjnnT",
+			"height": 25,
+			"width": 10,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.55
+				}
+			],
+			"detailsSumTotal": 16.75,
+			"images": [],
+			"pricePerHour": 0.65625,
+			"hoursSpent": 8,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 22,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:17:49",
+			"updated": "29.06.2024, 19:16:25"
+		},
+		"TSfTsHrdXr": {
+			"id": "TSfTsHrdXr",
+			"height": 22,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 10
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.09
+				}
+			],
+			"detailsSumTotal": 15.29,
+			"images": [],
+			"pricePerHour": 2.1775,
+			"hoursSpent": 4,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 24,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:18:49",
+			"updated": "29.06.2024, 19:03:35"
+		},
+		"8awIYmsygA": {
+			"id": "8awIYmsygA",
+			"height": 40,
+			"width": 50,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 37
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 11.68
+				}
+			],
+			"detailsSumTotal": 49.88,
+			"images": [],
+			"pricePerHour": 1.6413114754098361,
+			"hoursSpent": 61,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 150,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:20:28",
+			"updated": "29.06.2024, 19:17:54"
+		},
+		"eulVJctVdV": {
+			"id": "eulVJctVdV",
+			"height": 24,
+			"width": 34,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 13.92
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 5
+				}
+			],
+			"detailsSumTotal": 20.119999999999997,
+			"images": [],
+			"pricePerHour": 1.6090322580645162,
+			"hoursSpent": 31,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 70,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:22:54",
+			"updated": "29.06.2024, 19:03:15"
+		},
+		"sktVzMUtXH": {
+			"id": "sktVzMUtXH",
+			"height": 40,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 18
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 9.62
+				}
+			],
+			"detailsSumTotal": 28.82,
+			"images": [],
+			"pricePerHour": 1.088936170212766,
+			"hoursSpent": 47,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 80,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:24:26",
+			"updated": "29.06.2024, 19:18:19"
+		},
+		"axS7BOR7My": {
+			"id": "axS7BOR7My",
+			"height": 40,
+			"width": 50,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 22
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 13.63
+				}
+			],
+			"detailsSumTotal": 36.83,
+			"images": [],
+			"pricePerHour": 1.0225,
+			"hoursSpent": 52,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 90,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:26:01",
+			"updated": "29.06.2024, 19:18:32"
+		},
+		"k40LtqLlNc": {
+			"id": "k40LtqLlNc",
+			"height": 40,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 11.35
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 9.75
+				}
+			],
+			"detailsSumTotal": 22.299999999999997,
+			"images": [],
+			"pricePerHour": 1.6945945945945946,
+			"hoursSpent": 37,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 85,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:27:20",
+			"updated": "29.06.2024, 19:17:50"
+		},
+		"xn44nUAev8": {
+			"id": "xn44nUAev8",
+			"height": 35,
+			"width": 40,
+			"diamondForm": "circle",
+			"coverageArea": "partial",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 15.55
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.43
+				}
+			],
+			"detailsSumTotal": 21.18,
+			"images": [],
+			"pricePerHour": 1.9742857142857144,
+			"hoursSpent": 7,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 35,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:28:23",
+			"updated": "29.06.2024, 19:02:44"
+		},
+		"BljF1FUXpx": {
+			"id": "BljF1FUXpx",
+			"height": 70,
+			"width": 50,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 29.12
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 24
+				}
+			],
+			"detailsSumTotal": 54.32,
+			"images": [],
+			"pricePerHour": 1.292972972972973,
+			"hoursSpent": 74,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 150,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:29:52",
+			"updated": "29.06.2024, 19:18:04"
+		},
+		"8722mCgBTj": {
+			"id": "8722mCgBTj",
+			"height": 24,
+			"width": 24,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 13.73
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.26
+				}
+			],
+			"detailsSumTotal": 19.189999999999998,
+			"images": [],
+			"pricePerHour": 1.185,
+			"hoursSpent": 26,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 50,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:31:04",
+			"updated": "29.06.2024, 19:18:15"
+		},
+		"i2ORQqgf2t": {
+			"id": "i2ORQqgf2t",
+			"height": 20,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 0
+				},
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 4.83
+				}
+			],
+			"detailsSumTotal": 6.03,
+			"images": [],
+			"pricePerHour": 1.8438461538461537,
+			"hoursSpent": 13,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 30,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:31:50",
+			"updated": "29.06.2024, 19:16:49"
+		},
+		"GQG7f5Dr14": {
+			"id": "GQG7f5Dr14",
+			"height": 40,
+			"width": 50,
+			"diamondForm": "square",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 17.65
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 15.38
+				}
+			],
+			"detailsSumTotal": 34.23,
+			"images": [],
+			"pricePerHour": 1.4471250000000002,
+			"hoursSpent": 80,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 150,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:33:29",
+			"updated": "29.06.2024, 19:16:45"
+		},
+		"1sp1xCMNgi": {
+			"id": "1sp1xCMNgi",
+			"height": 45,
+			"width": 30,
+			"diamondForm": "circle",
+			"coverageArea": "total",
+			"details": [
+				{
+					"id": "u1tksJY57Y",
+					"name": "2. Лак",
+					"price": 1.2
+				},
+				{
+					"id": "e6hK6wPQ0v",
+					"name": "1. Рамка со стеклом",
+					"price": 15.26
+				},
+				{
+					"id": "YDT2Qi5J7N",
+					"name": "3. Материал",
+					"price": 10.57
+				}
+			],
+			"detailsSumTotal": 27.03,
+			"images": [],
+			"pricePerHour": 1.268076923076923,
+			"hoursSpent": 26,
+			"forHoursSpentTotal": 0,
+			"bayFullPrice": 60,
+			"isSold": false,
+			"comment": "",
+			"created": "25.06.2024, 19:35:00",
+			"updated": "29.06.2024, 19:16:39"
+		}
+	},
+	"picturesDefaultSet": {
+		"details": [
+			{
+				"id": "e6hK6wPQ0v",
+				"name": "1. Рамка со стеклом",
+				"price": 0
+			},
+			{
+				"id": "u1tksJY57Y",
+				"name": "2. Лак",
+				"price": 1.2
+			},
+			{
+				"id": "YDT2Qi5J7N",
+				"name": "3. Материал",
+				"price": 0
+			}
+		],
+		"detailsSumTotal": 0,
+		"pricePerHour": 2,
+		"pricePerHourAutoCorrect": true
+	},
+	"__internal__": {
+		"migrations": {
+			"version": "2.0.0"
+		}
+	}
+}
