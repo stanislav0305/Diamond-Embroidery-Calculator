@@ -43,7 +43,19 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
     })
   }
 
-  const [picturesDefaultSet, setPicturesDefaultSet] = useState<PicturesDefaultSetI>({} as PicturesDefaultSetI)
+  const createOrEditPicture = async (picture: PictureI | null | undefined) => {
+    const picturesDefaultSet = await window.api.picturesDefaultSet.get()
+    const pricePerHourAutoCorrect = picturesDefaultSet.pricePerHourAutoCorrect
+
+    if (!picture) {
+      picture = (Object.assign(pictureDefault) as PictureI)
+      picture.details = picturesDefaultSet.details
+      picture.detailsSumTotal = picturesDefaultSet.detailsSumTotal
+      picture.pricePerHour = picturesDefaultSet.pricePerHour
+    }
+
+    pictureEditModalRef.current.onOpen(picture, pricePerHourAutoCorrect)
+  }
 
   useEffect(() => {
     const query = componentMode === 'default'
@@ -54,11 +66,6 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       setColumnVisibility(opts.columnVisibility)
       setColumnOrder(opts.columnOrder)
       setColumnSorting(opts.columnSort)
-
-      window.api.picturesDefaultSet.get()
-        .then(defaultSet => {
-          setPicturesDefaultSet(defaultSet)
-        })
 
       window.api.pictures.getAll()
         .then(result => {
@@ -386,16 +393,9 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
   const pictureEditModalRef = useRef<PicturEditModal>({} as PicturEditModal)
   const openPictureEditModal = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
-    const picture = id ? data.find(picture => picture.id === id) ?? pictureDefault : pictureDefault
-    const pricePerHourAutoCorrect = picturesDefaultSet.pricePerHourAutoCorrect
 
-    if (!id || !picture) {
-      picture.details = picturesDefaultSet.details
-      picture.detailsSumTotal = picturesDefaultSet.detailsSumTotal
-      picture.pricePerHour = picturesDefaultSet.pricePerHour
-    }
-
-    pictureEditModalRef.current.onOpen(picture, pricePerHourAutoCorrect)
+    const picture = id ? data.find(picture => picture.id === id) : null
+    createOrEditPicture(picture)
   }
 
   const onSavedPicture = (forAdd: boolean, picture: PictureI) => {

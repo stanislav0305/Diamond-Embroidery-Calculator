@@ -95,7 +95,7 @@ export default class EventMessagePropsFactory {
             action: 'info',
             variant: 'success',
             title: 'Загрузка изображений картины',
-            description: 'Все изображения загружены успешно! ' + p.additionalDescription ?? '',
+            description: 'Все изображения загружены успешно! ' + (p.additionalDescription ?? ''),
             errorDescription: p.errorDescription ?? 'Произошла ошибка!'
         } as EventMessagePropsI)
     }
