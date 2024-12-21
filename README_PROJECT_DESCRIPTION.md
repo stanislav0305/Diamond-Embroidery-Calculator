@@ -9,7 +9,7 @@
 </tr>
 </table>
 
-## Описание проекта React-Electron на TypeScript на с Webpack
+## Описание проекта Electron на TypeScript, React с Webpack
 - В качестве рабочего инструмента использовался Visual Studio Code
 - В качестве основного языка программирования использовался **TypeScript**
 - А также использовался **HTML** и **SCSS**
