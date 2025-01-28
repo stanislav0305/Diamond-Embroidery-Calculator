@@ -1,7 +1,7 @@
-import BasetEntityI from '@dataAccess/entities/baseEntityI'
+import BaseEntityI from '@dataAccess/entities/baseEntityI'
 
 
-export default interface AppSettingsEntityI extends BasetEntityI {
+export default interface AppSettingsEntityI extends BaseEntityI {
     versions: {
         node: string
         chrome: string

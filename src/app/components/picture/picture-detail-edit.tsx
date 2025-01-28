@@ -56,7 +56,7 @@ export default class PictureDetailEdit extends React.Component<PropsI, {}> {
                                             className="mb-3"
                                             name="name"
                                             label="Название"
-                                            inputPlaceholder="Введите название матаниала"
+                                            inputPlaceholder="Введите название материала"
                                             addInput
                                         />
                                     </Col>

@@ -18,10 +18,10 @@ export default interface ContextBridgeApiI {
     getCurrent: () => Promise<CurrencyI>
     set: (model: CurrencyI) => Promise<CurrencyI>
     on: {
-      currencyChenged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void) => void
+      currencyChanged: (listener: (event: IpcRendererEvent, currency: CurrencyI) => void) => void
     }
     off: {
-      currencyChenged: () => void
+      currencyChanged: () => void
     }
   }
   app: {
@@ -49,10 +49,10 @@ export default interface ContextBridgeApiI {
     get: () => Promise<PicturesDefaultSetI>
     set: (model: PicturesDefaultSetI) => Promise<PicturesDefaultSetI>
     on: {
-      defaultSetChenged: (listener: (_event: IpcRendererEvent, defaultSet: PicturesDefaultSetI) => void) => void
+      defaultSetChanged: (listener: (_event: IpcRendererEvent, defaultSet: PicturesDefaultSetI) => void) => void
     }
     off: {
-      defaultSetChenged: () => void
+      defaultSetChanged: () => void
     }
   }
   pictureDetail: {
@@ -78,12 +78,12 @@ export default interface ContextBridgeApiI {
     images: {
       download: (fileName: string) => Promise<void>
       on: {
-        dowloaded: (listener: (event: IpcRendererEvent, result: boolean) => void) => void
+        downloaded: (listener: (event: IpcRendererEvent, result: boolean) => void) => void
         loaded: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void
         removed: (listener: (event: IpcRendererEvent, info: ProcessingResultI) => void) => void
       },
       off: {
-        dowloaded: () => void
+        downloaded: () => void
         loaded: () => void
         removed: () => void
       }

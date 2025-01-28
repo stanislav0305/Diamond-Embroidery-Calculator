@@ -10,13 +10,13 @@ import { CurrencyConsumer } from '@contexts/currency-context'
 import { PicturesDefaultSetConsumer } from '@contexts/pictures-default-set-context'
 
 
-interface PicturEditModalProps {
+interface PictureEditModalProps {
   eventMessagesContext: EventMessagesContextType
   componentMode?: ComponentModeType
   onSaved: (forAdd: boolean, picture: PictureI) => void
 }
 
-interface PicturEditModalState {
+interface PictureEditModalState {
   mode: ModalMode
   forAdd: boolean
   picture: PictureI
@@ -24,12 +24,12 @@ interface PicturEditModalState {
   details: PictureDetailI[]
 }
 
-export default class PicturEditModal extends React.Component<PicturEditModalProps, PicturEditModalState> {
+export default class PictureEditModal extends React.Component<PictureEditModalProps, PictureEditModalState> {
   static defaultProps = {
     componentMode: 'default',
   }
 
-  constructor(props: PicturEditModalProps) {
+  constructor(props: PictureEditModalProps) {
     super(props)
 
     this.state = {
@@ -43,11 +43,11 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
 
   onOpen = (picture: PictureI, pricePerHourAutoCorrect: boolean) => {
     const forAdd = !picture.id
-    this.toogle('loaded', forAdd, picture, pricePerHourAutoCorrect)
+    this.toggle('loaded', forAdd, picture, pricePerHourAutoCorrect)
   }
 
   onClose = () => {
-    this.toogle('closed')
+    this.toggle('closed')
   }
 
   onSave = async (picture: PictureI) => {
@@ -59,21 +59,21 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     } as PictureI
 
     console.log('sended picture:', JSON.stringify(p, null, 2))
-    this.toogle('loading', forAdd, picture)
+    this.toggle('loading', forAdd, picture)
 
     if (forAdd) {
       await window.api.pictures.create(p)
         .then(pp => {
           const hasError = !pp
           this.props.eventMessagesContext.addMessage('PictureCreated', hasError)
-          this.toogle('closed')
+          this.toggle('closed')
 
           //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {
           this.props.eventMessagesContext.addMessage('PictureCreated', true)
-          this.toogle('error', forAdd, picture)
+          this.toggle('error', forAdd, picture)
         })
 
     } else {
@@ -81,19 +81,19 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
         .then(pp => {
           const hasError = !pp
           this.props.eventMessagesContext.addMessage('PictureUpdated', hasError)
-          this.toogle('closed')
+          this.toggle('closed')
 
           //update the table
           pp && this.props.onSaved(forAdd, pp)
         })
         .catch(e => {
           this.props.eventMessagesContext.addMessage('PictureUpdated', true)
-          this.toogle('error', forAdd, picture)
+          this.toggle('error', forAdd, picture)
         })
     }
   }
 
-  toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null,
+  toggle = (mode: ModalMode = 'closed', forAdd: boolean = false, picture: PictureI | null = null,
     pricePerHourAutoCorrect: boolean | null = null) => {
     this.setState(prev => {
       return {
@@ -113,7 +113,7 @@ export default class PicturEditModal extends React.Component<PicturEditModalProp
     return (
       <CustomModal header={componentMode === 'default' ? (forAdd ? 'Добавление картины' : 'Редактирование картины') : 'Данные картины'}
         mode={mode}
-        onHide={this.toogle}
+        onHide={this.toggle}
       >
         <CurrencyConsumer>
           {currencyContext =>

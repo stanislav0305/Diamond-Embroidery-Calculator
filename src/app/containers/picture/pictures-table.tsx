@@ -7,8 +7,8 @@ import { diamondFormDataMap } from '@shared/types/diamondFormType'
 import { coverageAreasDataMap } from '@shared/types/coverageAreaType'
 import MapToArrayConverter from '@utils/helpers/mapToArrayConverter'
 import { ColumnFilter, ColumnOrderState, Row, SortingState, Updater } from '@tanstack/react-table'
-import PicturEditModal from '@containers/picture/picture-edit-modal'
-import { PicturRemoveModal } from '@containers/picture/picture-remove-modal'
+import PictureEditModal from '@containers/picture/picture-edit-modal'
+import { PictureRemoveModal } from '@containers/picture/picture-remove-modal'
 import PictureDefaultSetModal from '@containers/picture/picture-default-set-modal'
 import PictureImageI from '@shared/interfaces/pictureImageI'
 import { AppSettingsContext } from '@contexts/app-settings-context'
@@ -36,7 +36,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
   const [currencyHtmlCode, setCurrencyHtmlCode] = useState<string>(currencyContext.currencyHtmlCode)
   const [data, setData] = useState<PictureI[]>([])
 
-  const refresPicturesTable = (currency: CurrencyI) => {
+  const refreshPicturesTable = (currency: CurrencyI) => {
     setCurrencyHtmlCode(CurrencyNameHtmlCodesMap.get(currency.name)!)
     setData(prevData => {
       return [...prevData]
@@ -80,7 +80,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
     })
 
     const currencyChangeSubscription = currencyContext.subscribeCurrencyChange(currency => {
-      refresPicturesTable(currency)
+      refreshPicturesTable(currency)
     })
 
     return () => {
@@ -240,7 +240,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
           sortDescFirst: false,
         },
         {
-          header: 'Коментарий',
+          header: 'Комментарий',
           accessorKey: 'comment',
           sortUndefined: 'last',
           sortDescFirst: false,
@@ -272,7 +272,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
 
       if (prev && model && prev.length > 0 && model.length > 0 &&
         model.filter((item, index) => { return prev[index] !== item }).length > 0) {
-        //save only if arrays are defferent
+        //save only if arrays are different
         const query = componentMode === 'default'
           ? window.api.pictures.tableOptions
           : window.api.similarPictures.tableOptions
@@ -292,7 +292,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       if (prev && model
         && ((prev.length !== model.length)
           || (model.filter((item, index) => { return (prev[index].id !== item.id || prev[index].desc !== item.desc) }).length > 0))) {
-        //save only if arrays are defferent
+        //save only if arrays are different
         const query = componentMode === 'default'
           ? window.api.pictures.tableOptions
           : window.api.similarPictures.tableOptions
@@ -390,7 +390,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
 
   //------------------------------------------------------------------------------
 
-  const pictureEditModalRef = useRef<PicturEditModal>({} as PicturEditModal)
+  const pictureEditModalRef = useRef<PictureEditModal>({} as PictureEditModal)
   const openPictureEditModal = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
 
@@ -407,7 +407,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
 
   //------------------------------------------------------------------------------
 
-  const pictureRemoveModalRef = useRef<PicturRemoveModal>({} as PicturRemoveModal)
+  const pictureRemoveModalRef = useRef<PictureRemoveModal>({} as PictureRemoveModal)
   const openPictureRemoveModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.preventDefault()
     pictureRemoveModalRef.current.onOpen(id)
@@ -421,7 +421,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
   //------------------------------------------------------------------------------
 
   const pictureDetailsDefaultSetModalRef = useRef<PictureDefaultSetModal>({} as PictureDefaultSetModal)
-  const openPicturDetailsTableModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const openPictureDetailsTableModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     pictureDetailsDefaultSetModalRef.current.onOpen()
   }
@@ -437,7 +437,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
               variant="outline-success"
               size="sm"
               className='bi bi-plus-square-fill position-absolute mt-2 mx-2 z-index-10'
-              title='Добавить картинe'
+              title='Добавить картину'
               onClick={(e) => openPictureEditModal(e, '')}
             >
             </Button>
@@ -446,7 +446,7 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
               size="sm"
               className='bi bi-text-center position-absolute mt-2 ms-5 z-index-10'
               title='Данные по умолчанию'
-              onClick={openPicturDetailsTableModal}>
+              onClick={openPictureDetailsTableModal}>
             </Button>
           </>
         }
@@ -456,12 +456,12 @@ export default function PicturesTable({ componentMode = 'default', filter }: Pic
       <EventMessageConsumer>
         {context => (
           <>
-            <PicturRemoveModal
+            <PictureRemoveModal
               ref={pictureRemoveModalRef}
               eventMessagesContext={context}
               onRemoved={onRemovedPicture}
             />
-            <PicturEditModal
+            <PictureEditModal
               ref={pictureEditModalRef}
               eventMessagesContext={context}
               componentMode={componentMode}

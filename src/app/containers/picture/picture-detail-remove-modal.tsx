@@ -2,17 +2,17 @@ import React from 'react'
 import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 
 
-interface PicturDetailRemoveModalProps {
+interface PictureDetailRemoveModalProps {
     onRemoved: (id: string) => void
 }
 
-interface PicturDetailRemoveModalState {
+interface PictureDetailRemoveModalState {
     mode: ModalMode
     id: string
 }
 
-export default class PicturDetailRemoveModal extends React.Component<PicturDetailRemoveModalProps, PicturDetailRemoveModalState> {
-    constructor(props: PicturDetailRemoveModalProps) {
+export default class PictureDetailRemoveModal extends React.Component<PictureDetailRemoveModalProps, PictureDetailRemoveModalState> {
+    constructor(props: PictureDetailRemoveModalProps) {
         super(props)
 
         this.state = {
@@ -22,23 +22,23 @@ export default class PicturDetailRemoveModal extends React.Component<PicturDetai
     }
 
     onOpen = (id: string) => {
-        this.toogle('loaded', id)
+        this.toggle('loaded', id)
     }
 
     onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
     onConfirm = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         const id = this.state.id
 
-        this.toogle('closed')
+        this.toggle('closed')
         this.props.onRemoved(id)
     }
 
-    toogle = (mode: ModalMode = 'closed', id?: string) => {
+    toggle = (mode: ModalMode = 'closed', id?: string) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -57,7 +57,7 @@ export default class PicturDetailRemoveModal extends React.Component<PicturDetai
                 confirmBtnText='Удалить'
                 onConfirm={this.onConfirm}
                 onClose={this.onClose}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <p>Вы действительно хотите удалить материал картины # {id}?</p>
             </CustomModal >
         )

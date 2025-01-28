@@ -28,15 +28,15 @@ export default class AppSettingsModal extends React.Component<PropsI, StateI> {
     }
 
     onOpen = () => {
-        this.toogle('loaded')
+        this.toggle('loaded')
     }
 
     onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
-    toogle = (mode: ModalMode = 'closed') => {
+    toggle = (mode: ModalMode = 'closed') => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -53,7 +53,7 @@ export default class AppSettingsModal extends React.Component<PropsI, StateI> {
             <CustomModal header='Настройки'
                 mode={mode}
                 onClose={this.onClose}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <ThemeSwitch themeContext={themeContext} />
                 <CurrencySwitch currencyContext={currencyContext} />
                 <AppSettings appSettingsContext={appSettingsContext} />

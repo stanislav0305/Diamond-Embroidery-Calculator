@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 import MainWindow from '@general/window'
-import Chanels from '@shared/interfaces/ipc/chanels'
+import Channels from '@shared/interfaces/ipc/channels'
 
 
 export default class MainWindowChannelGroup {
@@ -9,23 +9,23 @@ export default class MainWindowChannelGroup {
     public static registry(mainWindow: MainWindow) {
         MainWindowChannelGroup.mainWindow = mainWindow
 
-        ipcMain.handle(Chanels.window_minimize, () => MainWindowChannelGroup.minimize())
-        ipcMain.handle(Chanels.window_maximize, () => MainWindowChannelGroup.maximize())
-        ipcMain.handle(Chanels.window_unmaximize, () => MainWindowChannelGroup.unmaximize())
+        ipcMain.handle(Channels.window_minimize, () => MainWindowChannelGroup.minimize())
+        ipcMain.handle(Channels.window_maximize, () => MainWindowChannelGroup.maximize())
+        ipcMain.handle(Channels.window_unmaximize, () => MainWindowChannelGroup.unmaximize())
     }
 
     private static minimize() {
-        console.info(Chanels.window_minimize)
+        console.info(Channels.window_minimize)
         MainWindowChannelGroup.mainWindow.minimize()
     }
 
     private static maximize() {
-        console.info(Chanels.window_maximize)
+        console.info(Channels.window_maximize)
         MainWindowChannelGroup.mainWindow.maximize()
     }
 
     private static unmaximize() {
-        console.info(Chanels.window_unmaximize)
+        console.info(Channels.window_unmaximize)
         MainWindowChannelGroup.mainWindow.unmaximize()
     }
 }

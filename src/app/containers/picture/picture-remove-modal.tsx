@@ -3,18 +3,18 @@ import CustomModal, { ModalMode } from '@components/layouts/custom-modal'
 import { EventMessagesContextType } from '@contexts/event-messages-context'
 
 
-interface PicturRemoveModalProps {
+interface PictureRemoveModalProps {
     eventMessagesContext: EventMessagesContextType
     onRemoved: (id: string) => void
 }
 
-interface PicturRemoveModalState {
+interface PictureRemoveModalState {
     mode: ModalMode
     id: string
 }
 
-export class PicturRemoveModal extends React.Component<PicturRemoveModalProps, PicturRemoveModalState> {
-    constructor(props: PicturRemoveModalProps) {
+export class PictureRemoveModal extends React.Component<PictureRemoveModalProps, PictureRemoveModalState> {
+    constructor(props: PictureRemoveModalProps) {
         super(props)
 
         this.state = {
@@ -24,36 +24,36 @@ export class PicturRemoveModal extends React.Component<PicturRemoveModalProps, P
     }
 
     onOpen = (id: string) => {
-        this.toogle('loaded', id)
+        this.toggle('loaded', id)
     }
 
     onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
     onConfirm = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         const id = this.state.id
 
-        this.toogle('loading')
+        this.toggle('loading')
 
         await window.api.pictures.delete(id)
             .then(removed => {
                 const hasError = !removed
                 this.props.eventMessagesContext.addMessage('PictureRemoved', hasError)
-                this.toogle('closed')
+                this.toggle('closed')
 
                 //update the table
                 removed && this.props.onRemoved(id)
             })
             .catch(e => {
                 this.props.eventMessagesContext.addMessage('PictureRemoved', true)
-                this.toogle('error')
+                this.toggle('error')
             })
     }
 
-    toogle = (mode: ModalMode = 'closed', id?: string) => {
+    toggle = (mode: ModalMode = 'closed', id?: string) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -72,7 +72,7 @@ export class PicturRemoveModal extends React.Component<PicturRemoveModalProps, P
                 confirmBtnText='Удалить'
                 onConfirm={this.onConfirm}
                 onClose={this.onClose}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <p>Вы действительно хотите удалить картину # {id}?</p>
             </CustomModal >
         )

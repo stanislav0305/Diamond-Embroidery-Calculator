@@ -36,7 +36,7 @@ export class Application {
     private onReady() {
         console.log('onReady...')
 
-        //this here is app and not Application instance, becouse used self.
+        //this here is app and not Application instance, because used self.
         const self = Application.self
 
         self.nativeTheme = new NativeTheme()

@@ -1,8 +1,8 @@
 import { Schema } from 'electron-store'
 import HistoryEntityI from '@dataAccess/entities/historyEntity'
-import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI'
-import PictureImageEntityI, { pictureImagesShema } from '@dataAccess/entities/pictureImageEntityI'
-import PicturesDefaultSetEntityI, { picturesDefaultSetShema } from '@dataAccess/entities/picturesDefaultSetEntity'
+import { PictureDetailEntityI, pictureDetailsSchema } from '@dataAccess/entities/pictureDetailEntityI'
+import PictureImageEntityI, { pictureImagesSchema } from '@dataAccess/entities/pictureImageEntityI'
+import PicturesDefaultSetEntityI, { picturesDefaultSetSchema } from '@dataAccess/entities/picturesDefaultSetEntity'
 
 
 const diamondFormDefault = 'circle'
@@ -38,7 +38,7 @@ export interface PictureEntityI extends HistoryEntityI {
     comment: string
 }
 
-export const picturesShema = {
+export const picturesSchema = {
     type: 'object',
     default: {},
     propertyNames: {
@@ -67,12 +67,12 @@ export const picturesShema = {
                 enum: coverageAreas,
                 default: coverageAreaDefault,
             },
-            details: pictureDetailsShema,
+            details: pictureDetailsSchema,
             detailsSumTotal: {
                 type: 'number',
                 default: 0,
             },
-            images: pictureImagesShema,
+            images: pictureImagesSchema,
             pricePerHour: {
                 type: 'number',
                 default: 0
@@ -106,12 +106,12 @@ export const picturesShema = {
     }
 }
 
-export interface PicturesStoreShemaI {
+export interface PicturesStoreSchemaI {
     picturesDefaultSet: PicturesDefaultSetEntityI
     pictures: {}
 }
 
-export const picturesStoreShema = {
-    picturesDefaultSet: picturesDefaultSetShema,
-    pictures: picturesShema
-} as Schema<PicturesStoreShemaI>
+export const picturesStoreSchema = {
+    picturesDefaultSet: picturesDefaultSetSchema,
+    pictures: picturesSchema
+} as Schema<PicturesStoreSchemaI>

@@ -1,10 +1,10 @@
-export default class Chanels {
+export default class Channels {
     static theme_getCurrent = 'theme:getCurrent'
     static theme_set = 'theme:set'
 
     static currency_getCurrent = 'currency:getCurrent'
     static currency_set = 'currency:set'
-    static currency_currencyChenged = 'currency:currencyChenged'
+    static currency_currencyChanged = 'currency:currencyChanged'
 
     static app_getSettings = 'app:getSettings'
     static app_close = 'app:close'
@@ -42,7 +42,7 @@ export default class Chanels {
     static picturesDefaultSet_tableOptions_setColumnSort = 'picturesDefaultSet:tableOptions:setColumnSort'
     static picturesDefaultSet_get = 'picturesDefaultSet:get'
     static picturesDefaultSet_set = 'picturesDefaultSet:set'
-    static picturesDefaultSet_defaultSetChenged = 'picturesDefaultSet:defaultSetChenged'
+    static picturesDefaultSet_defaultSetChanged = 'picturesDefaultSet:defaultSetChanged'
 
     static similarPictures_tableOptions_get = 'similarPictures:tableOptions:get'
     static similarPictures_tableOptions_setColumnVisibility = 'similarPictures:tableOptions:setColumnVisibility'

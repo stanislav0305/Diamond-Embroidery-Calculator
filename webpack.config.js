@@ -138,7 +138,7 @@ module.exports = (env, argv) => {
         entry: [
           path.resolve(__dirname, 'src', 'electron', 'main.ts'),
           path.resolve(__dirname, 'src', 'assets', 'diamond.ico'),
-          path.resolve(__dirname, 'src', 'assets', 'license.md')
+          path.resolve(__dirname, 'license.md')
         ],
         target: 'electron-main',
         devtool,
@@ -159,7 +159,7 @@ module.exports = (env, argv) => {
             {
               test: /\.ico$/i,
               type: 'asset/resource'
-            }
+            },
           ]
         },
         resolve: {

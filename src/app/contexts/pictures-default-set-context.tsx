@@ -52,15 +52,15 @@ export class PicturesDefaultSetProvider extends React.Component<PropsWithChildre
                 console.error('Error in getPicturesDefaultSet.', e)
             })
 
-        window.api.picturesDefaultSet.on.defaultSetChenged((_event, defaultSet: PicturesDefaultSetI) => {
-            console.log('PicturesDefaultSet chenged...')
+        window.api.picturesDefaultSet.on.defaultSetChanged((_event, defaultSet: PicturesDefaultSetI) => {
+            console.log('PicturesDefaultSet Changed...')
 
             this.picturesDefaultSetChangeSubject.next(defaultSet)
         })
     }
 
     componentWillUnmount(): void {
-        window.api.picturesDefaultSet.off.defaultSetChenged()
+        window.api.picturesDefaultSet.off.defaultSetChanged()
     }
 
     setPicturesDefaultSet = (defaultSet: PicturesDefaultSetI) => {

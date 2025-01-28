@@ -6,18 +6,18 @@ import IdHelper from '@shared/helpers/idHelper'
 import { CurrencyConsumer } from '@contexts/currency-context'
 
 
-interface PicturDetailEditModalProps {
+interface PictureDetailEditModalProps {
   onSaved: (forAdd: boolean, picture: PictureDetailI) => void
 }
 
-interface PicturDetailEditModalState {
+interface PictureDetailEditModalState {
   mode: ModalMode
   forAdd: boolean
   pictureDetail: PictureDetailI
 }
 
-export default class PicturDetailEditModal extends React.Component<PicturDetailEditModalProps, PicturDetailEditModalState> {
-  constructor(props: PicturDetailEditModalProps) {
+export default class PictureDetailEditModal extends React.Component<PictureDetailEditModalProps, PictureDetailEditModalState> {
+  constructor(props: PictureDetailEditModalProps) {
     super(props)
 
     this.state = {
@@ -29,11 +29,11 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
 
   onOpen = (pictureDetail: PictureDetailI) => {
     const forAdd = !pictureDetail.id
-    this.toogle('loaded', forAdd, pictureDetail)
+    this.toggle('loaded', forAdd, pictureDetail)
   }
 
   onClose = () => {
-    this.toogle('closed')
+    this.toggle('closed')
   }
 
   onSave = (pictureDetail: PictureDetailI) => {
@@ -42,13 +42,13 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
 
     console.log(JSON.stringify(pictureDetail, null, 2))
 
-    this.toogle('closed')
+    this.toggle('closed')
 
     //save and update the table
     this.props.onSaved(forAdd, pictureDetail)
   }
 
-  toogle = (mode: ModalMode = 'closed', forAdd: boolean = false, pictureDetail: PictureDetailI | null = null) => {
+  toggle = (mode: ModalMode = 'closed', forAdd: boolean = false, pictureDetail: PictureDetailI | null = null) => {
     this.setState(prev => {
       return {
         ...prev,
@@ -65,7 +65,7 @@ export default class PicturDetailEditModal extends React.Component<PicturDetailE
     return (
       <CustomModal header={forAdd ? 'Добавление материала картины' : 'Редактирование материала картины'}
         mode={mode}
-        onHide={this.toogle}>
+        onHide={this.toggle}>
         <CurrencyConsumer>
           {context =>
             <PictureDetailEdit

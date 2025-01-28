@@ -46,15 +46,15 @@ export class CurrencyProvider extends React.Component<PropsWithChildren<{}>, Cur
         })
       })
 
-    window.api.currency.on.currencyChenged((_event, currency: CurrencyI) => {
-      console.log('currencyChenged in PicturesTable...')
+    window.api.currency.on.currencyChanged((_event, currency: CurrencyI) => {
+      console.log('currencyChanged in PicturesTable...')
 
       this.currencyChangeSubject.next(currency)
     })
   }
 
   componentWillUnmount(): void {
-    window.api.currency.off.currencyChenged()
+    window.api.currency.off.currencyChanged()
   }
 
   setCurrency = (currency: CurrencyI) => {

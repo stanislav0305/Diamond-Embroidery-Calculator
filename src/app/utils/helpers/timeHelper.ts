@@ -13,7 +13,7 @@ export default class TimeHelper {
         }
 
         const totalInMinutes = TimeHelper.toMinutes(hours) + minutes
-        const totalInHours = hours + TimeHelper.toHoures(minutes)
+        const totalInHours = hours + TimeHelper.toHours(minutes)
 
         return { totalInMinutes, totalInHours, hoursRaw, minutesRaw }
     }
@@ -51,7 +51,7 @@ export default class TimeHelper {
             : TimeHelper.toMinutes(24) - (fromInMinutes - toInMinutes)
     }
 
-    public static toHoures(minutes: number): number {
+    public static toHours(minutes: number): number {
         return minutes / MINUTES_IN_HOUR
     }
 

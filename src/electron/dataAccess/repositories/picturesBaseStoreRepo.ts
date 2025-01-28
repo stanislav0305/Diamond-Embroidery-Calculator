@@ -1,15 +1,15 @@
 import Store, { Schema } from 'electron-store'
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import { PicturesStoreShemaI, picturesStoreShema } from '@dataAccess/entities/pictureEntityI'
+import { PicturesStoreSchemaI, picturesStoreSchema } from '@dataAccess/entities/pictureEntityI'
 import { PictureDetailEntityI } from '../entities/pictureDetailEntityI'
 
 
-export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
+export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreSchemaI> {
     constructor() {
         super('picturesStore')
     }
 
-    protected override getStoreOptions(): Store.Options<PicturesStoreShemaI> {
+    protected override getStoreOptions(): Store.Options<PicturesStoreSchemaI> {
         console.log('PicturesBaseStoreRepo.getStoreOptions...')
         return {
             schema: this.getSchema(),
@@ -26,7 +26,7 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
                             pricePerHour: 200.00,
                         },
                         pictures: {}
-                    } as PicturesStoreShemaI)
+                    } as PicturesStoreSchemaI)
                 },
                 '1.2.8': conf => {
                     const store = conf.store
@@ -37,14 +37,14 @@ export class PicturesBaseStoreRepo extends BaseStoreRepo<PicturesStoreShemaI> {
                                 ...store.picturesDefaultSet,
                                 pricePerHourAutoCorrect: true
                             }
-                        } as PicturesStoreShemaI
+                        } as PicturesStoreSchemaI
                     )
                 }
             },
         }
     }
 
-    protected override getSchema(): Schema<PicturesStoreShemaI> {
-        return picturesStoreShema
+    protected override getSchema(): Schema<PicturesStoreSchemaI> {
+        return picturesStoreSchema
     }
 }

@@ -37,12 +37,12 @@ export default class ApplicationUpdater {
                     })
             })
             .on('download-progress', (progressObj) => {
-                const procent = progressObj.percent.toFixed(1)
-                console.log(`ApplicationUpdater: download-progress, downloaded: ${procent}%`)
+                const percent = progressObj.percent.toFixed(1)
+                console.log(`ApplicationUpdater: download-progress, downloaded: ${percent}%`)
 
                 const pBar = ProgressBarHelper.appUpdateDownloadProgressBar
                 pBar.detail = `Скорость загрузки: ${progressObj.bytesPerSecond} byte/сек. 
-                - Загружено ${procent}% (${progressObj.transferred} / ${progressObj.total})`
+                - Загружено ${percent}% (${progressObj.transferred} / ${progressObj.total})`
 
                 pBar.value = progressObj.percent
             })

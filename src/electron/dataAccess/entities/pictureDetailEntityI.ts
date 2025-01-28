@@ -1,13 +1,13 @@
 import { Schema } from 'electron-store'
-import BasetEntityI from '@dataAccess/entities/baseEntityI'
+import BaseEntityI from '@dataAccess/entities/baseEntityI'
 
 
-export interface PictureDetailEntityI extends BasetEntityI {
+export interface PictureDetailEntityI extends BaseEntityI {
     name: string
     price: number
 }
 
-export const pictureDetailsShema = {
+export const pictureDetailsSchema = {
     type: 'array',
     default: [] as PictureDetailEntityI[],
     items: {
@@ -29,6 +29,6 @@ export const pictureDetailsShema = {
     }
 }
 
-export const pictureDefaultSetShema = {
-    details: pictureDetailsShema,
+export const pictureDefaultSetSchema = {
+    details: pictureDetailsSchema,
 }

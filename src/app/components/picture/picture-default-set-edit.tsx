@@ -63,7 +63,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
             })
 
         this.currencyChangeSubscription = this.props.currencyContext.subscribeCurrencyChange(currency => {
-            this.currencyChenged(currency)
+            this.currencyChanged(currency)
         })
     }
 
@@ -73,9 +73,9 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
 
     //---------------------------------------------------------------
 
-    currencyChenged(currency: CurrencyI) {
-        //refresh details table if changed currency simbol
-        console.log('currencyChenged in PictureDefaultSetEdit...')
+    currencyChanged(currency: CurrencyI) {
+        //refresh details table if changed currency symbol
+        console.log('currencyChanged in PictureDefaultSetEdit...')
 
         this.setState(prev => {
             return {
@@ -87,7 +87,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
 
     //---------------------------------------------------------------
 
-    onDetailsChenge = (details: PictureDetailI[]) => {
+    onDetailsChange = (details: PictureDetailI[]) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -121,7 +121,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
             if (prev && model
                 && prev.tableOptions.columnOrder.length > 0 && model.length > 0
                 && model.filter((item, index) => { return prev.tableOptions.columnOrder[index] !== item }).length > 0) {
-                //save only if arrays are defferent
+                //save only if arrays are different
                 window.api.picturesDefaultSet.tableOptions.setColumnOrder(model)
             }
 
@@ -145,7 +145,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                         return prev.tableOptions.columnSort[index].id !== item.id
                             || prev.tableOptions.columnSort[index].desc !== item.desc
                     }).length > 0))) {
-                //save only if arrays are defferent
+                //save only if arrays are different
                 window.api.picturesDefaultSet.tableOptions.setColumnSort(model)
             }
 
@@ -214,7 +214,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                                 <h6>Материалы картины по умолчанию</h6>
                                 <PicturesDetailsTable
                                     pictureDetails={details}
-                                    onDetailsChenge={this.onDetailsChenge}
+                                    onDetailsChange={this.onDetailsChange}
                                     tableOptions={tableOptions}
                                     currencyHtmlCode={currencyContext.currencyHtmlCode}
                                     onColumnVisibilityChange={this.onColumnVisibilityChange}
@@ -266,7 +266,7 @@ export default class PictureDefaultSetEdit extends React.Component<PropsI, State
                                         <Form.Check
                                             name="pricePerHour"
                                             type="switch"
-                                            label="Автоматически коректировать цену за час при сохранении - всегда вычислять: 
+                                            label="Автоматически корректировать цену за час при сохранении - всегда вычислять: 
                     Цену за час = (Цена картины - Всего за материалы) / Затрачено часов"
                                             checked={pricePerHourAutoCorrect}
                                             onChange={this.changePricePerHourAutoCorrect}

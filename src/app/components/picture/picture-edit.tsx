@@ -120,7 +120,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
 
     //---------------------------------------------------------------
 
-    onDetailsChenge = (details: PictureDetailI[]) => {
+    onDetailsChange = (details: PictureDetailI[]) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -154,7 +154,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
             if (prev.detailsTableOptions.columnOrder && model
                 && prev.detailsTableOptions.columnOrder.length > 0 && model.length > 0
                 && model.filter((item, index) => { return prev.detailsTableOptions.columnOrder[index] !== item }).length > 0) {
-                //save only if arrays are defferent
+                //save only if arrays are different
                 window.api.pictureDetail.tableOptions.setColumnOrder(model)
             }
 
@@ -178,7 +178,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                         return prev.detailsTableOptions.columnSort[index].id !== item.id
                             || prev.detailsTableOptions.columnSort[index].desc !== item.desc
                     }).length > 0))) {
-                //save only if arrays are defferent
+                //save only if arrays are different
                 window.api.pictureDetail.tableOptions.setColumnSort(model)
 
             }
@@ -225,7 +225,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
 
     //---------------------------------------------------------------
 
-    createPictereImage = (file: File, arrayBuffer: ArrayBuffer, isMain: boolean) => {
+    createPictureImage = (file: File, arrayBuffer: ArrayBuffer, isMain: boolean) => {
         return {
             id: uid.rnd(),
             //get the file name if it exists
@@ -243,7 +243,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
     onAddImage = async (file: File, arrayBuffer: ArrayBuffer) => {
         this.setState(prev => {
             const isMain = prev.images.length === 0
-            const newImg = this.createPictereImage(file, arrayBuffer, isMain)
+            const newImg = this.createPictureImage(file, arrayBuffer, isMain)
 
             return {
                 ...prev,
@@ -488,7 +488,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                                             componentMode={componentMode}
                                                             pictureDetails={details}
                                                             currencyHtmlCode={currencyHtmlCode}
-                                                            onDetailsChenge={this.onDetailsChenge}
+                                                            onDetailsChange={this.onDetailsChange}
                                                             tableOptions={detailsTableOptions}
                                                             onColumnVisibilityChange={this.onColumnVisibilityChange}
                                                             onColumnOrderChange={this.onColumnOrderChange}
@@ -585,7 +585,7 @@ export default class PictureEdit extends React.Component<PropsI, StateI> {
                                         className="mb-4"
                                         as="textarea"
                                         name="comment"
-                                        label="Коментарий"
+                                        label="Комментарий"
                                         addInput
                                         disabled={componentMode === 'readonly'}
                                     />

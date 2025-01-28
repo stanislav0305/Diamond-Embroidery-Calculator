@@ -1,19 +1,19 @@
 import { Schema } from 'electron-store'
-import BasetEntityI from '@dataAccess/entities/baseEntityI'
-import { PictureDetailEntityI, pictureDetailsShema } from '@dataAccess/entities/pictureDetailEntityI'
+import BaseEntityI from '@dataAccess/entities/baseEntityI'
+import { PictureDetailEntityI, pictureDetailsSchema } from '@dataAccess/entities/pictureDetailEntityI'
 
 
-export default interface PicturesDefaultSetEntityI extends BasetEntityI{
+export default interface PicturesDefaultSetEntityI extends BaseEntityI{
     details: PictureDetailEntityI[]
     detailsSumTotal: number
     pricePerHour: number
     pricePerHourAutoCorrect: boolean
 }
 
-export const picturesDefaultSetShema = {
+export const picturesDefaultSetSchema = {
     type: 'object',
     properties: {
-        details: pictureDetailsShema,
+        details: pictureDetailsSchema,
         detailsSumTotal: { 
             type: 'number', 
             default: 0 

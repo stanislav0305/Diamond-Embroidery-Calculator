@@ -1,14 +1,14 @@
 import Store, { Schema } from 'electron-store'
 import { BaseStoreRepo } from '@dataAccess/repositories/baseStoreRepoI'
-import ThemeEntityI, { ColumnSortEntityI, CurrencyEntityI, MainConfStoreShemaI, TableOptionsEntityI, TablesOptionsEntityI, mainConfStoreShema } from '@dataAccess/entities/mainConfigEntityI'
+import ThemeEntityI, { ColumnSortEntityI, CurrencyEntityI, MainConfStoreSchemaI, TableOptionsEntityI, TablesOptionsEntityI, mainConfStoreSchema } from '@dataAccess/entities/mainConfigEntityI'
 
 
-export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
+export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreSchemaI> {
     constructor() {
         super('mainConfig')
     }
 
-    protected override getStoreOptions(): Store.Options<MainConfStoreShemaI> {
+    protected override getStoreOptions(): Store.Options<MainConfStoreSchemaI> {
         console.log('MainConfBaseStoreRepo.getStoreOptions...')
         
         return {
@@ -54,7 +54,7 @@ export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
                             currency: {
                                 name: 'ruble'
                             } as CurrencyEntityI,
-                        } as MainConfStoreShemaI
+                        } as MainConfStoreSchemaI
                     )
                 },
                 '2.0.0': conf => {
@@ -77,14 +77,14 @@ export class MainConfBaseStoreRepo extends BaseStoreRepo<MainConfStoreShemaI> {
                                     ],
                                 }
                             },
-                        } as MainConfStoreShemaI
+                        } as MainConfStoreSchemaI
                     )
                 }
             },
         }
     }
 
-    protected override getSchema(): Schema<MainConfStoreShemaI> {
-        return mainConfStoreShema
+    protected override getSchema(): Schema<MainConfStoreSchemaI> {
+        return mainConfStoreSchema
     }
 }

@@ -20,15 +20,15 @@ export default class SimilarPicturesModal extends React.Component<{}, StateI> {
     }
 
     onOpen = (filter: SimilarPicturesFilterI) => {
-        this.toogle('loaded', filter)
+        this.toggle('loaded', filter)
     }
 
     onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
-    toogle = (mode: ModalMode = 'closed', filter: SimilarPicturesFilterI = {} as SimilarPicturesFilterI) => {
+    toggle = (mode: ModalMode = 'closed', filter: SimilarPicturesFilterI = {} as SimilarPicturesFilterI) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -45,7 +45,7 @@ export default class SimilarPicturesModal extends React.Component<{}, StateI> {
             <CustomModal header='Похожие картины'
                 mode={mode}
                 onClose={this.onClose}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <PicturesTable componentMode='readonly' filter={filter} />
             </CustomModal >
         )

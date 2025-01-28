@@ -4,6 +4,6 @@ type CoverageAreaType = typeof coverageAreas[number]
 export default CoverageAreaType
 
 export const coverageAreasDataMap: Map<CoverageAreaType, string> = new Map<CoverageAreaType, string>([
-    ['total', 'полноя'],
+    ['total', 'полная'],
     ['partial', 'частичная'],
 ])

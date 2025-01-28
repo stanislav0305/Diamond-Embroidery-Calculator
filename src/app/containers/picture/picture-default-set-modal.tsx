@@ -28,11 +28,11 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
     }
 
     onOpen = () => {
-        this.toogle('loaded', this.props.picturesDefaultSetContext.defaultSet)
+        this.toggle('loaded', this.props.picturesDefaultSetContext.defaultSet)
     }
 
     onClose = () => {
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
     onSave = async (formData: PicturesDefaultSetI) => {
@@ -40,18 +40,18 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
         const model = { ...formData } as PicturesDefaultSetI
 
         console.log('sended to save:', JSON.stringify(model, null, 2))
-        this.toogle('loading', model)
+        this.toggle('loading', model)
 
         await this.props.picturesDefaultSetContext.setPicturesDefaultSet(model)
             .then(defaultSet => {
-                this.toogle('closed')
+                this.toggle('closed')
             })
             .catch(e => {
-                this.toogle('error', model)
+                this.toggle('error', model)
             })
     }
 
-    toogle = (mode: ModalMode = 'closed', model: PicturesDefaultSetI | null = null) => {
+    toggle = (mode: ModalMode = 'closed', model: PicturesDefaultSetI | null = null) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -66,7 +66,7 @@ export default class PictureDefaultSetModal extends React.Component<PropsI, Stat
         return (
             <CustomModal header="Данные по умолчанию"
                 mode={mode}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <CurrencyConsumer>
                     {currencyContext =>
                         <PictureDefaultSetEdit

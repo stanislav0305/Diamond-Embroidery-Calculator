@@ -1,14 +1,14 @@
 import React, { createContext, PropsWithChildren } from 'react'
 import { interval, map, mergeMap, Subject, tap, takeWhile, switchMap } from 'rxjs'
 import EventMessage, { EventMessagePropsI } from '@components/event-message'
-import EventMessagePropsFactory, { EventMessageTyepe } from '@utils/helpers/eventMessagePropsFactory'
+import EventMessagePropsFactory, { EventMessageType } from '@utils/helpers/eventMessagePropsFactory'
 import { EVENT_MESSAGES } from '@shared/consts'
 import ProcessingResultI from '@shared/interfaces/processingResultI'
 import { ToastContainer } from 'react-bootstrap'
 
 
 export type EventMessagesContextType = {
-    addMessage: (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => void,
+    addMessage: (t: EventMessageType, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => void,
 }
 
 const EventMessagesContext = createContext<EventMessagesContextType>({} as EventMessagesContextType)
@@ -85,11 +85,11 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
             .subscribe()
 
 
-        window.api.pictures.images.on.dowloaded((_event, result: boolean) => {
-            const hasErroror = !result
+        window.api.pictures.images.on.downloaded((_event, result: boolean) => {
+            const hasError = !result
             this.addMessage(
-                'PictureFilesDonwnloaded',
-                hasErroror
+                'PictureFilesDownloaded',
+                hasError
             )
         })
 
@@ -126,7 +126,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
 
     componentWillUnmount(): void {
         window.api.pictures.images.off.loaded()
-        window.api.pictures.images.off.dowloaded()
+        window.api.pictures.images.off.downloaded()
         window.api.pictures.images.off.removed()
 
         this.addMessageSubject.unsubscribe()
@@ -134,7 +134,7 @@ export class EventMessagesProvider extends React.Component<PropsWithChildren<{}>
     }
 
 
-    addMessage = (t: EventMessageTyepe, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => {
+    addMessage = (t: EventMessageType, hasError?: boolean, errorDescription?: string, additionalDescription?: string) => {
         const props = EventMessagePropsFactory.getProps(t, this.onClose, hasError ?? false, errorDescription, additionalDescription)
         this.addMessageSubject.next(props)
     }

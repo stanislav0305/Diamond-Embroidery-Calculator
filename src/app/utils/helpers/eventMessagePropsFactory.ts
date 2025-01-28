@@ -1,8 +1,8 @@
 import { EventMessagePropsI } from "@components/event-message"
 import ShortUniqueId from "short-unique-id"
 
-export type EventMessageTyepe = 'PictureCreated' | 'PictureUpdated' | 'PictureRemoved'
-    | 'PictureFilesLoaded' | 'PictureFilesRemoved' | 'PictureFilesDonwnloaded'
+export type EventMessageType = 'PictureCreated' | 'PictureUpdated' | 'PictureRemoved'
+    | 'PictureFilesLoaded' | 'PictureFilesRemoved' | 'PictureFilesDownloaded'
     | 'PicturesDefaultSetSaved'
 
 const baseModel = {
@@ -12,7 +12,7 @@ const baseModel = {
 
 export default class EventMessagePropsFactory {
 
-    public static getProps(t: EventMessageTyepe, onClose: (id: string, e?: React.MouseEvent | React.KeyboardEvent) => void,
+    public static getProps(t: EventMessageType, onClose: (id: string, e?: React.MouseEvent | React.KeyboardEvent) => void,
         hasError: boolean, errorDescription: string | undefined, additionalDescription: string | undefined) {
 
         let props = this.addBasePropsPart(onClose, hasError, errorDescription, additionalDescription)
@@ -36,14 +36,14 @@ export default class EventMessagePropsFactory {
         return props as EventMessagePropsI
     }
 
-    static addMainPropsPart(p: EventMessagePropsI, t: EventMessageTyepe) {
+    static addMainPropsPart(p: EventMessagePropsI, t: EventMessageType) {
         switch (t) {
             case 'PictureCreated': return this.getPictureCreatedProps(p)
             case 'PictureUpdated': return this.getPictureUpdatedProps(p)
             case 'PictureRemoved': return this.getPictureRemovedProps(p)
             case 'PictureFilesLoaded': return this.getPictureFilesLoadedProps(p)
             case 'PictureFilesRemoved': return this.getPictureFilesRemovedProps(p)
-            case 'PictureFilesDonwnloaded': return this.getPictureFilesDonwnloadedProps(p)
+            case 'PictureFilesDownloaded': return this.getPictureFilesDownloadedProps(p)
             case 'PicturesDefaultSetSaved': return this.getPicturesDefaultSetSavedProps(p)
         }
     }
@@ -53,7 +53,7 @@ export default class EventMessagePropsFactory {
             return Object.assign({ ...p }, {
                 action: 'error',
                 variant: 'danger',
-                description: p.errorDescription ?? 'Произошла ошибка! Данные не изменены коректно.',
+                description: p.errorDescription ?? 'Произошла ошибка! Данные не изменены корректно.',
             } as EventMessagePropsI)
         }
 
@@ -66,7 +66,7 @@ export default class EventMessagePropsFactory {
             variant: 'success',
             title: 'Добавление картины',
             description: 'Картина добавлена!',
-            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные картины не сохранены коректно.'
+            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные картины не сохранены корректно.'
         } as EventMessagePropsI)
     }
 
@@ -76,7 +76,7 @@ export default class EventMessagePropsFactory {
             variant: 'success',
             title: 'Редактирование картины',
             description: 'Картина сохранена!',
-            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные картины не сохранены коректно.'
+            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные картины не сохранены корректно.'
         } as EventMessagePropsI)
     }
 
@@ -86,7 +86,7 @@ export default class EventMessagePropsFactory {
             variant: 'success',
             title: 'Удаление картины',
             description: 'Картина удалена!',
-            errorDescription: p.errorDescription ?? 'Произошла ошибка! Удаление картины не прошло коректно.'
+            errorDescription: p.errorDescription ?? 'Произошла ошибка! Удаление картины не прошло корректно.'
         } as EventMessagePropsI)
     }
 
@@ -110,7 +110,7 @@ export default class EventMessagePropsFactory {
         } as EventMessagePropsI)
     }
 
-    static getPictureFilesDonwnloadedProps(p: EventMessagePropsI) {
+    static getPictureFilesDownloadedProps(p: EventMessagePropsI) {
         return Object.assign({ ...p }, {
             action: 'info',
             variant: 'success',
@@ -127,7 +127,7 @@ export default class EventMessagePropsFactory {
             variant: 'success',
             title: 'Редактирование данных по умолчанию',
             description: 'Данные сохранены!',
-            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные по умолчанию не сохранены коректно.'
+            errorDescription: p.errorDescription ?? 'Произошла ошибка! Данные по умолчанию не сохранены корректно.'
         } as EventMessagePropsI)
     }
 }

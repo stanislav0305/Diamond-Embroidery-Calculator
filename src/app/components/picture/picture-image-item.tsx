@@ -60,7 +60,7 @@ export default function PictureImageItem(props: PropsI) {
                                         >
                                         </Button>
                                         <Button
-                                            key={`btn-remove-imagen-${img.id}`}
+                                            key={`btn-remove-image-${img.id}`}
                                             as="a"
                                             variant="outline-danger"
                                             size="sm"

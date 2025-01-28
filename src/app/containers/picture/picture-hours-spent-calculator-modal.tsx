@@ -48,25 +48,25 @@ export default class PictureHoursSpentCalculatorModal extends React.Component<Pr
     }
 
     onOpen = (hoursSpent: number) => {
-        this.toogle('loaded', hoursSpent)
+        this.toggle('loaded', hoursSpent)
     }
 
     onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.toogle('closed')
+        this.toggle('closed')
     }
 
     onConfirm = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
 
         const { itemsSumTotal } = this.state
-        const hoursSpent = Math.round(TimeHelper.toHoures(itemsSumTotal))
+        const hoursSpent = Math.round(TimeHelper.toHours(itemsSumTotal))
 
-        this.toogle('closed')
+        this.toggle('closed')
         this.props.onSaved(hoursSpent)
     }
 
-    toogle = (mode: ModalMode = 'closed', hoursSpent?: number) => {
+    toggle = (mode: ModalMode = 'closed', hoursSpent?: number) => {
         this.setState(prev => {
             return {
                 ...prev,
@@ -217,12 +217,12 @@ export default class PictureHoursSpentCalculatorModal extends React.Component<Pr
         const { hoursStr, minutesStr } = TimeHelper.formatTimeToStrings(itemsSumTotal, 'HHHHH:mm')
 
         return (
-            <CustomModal header='Калькулятор затраченых часов'
+            <CustomModal header='Калькулятор затраченных часов'
                 mode={mode}
                 confirmBtnText='Сохранить'
                 onConfirm={this.onConfirm}
                 onClose={this.onClose}
-                onHide={this.toogle}>
+                onHide={this.toggle}>
                 <Alert variant='secondary'>
                     <i className="bi bi-exclamation-triangle-fill me-2"></i>
                     <span>Введённые здесь строки с временем не будут сохранены. Они будут использоваться для расчета общего
@@ -236,7 +236,7 @@ export default class PictureHoursSpentCalculatorModal extends React.Component<Pr
                                     variant="outline-success"
                                     size="sm"
                                     className='bi bi-plus-square-fill me-1 mt-1'
-                                    title='Добавить картинe'
+                                    title='Добавить картину'
                                     onClick={(e) => this.onAddItem(e)}
                                 >
                                 </Button>
@@ -328,10 +328,10 @@ export default class PictureHoursSpentCalculatorModal extends React.Component<Pr
                     </tbody>
                 </Table>
                 <InputGroup>
-                    <InputGroup.Text>Всего колличество часов:</InputGroup.Text>
-                    <InputGroup.Text>{Math.round(TimeHelper.toHoures(itemsSumTotal))}</InputGroup.Text>
+                    <InputGroup.Text>Всего количество часов:</InputGroup.Text>
+                    <InputGroup.Text>{Math.round(TimeHelper.toHours(itemsSumTotal))}</InputGroup.Text>
                     <InputGroup.Text>{`(${hoursStr} ч. ${minutesStr} мин.)`}</InputGroup.Text>
-                    <InputGroup.Text>{`(в часах: ${TimeHelper.toHoures(itemsSumTotal).toFixed(2)})`}</InputGroup.Text>
+                    <InputGroup.Text>{`(в часах: ${TimeHelper.toHours(itemsSumTotal).toFixed(2)})`}</InputGroup.Text>
                 </InputGroup>
             </CustomModal>
         )

@@ -1,15 +1,15 @@
 import { Schema } from 'electron-store'
-import BasetEntityI from '@dataAccess/entities/baseEntityI'
+import BaseEntityI from '@dataAccess/entities/baseEntityI'
 
 
 export type ThemeModesType = 'light' | 'dark' | 'auto'
 
-export default interface ThemeEntityI extends BasetEntityI {
+export default interface ThemeEntityI extends BaseEntityI {
     mode: ThemeModesType
     name: string
 }
 
-const themeShema = {
+const themeSchema = {
     type: 'object',
     properties: {
         mode: {
@@ -28,11 +28,11 @@ const themeShema = {
 
 export type CurrencyNamesType = 'ruble' | 'euro' | 'dollar'
 
-export interface CurrencyEntityI extends BasetEntityI {
+export interface CurrencyEntityI extends BaseEntityI {
     name: CurrencyNamesType
 }
 
-const currencyShema = {
+const currencySchema = {
     type: 'object',
     properties: {
         name: {
@@ -63,7 +63,7 @@ export interface TablesOptionsEntityI {
     similarPictureTable: TableOptionsEntityI
 }
 
-const tableOptionsShema = {
+const tableOptionsSchema = {
     type: 'object',
     properties: {
         columnVisibility: {},
@@ -94,24 +94,24 @@ const tableOptionsShema = {
     } as Schema<TableOptionsEntityI>
 }
 
-const tablesOptionsShema = {
+const tablesOptionsSchema = {
     type: 'object',
     properties: {
-        pictureTable: tableOptionsShema,
-        pictureDetailTable: tableOptionsShema,
-        pictureDefaultSetTable: tableOptionsShema,
-        similarPictureTable: tableOptionsShema,
+        pictureTable: tableOptionsSchema,
+        pictureDetailTable: tableOptionsSchema,
+        pictureDefaultSetTable: tableOptionsSchema,
+        similarPictureTable: tableOptionsSchema,
     } as Schema<TablesOptionsEntityI>
 }
 
-export interface MainConfStoreShemaI {
+export interface MainConfStoreSchemaI {
     theme: ThemeEntityI,
     tablesOptions: TablesOptionsEntityI,
     currency: CurrencyEntityI,
 }
 
-export const mainConfStoreShema = {
-    theme: themeShema,
-    tablesOptions: tablesOptionsShema,
-    currency: currencyShema,
-} as Schema<MainConfStoreShemaI>
+export const mainConfStoreSchema = {
+    theme: themeSchema,
+    tablesOptions: tablesOptionsSchema,
+    currency: currencySchema,
+} as Schema<MainConfStoreSchemaI>

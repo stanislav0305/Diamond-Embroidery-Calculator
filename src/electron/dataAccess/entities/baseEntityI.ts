@@ -1,2 +1,2 @@
-export default interface BasetEntityI{
+export default interface BaseEntityI{
 }
